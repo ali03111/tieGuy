@@ -1,11 +1,24 @@
 # Resolve react_native_pods.rb with node to allow for hoisting
-require Pod::Executable.execute_command('node', ['-p',
-  'require.resolve(
-    "react-native/scripts/react_native_pods.rb",
-    {paths: [process.argv[1]]},
-  )', __dir__]).strip
+# require Pod::Executable.execute_command('node', ['-p',
+#   'require.resolve(
+#     "react-native/scripts/react_native_pods.rb",
+#     {paths: [process.argv[1]]},
+#   )', __dir__]).strip
 
-platform :ios, min_ios_version_supported
+
+ def node_require(script)
+   # Resolve script with node to allow for hoisting
+   require Pod::Executable.execute_command('node', ['-p',
+     "require.resolve(
+       '#{script}',
+       {paths: [process.argv[1]]},
+     )", __dir__]).strip
+ end
+
+ node_require('react-native/scripts/react_native_pods.rb')
+ node_require('react-native-permissions/scripts/setup.rb')
+
+platform :ios, 13.4
 prepare_react_native_project!
 
 # If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.
@@ -34,10 +47,25 @@ target 'tieguy' do
     #
     # Note that if you have use_frameworks! enabled, Flipper will not work and
     # you should disable the next line.
+    :hermes_enabled => false,
     :flipper_configuration => flipper_config,
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
+
+# pod install
+rn_maps_path = '../node_modules/react-native-maps'
+pod 'GoogleMaps'
+  pod 'GooglePlaces'
+  pod 'react-native-google-maps', :path => rn_maps_path
+  pod 'GoogleMaps'  # Uncomment this line if you want to support GoogleMaps on iOS
+  pod 'Google-Maps-iOS-Utils' # Uncomment this line if you want to support GoogleMaps on iOS
+  pod 'Firebase', :modular_headers => true
+  pod 'FirebaseCoreInternal', :modular_headers => true
+  pod 'GTMSessionFetcher', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
+  pod 'FirebaseCore', :modular_headers => true
+
 
   target 'tieguyTests' do
     inherit! :complete

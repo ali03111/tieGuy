@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "664658424087",
+    "project_id": "tieguy-2b261",
+    "storage_bucket": "tieguy-2b261.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:664658424087:android:49d86f81b1b684829e0752",
+        "android_client_info": {
+          "package_name": "com.tieguy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvmpZbq9pEvRIfnnk5ZEJIEE4IoNk5DmY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

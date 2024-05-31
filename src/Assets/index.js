@@ -13,7 +13,7 @@ export {default as eyeOff} from './Icons/eye-off.png';
 export {default as passwordIcon} from './Icons/password.png';
 export {default as tickemp} from './Icons/tick-emp.png';
 export {default as tickfill} from './Icons/tick-fill.png';
-
+export {default as locationArrow} from './Icons/locationArrow.png';
 
 export {default as username} from './Icons/username.png';
 export {default as user} from './Icons/user.png';
@@ -56,6 +56,6 @@ export {default as bell} from './Icons/bell.png';
 export {default as thumbUp} from './Icons/thumbUp.png';
 export {default as arrowLeft} from './Icons/arrow-left.png';
 
-export {default as apple} from './Icons/apple.png';
-export {default as google} from './Icons/google.png';
-export {default as facebook} from './Icons/facebook.png';
+export {default as apple} from './Icons/appleImage.png';
+export {default as google} from './Icons/googleImage.png';
+export {default as facebook} from './Icons/facebookImage.png';

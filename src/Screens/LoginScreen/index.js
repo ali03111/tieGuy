@@ -5,12 +5,10 @@ import {styles} from './styles';
 import ThemeButton from '../../Components/ThemeButton';
 import {
   apple,
- 
   facebook,
   google,
   lock,
   locksetting,
- 
   sms,
   tickemp,
   tickfill,
@@ -22,7 +20,9 @@ import {Touchable} from '../../Components/Touchable';
 import KeyBoardWrapper from '../../Components/KeyBoardWrapper';
 import {LoginBg} from '../../Assets';
 import {hp, wp} from '../../Config/responsive';
-import { Colors } from '../../Theme/Variables';
+import {Colors} from '../../Theme/Variables';
+import SocialBottomView from '../../Components/SocialBottomComp';
+import SocialBottomComp from '../../Components/SocialBottomComp';
 
 const LoginScreen = ({navigation}) => {
   // const [check, setCheck] = useState(!isCheck);
@@ -48,11 +48,10 @@ const LoginScreen = ({navigation}) => {
       <KeyBoardWrapper
         styles={styles.logInMain}
         showsVerticalScrollIndicator={false}>
-       
         <View style={styles.loginBottom}>
-        <View style={styles.loginTop}>
-          <TextComponent text={'Log In'} styles={styles.signInText} />
-        </View>
+          <View style={styles.loginTop}>
+            <TextComponent text={'Log In'} styles={styles.signInText} />
+          </View>
           <InputComponent
             {...{
               name: 'email',
@@ -89,18 +88,18 @@ const LoginScreen = ({navigation}) => {
 
           <View style={styles.rememberSec}>
             <View style={styles.checkContainer}>
-               <Touchable style={styles.checkContainer} onPress={handleClick}>
+              <Touchable style={styles.checkContainer} onPress={handleClick}>
                 <Image
                   source={check ? tickfill : tickemp}
                   style={{
                     resizeMode: 'contain',
                     // tintColor: Colors.white,
-                    width: wp('5.5')
+                    width: wp('5.5'),
                   }}
                 />
               </Touchable>
-                <TextComponent text={'Remember me'} styles={styles.remStyle}/>
-              </View>
+              <TextComponent text={'Remember me'} styles={styles.remStyle} />
+            </View>
             <TextComponent
               text={'Forgot Password?'}
               styles={styles.forgetText}
@@ -113,30 +112,7 @@ const LoginScreen = ({navigation}) => {
             <TextComponent text={'Or Log In with'} styles={styles.barText} />
             <View style={styles.barLine}></View>
           </View>
-          <View style={styles.social}>
-            <Touchable style={styles.socialIcons}>
-              <Image
-                source={google}
-                style={styles.socialImage}
-                resizeMode="contain"
-              />
-            </Touchable>
-            <Touchable style={styles.socialIcons}>
-              <Image
-                source={apple}
-                style={styles.socialImage}
-                resizeMode="contain"
-              />
-            </Touchable>
-            <Touchable style={styles.socialIcons}>
-              <Image
-                source={facebook}
-                style={styles.socialImage}
-                resizeMode="contain"
-              />
-            </Touchable>
-          </View>
-
+          <SocialBottomComp />
           <View style={styles.dontHave}>
             <TextComponent
               text={'Don’t have an account?'}
@@ -146,7 +122,6 @@ const LoginScreen = ({navigation}) => {
               <Text style={styles.signUpText}>Sign Up</Text>
             </Touchable>
           </View>
-
         </View>
       </KeyBoardWrapper>
     </ImageBackground>

@@ -35,7 +35,8 @@ import {Touchable} from '../../Components/Touchable';
 import useRegister from './useRegisterScreen';
 import KeyBoardWrapper from '../../Components/KeyBoardWrapper';
 import {LoginBg} from '../../Assets';
-import { hp } from '../../Config/responsive';
+import {hp} from '../../Config/responsive';
+import SocialBottomComp from '../../Components/SocialBottomComp';
 
 const RegisterScreen = ({navigation}) => {
   const {
@@ -134,22 +135,6 @@ const RegisterScreen = ({navigation}) => {
               inputIconStyle: styles.lockstyle,
             }}
           />
-          {/* <View style={styles.termsMain}>
-            <Touchable style={styles.rememberInner} onPress={PolicyValue}>
-              <Image
-                source={policy ? rememberEmpty : rememberImg}
-                style={styles.tickIcon}
-              />
-              <TextComponent styles={styles.tickText} text={'Agree to our '} />
-            </Touchable>
-            <TextComponent
-              styles={styles.termsText}
-              text={'terms & conditions.'}
-              onPress={() =>
-                Linking.openURL('https://www.greenboom.com/privacy')
-              }
-            />
-          </View> */}
           <View style={{paddingTop: hp('3')}}>
             <ThemeButton
               title={'Register'}
@@ -162,29 +147,7 @@ const RegisterScreen = ({navigation}) => {
             <TextComponent text={'Or Sign Up with'} styles={styles.barText} />
             <View style={styles.barLine}></View>
           </View>
-          <View style={styles.social}>
-            <Touchable style={styles.socialIcons}>
-              <Image
-                source={google}
-                style={styles.socialImage}
-                resizeMode="contain"
-              />
-            </Touchable>
-            <Touchable style={styles.socialIcons}>
-              <Image
-                source={apple}
-                style={styles.socialImage}
-                resizeMode="contain"
-              />
-            </Touchable>
-            <Touchable style={styles.socialIcons}>
-              <Image
-                source={facebook}
-                style={styles.socialImage}
-                resizeMode="contain"
-              />
-            </Touchable>
-          </View>
+          <SocialBottomComp />
           <View style={styles.dontHave}>
             <TextComponent
               text={'Already have an account?'}

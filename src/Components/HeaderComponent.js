@@ -39,19 +39,19 @@ export const HeaderComponent = ({
     );
   });
 
-  useEffect(() => {
-    const backAction = () => {
-      goBack(); // Call your goBack function when the back button is pressed
-      return true; // Prevent default behavior (exit the app)
-    };
+  // useEffect(() => {
+  //   const backAction = () => {
+  //     goBack(); // Call your goBack function when the back button is pressed
+  //     return true; // Prevent default behavior (exit the app)
+  //   };
 
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    );
+  //   const backHandler = BackHandler.addEventListener(
+  //     'hardwareBackPress',
+  //     backAction,
+  //   );
 
-    return () => backHandler.remove(); // Remove event listener on component unmount
-  }, [goBack]);
+  //   return () => backHandler.remove(); // Remove event listener on component unmount
+  // }, [goBack]);
 
   return (
     <View style={{...styles.headerTop, ...headerShow}}>

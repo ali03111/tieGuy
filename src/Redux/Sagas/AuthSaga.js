@@ -18,7 +18,6 @@ import {
   registerService,
   updateProfileServices,
 } from '../../Services/AuthServices';
-import DeviceInfo from 'react-native-device-info';
 import {errorMessage, successMessage} from '../../Config/NotificationMessage';
 import NavigationService from '../../Services/NavigationService';
 
@@ -35,8 +34,6 @@ properties, and then performs a series of asynchronous operations using the `yie
 const loginSaga = function* ({payload: {datas, type}}) {
   yield put(loadingTrue());
   console.log('asd');
-  const {getUniqueId} = DeviceInfo;
-  const deviceToken = yield call(getUniqueId);
   try {
     const getLoginData = loginObject[type];
     const resultData = yield call(getLoginData, datas);

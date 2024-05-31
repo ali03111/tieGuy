@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
   logInMain: {
     // paddingHorizontal: wp('3.5'),
     justifyContent: 'center',
-    position: 'relative'
+    position: 'relative',
   },
   ImgBg: {
     flex: 1,
@@ -20,9 +20,9 @@ export const styles = StyleSheet.create({
   },
   remStyle: {
     color: Colors.white,
-     fontSize: hp('1.8'),
-      paddingLeft: wp('1')
-    },
+    fontSize: hp('1.8'),
+    paddingLeft: wp('1'),
+  },
   checkContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -68,6 +68,7 @@ export const styles = StyleSheet.create({
   socialImage: {
     width: wp('7'),
     height: hp('3.5'),
+    resizeMode: 'contain',
   },
   mainImage: {
     width: wp('100'),
@@ -87,7 +88,7 @@ export const styles = StyleSheet.create({
   loginBottom: {
     flex: 1,
     paddingHorizontal: wp('3.5'),
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   rememberSec: {
     flexDirection: 'row',
@@ -124,11 +125,11 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: hp('8'),
     alignItems: 'center',
-    paddingBottom: hp('2'),  
+    paddingBottom: hp('2'),
     // position: 'absolute',
     // left: 0,
     // right: 0,
-    // bottom: hp('2')  
+    // bottom: hp('2')
   },
   dontHaveText: {
     fontSize: hp('2'),
@@ -139,6 +140,7 @@ export const styles = StyleSheet.create({
   signUpText: {
     color: Colors.themeOrg,
     fontSize: hp('2'),
-    fontWeight: '600'
+    fontWeight: '600',
   },
+  imageStyle: {width: wp('30'), height: hp('15')},
 });
