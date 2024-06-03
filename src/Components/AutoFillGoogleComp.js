@@ -12,6 +12,7 @@ export const AutoFillGoogleComp = ({
   onChangeText,
   key,
   defaultValue,
+  textInputStyle,
 }) => {
   return (
     <GooglePlacesAutocomplete
@@ -57,6 +58,7 @@ export const AutoFillGoogleComp = ({
           color: 'black',
           fontSize: hp('1.8'),
           backgroundColor: 'white',
+          ...textInputStyle,
           //   flex: 1,
         },
         predefinedPlacesDescription: {
@@ -84,14 +86,14 @@ export const AutoFillGoogleComp = ({
         handleButtonClick({
           ...data,
           coords: {
-            latitude: lat,
-            longitude: lng,
+            lat,
+            lng,
           },
         });
         // handleButtonClick(data,{ lat, lng });
       }}
       query={{
-        key: 'AIzaSyDrsOp8m31p4Ouy3S0pfXRNehExMJ-Mp2U',
+        key: 'AIzaSyAu-nEBbiOahfUyeMc8Lc1gTTKfete_wnQ',
         language: 'en',
       }}
     />

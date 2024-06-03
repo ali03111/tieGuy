@@ -5,6 +5,8 @@ export {default as splashOne} from './Images/splashOne.png';
 export {default as splashTwo} from './Images/splashTwo.png';
 export {default as splashThree} from './Images/splashThree.png';
 export {default as LoginBg} from './Images/loginBg.png';
+export {default as blackImg} from './Images/blackImg.png';
+export {default as parCloud} from './Images/parCloud.png';
 
 //  Icons
 
@@ -14,6 +16,9 @@ export {default as passwordIcon} from './Icons/password.png';
 export {default as tickemp} from './Icons/tick-emp.png';
 export {default as tickfill} from './Icons/tick-fill.png';
 export {default as locationArrow} from './Icons/locationArrow.png';
+export {default as routeIcon} from './Icons/routeIcon.png';
+export {default as Line} from './Icons/Line.png';
+export {default as callIcon} from './Icons/callIcon.png';
 
 export {default as username} from './Icons/username.png';
 export {default as user} from './Icons/user.png';

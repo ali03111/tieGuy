@@ -6,11 +6,25 @@ import useHomeScreen from './useHomeScreen';
 import {styles} from './styles';
 import MapView from 'react-native-maps';
 import {hp, wp} from '../../Config/responsive';
-import {locationArrow} from '../../Assets';
+import {Line, locationArrow, routeIcon} from '../../Assets';
 import {AutoFillGoogleComp} from '../../Components/AutoFillGoogleComp';
+import KeyBoardWrapper from '../../Components/KeyBoardWrapper';
+import {Colors} from '../../Theme/Variables';
+import InputView from './InputView';
+import WeatherComp from '../../Components/WeatherComp';
+import EmergencyCardComp from '../../Components/EmergencyCardComp';
 
 const HomeScreen = ({navigation}) => {
-  const {laongituteDalta, latitudeDelta} = useHomeScreen(navigation);
+  const {
+    laongituteDalta,
+    latitudeDelta,
+    endLocation,
+    startLocation,
+    dynamicNav,
+    updateState,
+    valChange,
+    updateDescription,
+  } = useHomeScreen(navigation);
 
   const RenderMap = useCallback(({item, index}) => {
     return (
@@ -37,36 +51,20 @@ const HomeScreen = ({navigation}) => {
   }, []);
 
   return (
-    <View style={styles.homeMain}>
+    <KeyBoardWrapper styles={styles.homeMain} scroll={true}>
       <RenderMap />
-      <View
-        style={{
-          width: wp('95'),
-          borderRadius: 10,
-          paddingVertical: hp('3'),
-          backgroundColor: 'white',
-          alignSelf: 'center',
-        }}>
-        <View style={styles.inputArea}>
-          <Image source={locationArrow} style={styles.inputLeftImg} />
-          <AutoFillGoogleComp
-            handleButtonClick={
-              e => {}
-              // updateInputState({locationInput: e})
-            }
-            key={0}
-            inputPlaceHolder="Choose Start Location"
-            // inputVal={locationInput.description}
-            // defaultValue={locationInput.description}
-            inputContainerStyle={{width: wp('80'), marginLeft: wp('1')}}
-            onChangeText={
-              text => {}
-              // updateInputState({locationInput: {description: text}})
-            }
-          />
-        </View>
+      <InputView
+        startValFun={val => valChange('startLocation', val)}
+        endValFun={val => valChange('endLocation', val)}
+        chageDes={(locationType, des) => updateDescription(locationType, des)}
+        endLocation={endLocation?.description}
+        startLocation={startLocation?.description}
+      />
+      <View style={{marginTop: hp('18')}}>
+        <WeatherComp />
       </View>
-    </View>
+      <EmergencyCardComp />
+    </KeyBoardWrapper>
   );
 };
 

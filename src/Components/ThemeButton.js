@@ -19,7 +19,7 @@ export default ThemeButton;
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: Colors.themeOrg,
+    backgroundColor: Colors.primaryColor,
     height: hp('6.5'),
     width: '100%',
     borderRadius: 10,
