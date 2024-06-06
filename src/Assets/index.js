@@ -19,6 +19,7 @@ export {default as locationArrow} from './Icons/locationArrow.png';
 export {default as routeIcon} from './Icons/routeIcon.png';
 export {default as Line} from './Icons/Line.png';
 export {default as callIcon} from './Icons/callIcon.png';
+export {default as desMarker} from './Icons/desMarker.png';
 
 export {default as username} from './Icons/username.png';
 export {default as user} from './Icons/user.png';

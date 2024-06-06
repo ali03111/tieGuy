@@ -22,20 +22,10 @@ const OnboardScreen = ({navigation}) => {
   const renderItem = useCallback(
     ({item, index}) => {
       return (
-        // currentIndex == index && (
-        <ImageBackground
-          style={styles.bannerImg}
-          // resizeMode="contain"
-          source={item?.image}>
+        <ImageBackground style={styles.bannerImg} source={item?.image}>
           <View style={styles.centerMainView}>
-            {/* <Image
-              source={item?.splashImage}
-              resizeMode="contain"
-              style={styles.splashImg}
-            /> */}
             <TextComponent text={item?.heading} styles={styles.hdStyle} />
             <TextComponent text={item?.description} styles={styles.descStyle} />
-            {/* <ThemeButton title={'next'} onPress={goNext} /> */}
           </View>
         </ImageBackground>
       );
@@ -55,9 +45,6 @@ const OnboardScreen = ({navigation}) => {
       contentContainerStyle={{
         flex: 1,
         position: 'relative',
-        // width: wp('100'),
-        // height: hp('100'),
-        // paddingBottom: hp('10'),
       }}>
       <FlatList
         refreshing={false}
@@ -77,34 +64,6 @@ const OnboardScreen = ({navigation}) => {
         style={{paddingBottom: 0}}
       />
       <View style={styles.bottomContainer}>
-        {/* <FlatList
-        refreshing={false}
-        data={[0, 1]}
-        renderItem={renderItemDots}
-        alwaysBounceVertical
-        showsHorizontalScrollIndicator={false}
-        horizontal
-        keyExtractor={keyExtractor}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.dotList}
-        style={{alignSelf: 'center'}}
-      /> */}
-
-        {/* {currentIndex == 1 ? (
-        // <Animatable.View animation={'bounceIn'}>
-        <ButtonWithIcon
-          title={'Get Start'}
-          style={styles.getStart}
-          onPress={getStart}
-        />
-      ) : (
-        // </Animatable.View>
-        <ButtonWithIcon
-          title={'Next'}
-          style={styles.getStart}
-          onPress={goNext}
-        />
-      )} */}
         <FlatList
           data={onBoardingData} // Use the same data for the dots
           renderItem={renderItemDots}

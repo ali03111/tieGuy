@@ -4,6 +4,7 @@ import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete'
 import {Colors} from '../Theme/Variables';
 import {hp, wp} from '../Config/responsive';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {MapAPIKey} from '../Utils/Urls';
 export const AutoFillGoogleComp = ({
   handleButtonClick,
   inputContainerStyle,
@@ -13,22 +14,26 @@ export const AutoFillGoogleComp = ({
   key,
   defaultValue,
   textInputStyle,
+  isEdit,
 }) => {
   return (
     <GooglePlacesAutocomplete
       textInputProps={{
         placeholderTextColor: Colors.gray,
         value: inputVal,
-        onChangeText: text => {
-          onChangeText(text);
-          // Update the state with the current input text
-        },
-        defaultValue: defaultValue,
+        // onChangeText: text => {
+        //   console.log('lskjdbvjklsdbvlkjsbdkljvbsd,', text);
+        //   onChangeText(text);
+        //   // Update the state with the current input text
+        // },
+        onChange: text => onChangeText(text?.nativeEvent?.text ?? ''),
+        defaultValue,
+        editable: isEdit,
       }}
       placeholder={inputPlaceHolder}
       returnKeyType="default"
       fetchDetails={true}
-      key={key}
+      // key={key}
       // currentLocation={true}
       //   listViewDisplayed
       // currentLocationLabel=" "
@@ -36,7 +41,7 @@ export const AutoFillGoogleComp = ({
       keepResultsAfterBlur={false}
       enablePoweredByContainer={false}
       predefinedPlacesAlwaysVisible
-      listViewDisplayed="auto"
+      listViewDisplayed={false}
       styles={{
         container: {
           zIndex: 1,
@@ -87,13 +92,13 @@ export const AutoFillGoogleComp = ({
           ...data,
           coords: {
             lat,
-            lng,
+            long: lng,
           },
         });
         // handleButtonClick(data,{ lat, lng });
       }}
       query={{
-        key: 'AIzaSyAu-nEBbiOahfUyeMc8Lc1gTTKfete_wnQ',
+        key: MapAPIKey,
         language: 'en',
       }}
     />

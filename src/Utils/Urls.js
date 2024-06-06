@@ -24,6 +24,8 @@ export const imageUrl = url => {
   // : 'https://res.cloudinary.com/dd6tdswt5/image/upload/v1684830799/UserImages/mhysa2zj0sbmvnw69b35.jpg';
 };
 
+export const MapAPIKey = 'AIzaSyAu-nEBbiOahfUyeMc8Lc1gTTKfete_wnQ';
+
 export const registerUrl = '/register';
 export const loginUrl = '/login-user';
 export const logoutUrl = 'auth/logout';

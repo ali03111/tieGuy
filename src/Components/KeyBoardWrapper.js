@@ -6,6 +6,7 @@ const KeyBoardWrapper = ({children, scroll, styles, bounces}) => (
     showsVerticalScrollIndicator={false}
     bounces={bounces ?? true}
     scrollEnabled={scroll ?? true}
+    keyboardShouldPersistTaps={'always'}
     contentContainerStyle={{flexGrow: 1, ...styles}}>
     {children}
   </KeyboardAwareScrollView>

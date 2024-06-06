@@ -64,7 +64,7 @@ const WeatherComp = () => {
           text={`It's ${weatherState?.description}`}
           styles={{color: 'white', width: wp('45')}}
         />
-        <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Ionicons name={'arrow-up'} color={'white'} size={hp('2.5')} />
           <TextComponent
             text={`${weatherState?.temp_max} °C`}

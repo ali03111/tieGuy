@@ -6,6 +6,7 @@ import {openSettings} from 'react-native-permissions';
 import {store} from '../Redux/Reducer';
 import {loadingFalse, loadingTrue} from '../Redux/Action/isloadingAction';
 import {errorMessage} from '../Config/NotificationMessage';
+import {MapAPIKey} from '../Utils/Urls';
 
 const getSingleCharacter = text => {
   let letter = text?.charAt(0).toUpperCase();
@@ -59,6 +60,7 @@ const getProperLocation = () => {
             },
           );
         } else {
+          store.dispatch(loadingFalse());
           console.log(
             'skjdbvojsndvjksndojnvs jkdnv jksdb vjksdb kjvsdb vjksdb kjvsd bkjvsdb kj sbdjksdb',
           );
@@ -78,8 +80,8 @@ const getProperLocation = () => {
               );
               resolve({
                 coords: {
-                  latitude: info.coords.latitude,
-                  longitude: info.coords.longitude,
+                  lat: info.coords.latitude,
+                  long: info.coords.longitude,
                 },
                 description: locationName,
               });
@@ -105,8 +107,8 @@ const getProperLocation = () => {
             );
             resolve({
               coords: {
-                latitude: info.coords.latitude,
-                longitude: info.coords.longitude,
+                lat: info.coords.latitude,
+                long: info.coords.longitude,
               },
               description: locationName,
             });
@@ -133,19 +135,14 @@ const getProperLocation = () => {
 const getLocationName = async (latitude, longitude) => {
   console.log('third');
 
-  const geocodingAPI = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyDQ_pjAQYvVcGWNLy-ND_ZtyufjXtiUAxs`;
+  const geocodingAPI = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${MapAPIKey}`;
 
   // Replace "YOUR_API_KEY" with your actual Google Maps Geocoding API key
 
   const res = await fetch(geocodingAPI);
   const response = await res.json();
-  console.log('kjsdbvjklsbklvbsdklvbskdlbvsdbvbsdbksjdvsd', response);
   if (response.results.length > 0) {
     const locationName = response.results[0].formatted_address;
-    console.log(
-      'locationNamelocationNamelocationNamelocationNamelocationNamelocationNamelocationNamelocationNamelocationNamelocationNamelocationName',
-      locationName,
-    );
     return locationName;
   }
 };
@@ -209,6 +206,32 @@ const openGoogleMaps = (latitude, longitude) => {
   Linking.openURL(url);
 };
 
+const fetchRailwayCrossingAPI = async (lat, long) => {
+  const apiKey = MapAPIKey;
+  const locations = `${lat},${long}`;
+  const radius = '10'; // Radius in meters (adjust as needed)
+  const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=railway%50crossing&location=${locations}&radius=${radius}&key=${apiKey}`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    const results = data.results;
+    const places = results.map(place => ({
+      id: place.place_id,
+      name: place.name,
+      location: {
+        latitude: place.geometry.location.lat,
+        longitude: place.geometry.location.lng,
+      },
+    }));
+    return {ok: true, data: places};
+    // setCrossings(places);
+  } catch (error) {
+    console.error('Error fetching railway crossings:', error);
+    return {ok: false, data: error};
+  }
+};
+
 function getValBeforePoint(value) {
   //    input = 353.68558
   //    output = 353
@@ -220,6 +243,38 @@ function getValBeforePoint(value) {
   return Math.floor(number);
 }
 
+/**
+ * Calculates the distance between two geographic coordinates using the Haversine formula.
+ * @param {number} lat1 - Latitude of the first point.
+ * @param {number} lon1 - Longitude of the first point.
+ * @param {number} lat2 - Latitude of the second point.
+ * @param {number} lon2 - Longitude of the second point.
+ * @returns {number} Distance between the two points in kilometers.
+ */
+function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+  const R = 6371; // Radius of the Earth in kilometers
+  const dLat = deg2rad(lat2 - lat1);
+  const dLon = deg2rad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) *
+      Math.cos(deg2rad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c; // Distance in kilometers
+  return distance;
+}
+
+/**
+ * Converts degrees to radians.
+ * @param {number} deg - Value in degrees.
+ * @returns {number} Value in radians.
+ */
+function deg2rad(deg) {
+  return deg * (Math.PI / 180);
+}
+
 export {
   getSingleCharacter,
   getProperLocation,
@@ -228,4 +283,6 @@ export {
   openGoogleMaps,
   removeTimeFromDate,
   getValBeforePoint,
+  fetchRailwayCrossingAPI,
+  getDistanceFromLatLonInKm,
 };

@@ -1,28 +1,30 @@
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {hp, wp} from '../../Config/responsive';
 import {Colors} from '../../Theme/Variables';
+
+const {width, height} = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   homeMain: {
     paddingBottom: hp('10'),
   },
   staticMapImg: {
-    marginTop: hp('-15'),
+    // marginTop: hp('-15'),
     // zIndex: -2,
-    height: hp('70'),
+    height: height / 1.7,
     width: wp('100'),
     marginBottom: hp('5'),
     alignSelf: 'center',
     // overflow: 'hidden',
   },
-  inputViewContainer: {
-    width: wp('95'),
+  inputViewContainer: isShowBtn => ({
+    width: wp('93'),
     borderRadius: 20,
-    paddingVertical: hp('3'),
+    paddingVertical: hp('1.5'),
     backgroundColor: 'white',
-    alignSelf: 'center',
-    position: 'absolute',
-    top: hp('45'),
+    // alignSelf: 'center',
+    // position: 'absolute',
+    // top: isShowBtn ? hp('45') : hp('50'),
     shadowColor: '#000000',
     shadowOffset: {
       width: 0,
@@ -30,7 +32,7 @@ export const styles = StyleSheet.create({
     },
     shadowOpacity: 0.58,
     shadowRadius: 5,
-  },
+  }),
   inputArea: {
     flexDirection: 'row',
     // alignItems: 'center',
@@ -63,7 +65,21 @@ export const styles = StyleSheet.create({
   startBtn: {
     width: wp('87'),
     alignSelf: 'center',
-    marginTop: hp('2'),
-    height: hp('6'),
+    marginTop: hp('1'),
+    height: hp('5.5'),
+  },
+  desView: {
+    width: wp('90'),
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: hp('2'),
+  },
+  tracksText: {
+    paddingVertical: hp('0.5'),
+    paddingHorizontal: wp('1.5'),
+    backgroundColor: 'red',
+    borderRadius: 10,
+    overflow: 'hidden',
   },
 });
