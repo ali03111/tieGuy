@@ -1,5 +1,13 @@
 import {useEffect, useState} from 'react';
-import {Image, ImageBackground, StyleSheet, View} from 'react-native';
+import {
+  Image,
+  ImageBackground,
+  Linking,
+  PermissionsAndroid,
+  Platform,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {
   dailyForecast,
   showWeather,
@@ -8,49 +16,83 @@ import {
   getWeather,
 } from 'react-native-weather-api';
 import {
+  checkLocationPermission,
+  checkPer,
   getProperLocation,
   getValBeforePoint,
+  granted,
 } from '../Services/GlobalFunctions';
 import {hp, wp} from '../Config/responsive';
 import {blackImg, parCloud} from '../Assets';
 import {TextComponent} from './TextComponent';
-import {FontSize} from '../Theme/Variables';
+import {Colors, FontSize} from '../Theme/Variables';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Geolocationios from '@react-native-community/geolocation';
+import {PERMISSIONS, request} from 'react-native-permissions';
+import Geolocation from '@react-native-community/geolocation';
 
-const WeatherComp = () => {
+const WeatherComp = ({addListener, startLocationDes}) => {
   const [weatherState, setWeatherState] = useState();
+  // const isGranted = true;
 
-  const getWeatherLo = () => {
-    let temp;
-    let wind;
-    getLocation().then(location => {
-      getWeather({
-        key: 'd3b17fd9554eb61a5ddc829fe4624335',
-        lat: location.coords.latitude,
-        lon: location.coords.longitude,
-        unit: 'metric',
-      })
-        .then(() => {
-          let data = new showWeather();
-          setWeatherState(data);
-          temp = data.temp;
-          wind = data.wind;
-        })
-        .catch(err =>
-          console.log('lskdbvlkbsdlkvblksdbvlksdbklvbsdklbksd', err),
-        );
-    });
+  const [isGranted, setIsGranted] = useState(false);
+
+  const checkPermission = async () => {
+    const {hasLocationPermission} = await getProperLocation();
+    console.log('sldbkljsbdkvbsdkvbksdbvksdbvd', hasLocationPermission);
+    if (hasLocationPermission?.ok == true) setIsGranted(true);
+    else setIsGranted(true);
   };
 
-  useEffect(getWeatherLo, []);
+  const getWeatherLo = async () => {
+    // await checkPermission();
+    const hasPermission = await checkLocationPermission();
+    setIsGranted(hasPermission);
+    if (hasPermission) {
+      let temp;
+      let wind;
+      getLocation().then(location => {
+        getWeather({
+          key: 'd3b17fd9554eb61a5ddc829fe4624335',
+          lat: location.coords.latitude,
+          lon: location.coords.longitude,
+          unit: 'metric',
+        })
+          .then(() => {
+            let data = new showWeather();
+            console.log('         lsdbklvbsdlkvbsdklvbsldkbvlksbdvsd', data);
+            setWeatherState(data);
+            temp = data.temp;
+            wind = data.wind;
+          })
+          .catch(err =>
+            console.log('lskdbvlkbsdlkvblksdbvlksdbklvbsdklbksd', err),
+          );
+      });
+    }
+  };
 
-  return (
+  useEffect(() => {
+    const event = addListener('focus', async () => {
+      console.log('jdbjksdjkvjksdvjksdvjksdvkjsdvvkjsdkjvbkjsdvsdb');
+      await getWeatherLo();
+    });
+    getWeatherLo();
+    return event;
+  }, [startLocationDes]);
+
+  return isGranted ? (
     <ImageBackground
       style={styles.bgImage}
       source={blackImg}
       resizeMode="contain">
       <View style={styles.upView}>
-        <Image source={parCloud} resizeMode="contain" style={styles.cloudImg} />
+        <Image
+          source={parCloud}
+          // source={weatherState?.icon}
+          resizeMode="contain"
+          style={styles.cloudImg}
+        />
         <View style={styles.upInnerView}>
           <TextComponent
             text={getValBeforePoint(weatherState?.temp)}
@@ -76,6 +118,26 @@ const WeatherComp = () => {
         </View>
       </View>
     </ImageBackground>
+  ) : (
+    <View style={styles.allowBtn}>
+      <TextComponent
+        text={'Allow location'}
+        styles={styles.allowText}
+        isWhite={true}
+        onPress={async () => {
+          Linking.openSettings();
+          // const p = await checkPer();
+          // console.log('sdl,bvklbsdlkvblksdbvklsdbvklsdbkvsd', p);
+          // Geolocation.requestAuthorization('always');
+          // const op = await request(
+          //   Platform.OS == 'ios'
+          //     ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
+          //     : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+          // );
+          // console.log('sdl,bvklbsdlkvblksdbvklsdbvklsdbkvsd', op);
+        }}
+      />
+    </View>
   );
 };
 
@@ -116,5 +178,33 @@ const styles = StyleSheet.create({
     marginLeft: wp('2'),
     flexDirection: 'row',
     marginTop: hp('1.5'),
+  },
+  allowBtn: {
+    width: wp('95'),
+    height: hp('10'),
+    alignSelf: 'center',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    overflow: 'hidden',
+    justifyContent: 'center',
+    marginBottom: hp('3'),
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 5,
+  },
+  allowText: {
+    borderRadius: 10,
+    overflow: 'hidden',
+    backgroundColor: Colors.primaryColor,
+    height: hp('5'),
+    width: wp('50'),
+    alignSelf: 'center',
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    paddingTop: Platform.OS == 'ios' ? hp('1.3') : 0,
   },
 });

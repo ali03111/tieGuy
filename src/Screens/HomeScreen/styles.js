@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
   },
   inputViewContainer: isShowBtn => ({
     width: wp('93'),
-    borderRadius: 20,
+    borderRadius: 10,
     paddingVertical: hp('1.5'),
     backgroundColor: 'white',
     // alignSelf: 'center',

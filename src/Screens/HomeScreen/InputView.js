@@ -7,6 +7,7 @@ import {Colors} from '../../Theme/Variables';
 import {hp, wp} from '../../Config/responsive';
 import ThemeButton from '../../Components/ThemeButton';
 import {TextComponent} from '../../Components/TextComponent';
+import {getDistancesBetweenLocationsArry} from '../../Services/GlobalFunctions';
 
 const InputView = ({
   startValFun,
@@ -20,11 +21,22 @@ const InputView = ({
   stopTracking,
   railwayTracks,
   kiloMeter,
+  currentCoords,
 }) => {
+  // console.log(
+  //   'pksdbivbiosdbvjsdbvjdsvjksdbvjdsbdsjkbsdjvbsdjsdsd',
+  //   getDistancesBetweenLocationsArry(currentCoords, railwayTracks).filter(
+  //     res => res,
+  //   ),
+  // );
   const KlMeterView = useCallback(() => {
     return (
       <TextComponent
-        text={`${railwayTracks} Rail Tracks`}
+        text={`${
+          getDistancesBetweenLocationsArry(currentCoords, railwayTracks).filter(
+            res => parseFloat(res.km) <= 5,
+          ).length ?? 0
+        } Rail Tracks`}
         styles={styles.tracksText}
         isWhite={true}
       />

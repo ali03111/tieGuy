@@ -12,7 +12,7 @@ const App = () => {
   };
   const {getState, dispatch} = useReduxStore();
   const {isloading} = getState('isloading');
-  console.log('load', isloading);
+
   const time = () => {
     return 3000;
   };

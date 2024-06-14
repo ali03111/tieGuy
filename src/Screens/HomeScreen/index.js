@@ -70,14 +70,14 @@ const HomeScreen = ({navigation}) => {
               ? startLocation.coords.long
               : -122.4324,
           }}
-          radius={1000} // radius in meters
+          radius={500} // radius in meters
           strokeWidth={2}
           strokeColor="rgba(0, 122, 255, 1)"
           fillColor="rgba(0, 122, 255, 0.3)"
         />
       </>
     );
-  }, [startLocation.description, startLocation.coords.lat]);
+  }, [startLocation?.description]);
 
   const RenderMap = useCallback(
     ({childern}) => {
@@ -110,21 +110,22 @@ const HomeScreen = ({navigation}) => {
         </MapView>
       );
     },
-    [startLocation.description],
+    [startLocation?.description],
   );
 
   const MarkerForTrack = useCallback(
     ({res}) => {
-      const isNearMe = Boolean(
-        getDistanceFromLatLonInKm(
-          startLocation.coords.lat,
-          startLocation.coords.long,
-          res.location.latitude,
-          res.location.longitude,
-        ) <= 50,
+      const km = getDistanceFromLatLonInKm(
+        startLocation.coords.lat,
+        startLocation.coords.long,
+        res.location.latitude,
+        res.location.longitude,
       );
 
-      if (isNearMe) localNotifeeNotification();
+      const isNearMe = Boolean(parseFloat(km) <= 5);
+
+      console.log('km on railya track ', km, isNearMe);
+      // if (isNearMe && startTracking) localNotifeeNotification();
       return (
         <Marker
           coordinate={{
@@ -145,7 +146,7 @@ const HomeScreen = ({navigation}) => {
         </Marker>
       );
     },
-    [railwayTracks],
+    [railwayTracks, startLocation.coords],
   );
 
   return (
@@ -153,8 +154,8 @@ const HomeScreen = ({navigation}) => {
       <InputView
         startValFun={val => valChange('startLocation', val)}
         endValFun={val => {
-          getKiloMeter();
           valChange('endLocation', val);
+          getKiloMeter({}, val);
         }}
         chageDes={(locationType, des) => updateDescription(locationType, des)}
         endLocation={endLocation?.description}
@@ -166,8 +167,9 @@ const HomeScreen = ({navigation}) => {
         isShowBtn={isShowBtn}
         isTrackingStart={startTracking}
         stopTracking={stopTracking}
-        railwayTracks={railwayTracks.current.length ?? 0}
+        railwayTracks={railwayTracks.current}
         kiloMeter={kiloMeterRef}
+        currentCoords={startLocation.coords}
       />
       <RenderMap
         childern={
@@ -220,7 +222,10 @@ const HomeScreen = ({navigation}) => {
         }
       />
       <View style={{marginTop: !isShowBtn ? hp('6') : hp('7.8')}}>
-        <WeatherComp />
+        <WeatherComp
+          addListener={navigation.addListener}
+          startLocationDes={startLocation.description}
+        />
       </View>
       <EmergencyCardComp />
     </KeyBoardWrapper>

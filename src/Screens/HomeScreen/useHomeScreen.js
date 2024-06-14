@@ -2,11 +2,19 @@ import {useEffect, useRef, useState} from 'react';
 import {Dimensions, Platform} from 'react-native';
 import {
   fetchRailwayCrossingAPI,
+  getDistanceFromLatLonInKm,
+  getDistancesBetweenLocationsArry,
   getProperLocation,
+  matchIDinTwoArry,
+  matchTwoArrays,
 } from '../../Services/GlobalFunctions';
 import Geolocation from '@react-native-community/geolocation';
-import {localNotifeeNotification} from '../../Services/LocalNotificationService';
+import {
+  localNotifeeNotification,
+  localNotification,
+} from '../../Services/LocalNotificationService';
 import {getDistance} from 'geolib';
+import {errorMessage} from '../../Config/NotificationMessage';
 
 const useHomeScreen = ({addListener, navigate}) => {
   const {width, height} = Dimensions.get('window');
@@ -55,7 +63,9 @@ const useHomeScreen = ({addListener, navigate}) => {
 
   const [previousRouteCoordinates, setPreviousRouteCoordinates] = useState([]);
 
-  const startYourTracking = () => {
+  const [trackThatNotify, setTrackThatNotify] = useState([]);
+
+  const startYourTracking = async () => {
     watchId.current = Geolocation.watchPosition(
       async position => {
         const {latitude, longitude} = position.coords;
@@ -67,9 +77,38 @@ const useHomeScreen = ({addListener, navigate}) => {
           },
         });
         getKiloMeter(position.coords);
-        const {ok, data} = await fetchRailwayCrossingAPI(latitude, longitude);
+        const {ok, data} = await fetchRailwayCrossingAPI(
+          startLocation.coords.lat,
+          startLocation.coords.long,
+        );
 
         if (ok) {
+          const afterFilterTrack = getDistancesBetweenLocationsArry(
+            startLocation.coords,
+            data,
+          ).filter(res => parseFloat(res.km) <= 2);
+
+          if (afterFilterTrack.length > 0) {
+            const lengthOfTrack = trackThatNotify.length ?? 0;
+
+            let afterMatch = matchIDinTwoArry(
+              afterFilterTrack,
+              trackThatNotify,
+            );
+
+            setTrackThatNotify(
+              afterMatch.length > 0 ? afterMatch : afterFilterTrack,
+            );
+            setTimeout(() => {
+              if (
+                trackThatNotify.length == 0 ||
+                trackThatNotify.length > lengthOfTrack
+              )
+                localNotifeeNotification();
+            }, 500);
+            // trackThatNotify.map(res=> res)
+            // localNotification()
+          }
           railwayTracksRef.current = data;
           setDummy(prev => ++prev);
           // setRailwayTracks(data);
@@ -97,14 +136,20 @@ const useHomeScreen = ({addListener, navigate}) => {
 
   const setTheValForMap = async () => {
     const location = await getProperLocation();
-    valChange('startLocation', location);
-    const {ok, data} = await fetchRailwayCrossingAPI(
-      location?.coords?.lat,
-      location?.coords?.long,
-    );
-    if (ok) {
-      railwayTracksRef.current = data;
-      setDummy(prev => ++prev);
+    if (location?.ok == true) {
+      console.log(
+        'lkdsbvklsdbvlksdbvlksdklvbsdklbvkldsbvkldsbvlsdkvbsdvklsdbv',
+        location,
+      );
+      valChange('startLocation', location?.location ?? location);
+      const {ok, data} = await fetchRailwayCrossingAPI(
+        location.location?.coords?.lat,
+        location.location?.coords?.long,
+      );
+      if (ok) {
+        railwayTracksRef.current = data;
+        setDummy(prev => ++prev);
+      }
     }
     // if (ok) setRailwayTracks(data);
   };
@@ -146,7 +191,7 @@ const useHomeScreen = ({addListener, navigate}) => {
   const stopTracking = () => {
     Geolocation.clearWatch(watchId.current);
     valChange('startTracking', false);
-    localNotifeeNotification();
+    // localNotifeeNotification();
   };
 
   const useEffectFun = () => {
@@ -165,22 +210,30 @@ const useHomeScreen = ({addListener, navigate}) => {
 
   const dynamicNav = (route, item) => navigate(route, item);
 
-  const getKiloMeter = user => {
-    distance = getDistance(
-      {
-        latitude: user?.latitude ?? startLocation.coords.lat,
-        longitude: user?.longitude ?? startLocation.coords.long,
-      },
-      {latitude: endLocation.coords.lat, longitude: endLocation.coords.long},
+  const getKiloMeter = (user, end) => {
+    console.log('skjdbvkjlsbdkjvbsdkjvbjksdbvkjsbdv', end);
+
+    distance = getDistanceFromLatLonInKm(
+      user?.latitude ?? startLocation.coords.lat,
+      user?.longitude ?? startLocation.coords.long,
+      end.coords?.lat ?? endLocation.coords.lat,
+      end.coords?.long ?? endLocation.coords.long,
     );
+    // distance = getDistance(
+    //   {
+    //     latitude: user?.latitude ?? startLocation.coords.lat,
+    //     longitude: user?.longitude ?? startLocation.coords.long,
+    //   },
+    //   {latitude: endLocation.coords.lat, longitude: endLocation.coords.long},
+    // );
     const kiloMeter = distance / 1000;
     console.log(
       'kiloMeterkiloMeterkiloMeterkiloMeterkiloMeterkiloMeter',
+      distance,
       kiloMeter,
-      startLocation.coords,
-      user,
     );
-    kiloMeterRef.current = kiloMeter.toFixed(2);
+    kiloMeterRef.current = distance;
+    setDummy(prev => ++prev);
   };
 
   return {

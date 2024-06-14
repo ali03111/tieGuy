@@ -46,16 +46,14 @@ export const AutoFillGoogleComp = ({
         container: {
           zIndex: 1,
           height: 'auto',
-          overflow: 'hidden',
+          // overflow: 'hidden',
           maxHeight: hp('18'),
           //   position: 'absolute',
         }, // Added to adjust container flex
         textInputContainer: {
           ...inputContainerStyle,
           height: hp('5.3'),
-          overflow: 'hidden',
-          borderWidth: 0.2,
-          borderRadius: 10,
+          // overflow: 'hidden',
         },
         // Modified placeholder style
 
@@ -63,8 +61,11 @@ export const AutoFillGoogleComp = ({
           color: 'black',
           fontSize: hp('1.8'),
           backgroundColor: 'white',
+          borderRadius: 5,
+
+          borderWidth: 0.2,
+          overflow: 'hidden',
           ...textInputStyle,
-          //   flex: 1,
         },
         predefinedPlacesDescription: {
           color: 'black',

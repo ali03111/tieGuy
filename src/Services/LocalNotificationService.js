@@ -71,5 +71,5 @@ export async function localNotifeeNotification() {
       },
     },
   });
-  notifee.setBadgeCount(1).then(() => console.log('Badge count set!'));
+  // notifee.setBadgeCount(1).then(() => console.log('Badge count set!'));
 }

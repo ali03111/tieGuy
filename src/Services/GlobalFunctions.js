@@ -2,7 +2,13 @@ import {Alert, Linking, PermissionsAndroid, Platform} from 'react-native';
 import Geolocationios from '@react-native-community/geolocation';
 import Geolocation from 'react-native-geolocation-service';
 // import Geolocation from '@react-native-community/geolocation';
-import {openSettings} from 'react-native-permissions';
+import {
+  PERMISSIONS,
+  RESULTS,
+  check,
+  openSettings,
+  request,
+} from 'react-native-permissions';
 import {store} from '../Redux/Reducer';
 import {loadingFalse, loadingTrue} from '../Redux/Action/isloadingAction';
 import {errorMessage} from '../Config/NotificationMessage';
@@ -13,123 +19,178 @@ const getSingleCharacter = text => {
   return letter;
 };
 
-const getProperLocation = () => {
-  store.dispatch(loadingTrue());
+const reqPer = async () => {
+  const granted = await PermissionsAndroid.request(
+    PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION,
+  );
+  return granted;
+};
 
-  Geolocation.setRNConfiguration({
-    config: {
-      skipPermissionRequests: true,
-      authorizationLevel: 'always' | 'whenInUse' | 'auto',
-      enableBackgroundLocationUpdates: true,
-      locationProvider: 'playServices' | 'android' | 'auto',
-    },
+const checkPer = async () => {
+  try {
+    const granted = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      // ||
+      // PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION ||
+      // PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+    );
+    console.log('grantedgrantedgrantedgrantedgrantedgrantedgranted', granted);
+    return granted == PermissionsAndroid.RESULTS.GRANTED;
+  } catch (err) {
+    console.error('Permission check failed:', err);
+    return false;
+  }
+};
+
+// const getProperLocation = () => {
+//   Geolocation.setRNConfiguration({
+//     config: {
+//       skipPermissionRequests: false,
+//       authorizationLevel: 'always' | 'whenInUse' | 'auto',
+//       enableBackgroundLocationUpdates: true,
+//       locationProvider: 'playServices' | 'android' | 'auto',
+//     },
+//   });
+
+// return new Promise(async (resolve, reject) => {
+//   try {
+//     // Function to get current position and location name
+//     const getCurrentPosition = async geolocationFunction => {
+//       return new Promise((resolve, reject) => {
+//         geolocationFunction(
+//           async info => {
+//             const locationName = await getLocationName(
+//               info.coords.latitude,
+//               info.coords.longitude,
+//             );
+//             resolve({
+//               coords: {
+//                 lat: info.coords.latitude,
+//                 long: info.coords.longitude,
+//               },
+//               description: locationName || 'Unknown location',
+//               ok: true,
+//             });
+//           },
+//           error => {
+//             errorMessage('Please enable your mobile location');
+//             reject({error, ok: false});
+//           },
+//           {enableHighAccuracy: true, accuracy: true},
+//         );
+//       });
+//     };
+
+//       // Request permission for Android
+//       if (Platform.OS === 'android') {
+//         const granted = await reqPer();
+//         if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+//           return Alert.alert(
+//             'Warning',
+//             'Location permission have been denied. Please enable location permission from settings.',
+//             [
+//               {text: 'Cancel', onPress: () => null, style: 'cancel'},
+//               {
+//                 text: 'Open Setting',
+//                 onPress: () => {
+//                   openSettings().catch(() =>
+//                     console.warn('Cannot open settings'),
+//                   );
+//                 },
+//               },
+//             ],
+//             {userInterfaceStyle: 'light'},
+//           );
+//         }
+//       }
+
+//       // Get location based on platform
+//       const position = await (Platform.OS === 'android'
+//         ? getCurrentPosition(Geolocation.getCurrentPosition)
+//         : getCurrentPosition(Geolocationios.getCurrentPosition));
+
+//       resolve(position);
+//     } catch (error) {
+//       console.error('Error getting location:', error);
+//       store.dispatch(loadingFalse());
+//       reject(error);
+//     }
+//   });
+// };
+
+// Function to check location permission
+const checkLocationPermission = async () => {
+  if (Platform.OS === 'ios') {
+    const permissionStatus = await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+    return permissionStatus === RESULTS.GRANTED;
+  } else {
+    const granted = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    );
+    return granted;
+  }
+};
+
+// Function to request location permission
+const requestLocationPermission = async () => {
+  if (Platform.OS === 'ios') {
+    const permissionStatus = await request(
+      PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+    );
+    return permissionStatus === RESULTS.GRANTED;
+  } else {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    );
+    return granted === PermissionsAndroid.RESULTS.GRANTED;
+  }
+};
+
+// Function to get current location
+const getCurrentLocation = () => {
+  return new Promise((resolve, reject) => {
+    Geolocation.getCurrentPosition(
+      async position => {
+        const locationName = await getLocationName(
+          position.coords.latitude,
+          position.coords.longitude,
+        );
+        resolve({
+          coords: {
+            lat: position.coords.latitude,
+            long: position.coords.longitude,
+          },
+          description: locationName || 'Unknown location',
+          ok: true,
+        });
+      },
+      error => {
+        reject(error);
+      },
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+    );
   });
+};
 
-  return new Promise(async (resolve, reject) => {
-    console.log('first');
-
-    try {
-      // Request permission to access geolocation if needed
-      if (Platform.OS === 'android') {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        );
-        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-          store.dispatch(loadingFalse());
-
-          return Alert.alert(
-            'Warning',
-            `Location permission have been denied. Please enabled location permission from settings.`,
-            [
-              {
-                text: 'Cancel',
-                onPress: () => null,
-                style: 'cancel',
-              },
-              {
-                text: 'Open Setting',
-                onPress: () => {
-                  openSettings().catch(() =>
-                    console.warn('Cannot open settings'),
-                  );
-                },
-              },
-            ],
-            {
-              userInterfaceStyle: 'light',
-            },
-          );
-        } else {
-          store.dispatch(loadingFalse());
-          console.log(
-            'skjdbvojsndvjksndojnvs jkdnv jksdb vjksdb kjvsdb vjksdb kjvsd bkjvsdb kj sbdjksdb',
-          );
-          Geolocation.getCurrentPosition(
-            async info => {
-              console.log(
-                'kjsdbvjklsbdklvbsdklbvlksdbvlksdbvkljsblkvbsdlkvblskdbvlsdbvbsdkvds',
-                info,
-              );
-              const locationName = await getLocationName(
-                info.coords.latitude,
-                info.coords.longitude,
-              );
-              console.log(
-                'lksdbvlkbsdlkvbklsdbvlkbklsbvbklsdbvlksdbklvbsdl',
-                locationName,
-              );
-              resolve({
-                coords: {
-                  lat: info.coords.latitude,
-                  long: info.coords.longitude,
-                },
-                description: locationName,
-              });
-            },
-            error => {
-              errorMessage('Please enable your mobile location');
-              reject(error);
-            },
-            {enableHighAccuracy: true, accuracy: true},
-          );
-        }
-        store.dispatch(loadingFalse());
-      } else {
-        Geolocationios.getCurrentPosition(
-          async info => {
-            const locationName = await getLocationName(
-              info.coords.latitude,
-              info.coords.longitude,
-            );
-            console.log(
-              'lksdbvlkbsdlkvbklsdbvlkbklsbvbklsdbvlksdbklvbsdl',
-              locationName,
-            );
-            resolve({
-              coords: {
-                lat: info.coords.latitude,
-                long: info.coords.longitude,
-              },
-              description: locationName,
-            });
-          },
-          error => {
-            reject(error);
-          },
-          {enableHighAccuracy: true, accuracy: true},
-        );
-        store.dispatch(loadingFalse());
-      }
-      store.dispatch(loadingFalse());
-    } catch (error) {
-      console.log(
-        'osdbviosboivbsdiobvoisdbvoisdbovibsdoivbsodbvosdivbdsoibds',
-        error,
+const getProperLocation = async () => {
+  const hasPermission = await checkLocationPermission();
+  if (hasPermission) {
+    const position = await getCurrentLocation();
+    return {location: position, ok: true};
+  } else {
+    const permissionGranted = await requestLocationPermission();
+    if (permissionGranted) {
+      const position = await getCurrentLocation();
+      return position;
+    } else {
+      Alert.alert(
+        'Permission Denied',
+        'Location permission is required to use this feature',
+        [{text: 'OK'}],
       );
-      store.dispatch(loadingFalse());
-      reject(error);
+      return {location: {}, ok: false};
     }
-  });
+  }
 };
 
 const getLocationName = async (latitude, longitude) => {
@@ -253,17 +314,26 @@ function getValBeforePoint(value) {
  */
 function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
   const R = 6371; // Radius of the Earth in kilometers
+
+  // Helper function to convert degrees to radians
+  function deg2rad(deg) {
+    return deg * (Math.PI / 180);
+  }
+
   const dLat = deg2rad(lat2 - lat1);
   const dLon = deg2rad(lon2 - lon1);
+
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(deg2rad(lat1)) *
       Math.cos(deg2rad(lat2)) *
       Math.sin(dLon / 2) *
       Math.sin(dLon / 2);
+
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
   const distance = R * c; // Distance in kilometers
-  return distance;
+  return distance.toFixed(2); // Return distance rounded to two decimal places
 }
 
 /**
@@ -275,6 +345,52 @@ function deg2rad(deg) {
   return deg * (Math.PI / 180);
 }
 
+/**
+ * Calculates the distance between the current location and each location in an array.
+ * @param {Object} currentLocation - Current location object with 'lat' and 'lon' properties.
+ * @param {Array} locations - Array of location objects, each with 'lat' and 'lon' properties.
+ * @returns {Array} Array of distances from the current location to each location in the array in kilometers.
+ */
+function getDistancesBetweenLocationsArry(currentLocation, locations) {
+  // console.log(
+  //   'skldbvklsdblkvbsdlkbvlksdvlkbsdvlksdbvklsdbvksdl',
+  //   currentLocation,
+  // );
+  return locations.map(res => {
+    return {
+      id: res?.id,
+      km: getDistanceFromLatLonInKm(
+        currentLocation?.lat,
+        currentLocation?.long,
+        res?.location?.latitude,
+        res?.location?.longitude,
+      ),
+    };
+  });
+}
+
+const matchTwoArrays = (matchFrom, matchTheArry, needToGetId) => {
+  let matchFromArry = [...matchFrom];
+  // Create a Set of nutrition IDs for faster lookup
+  let nutritionIds = needToGetId
+    ? new Set(matchTheArry.map(matchTheArry => matchTheArry.id))
+    : matchTheArry;
+
+  // Match nutritions with ingredients
+  matchFromArry.forEach(matchFrom => {
+    if (nutritionIds.has(matchFrom.id)) {
+      matchFrom.match = true;
+    } else {
+      matchFrom.match = false;
+    }
+  });
+  return matchFromArry;
+};
+
+const matchIDinTwoArry = (data, ids) => {
+  return data.filter(item => ids.includes(item.id));
+};
+
 export {
   getSingleCharacter,
   getProperLocation,
@@ -285,4 +401,11 @@ export {
   getValBeforePoint,
   fetchRailwayCrossingAPI,
   getDistanceFromLatLonInKm,
+  checkPer,
+  reqPer,
+  requestLocationPermission,
+  checkLocationPermission,
+  getDistancesBetweenLocationsArry,
+  matchTwoArrays,
+  matchIDinTwoArry,
 };
