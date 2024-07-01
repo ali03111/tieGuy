@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {
   Image,
   ImageBackground,
@@ -16,14 +16,28 @@ import {
   getWeather,
 } from 'react-native-weather-api';
 import {
+  AMPMLayout,
   checkLocationPermission,
   checkPer,
   getProperLocation,
   getValBeforePoint,
   granted,
+  removeSpacesBetweenWords,
 } from '../Services/GlobalFunctions';
 import {hp, wp} from '../Config/responsive';
-import {blackImg, parCloud} from '../Assets';
+import Images, {
+  blackImg,
+  parCloud,
+  mist,
+  rain,
+  snow,
+  thunderstorm,
+  brokenClouds,
+  scatteredClouds,
+  clearSkyD,
+  clearSkyN,
+  fewClouds,
+} from '../Assets';
 import {TextComponent} from './TextComponent';
 import {Colors, FontSize} from '../Theme/Variables';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -34,6 +48,29 @@ import Geolocation from '@react-native-community/geolocation';
 const WeatherComp = ({addListener, startLocationDes}) => {
   const [weatherState, setWeatherState] = useState();
   // const isGranted = true;
+
+  const weatherImgaes = {
+    parCloud,
+    mist,
+    rain,
+    snow,
+    thunderstorm,
+    brokenClouds,
+    scatteredClouds,
+    clearSkyD,
+    clearSkyN,
+    fewClouds,
+    smoke: brokenClouds,
+    haze: brokenClouds,
+    'sand/dust whirls': brokenClouds,
+    fog: brokenClouds,
+    sand: brokenClouds,
+    dust: brokenClouds,
+    'volcanic ash': brokenClouds,
+    squalls: brokenClouds,
+    tornado: brokenClouds,
+    'overcast clouds': brokenClouds,
+  };
 
   const [isGranted, setIsGranted] = useState(false);
 
@@ -81,18 +118,38 @@ const WeatherComp = ({addListener, startLocationDes}) => {
     return event;
   }, [startLocationDes]);
 
+  const WeatherImgaesView = useCallback(() => {
+    return (
+      <Image
+        source={AMPMLayout(
+          weatherImgaes[
+            removeSpacesBetweenWords(weatherState?.description ?? 'parCloud')
+          ] ??
+            weatherImgaes[
+              `${removeSpacesBetweenWords(weatherState?.description)}D` ??
+                'parCloud'
+            ],
+          weatherImgaes[
+            removeSpacesBetweenWords(weatherState?.description ?? 'parCloud')
+          ] ??
+            weatherImgaes[
+              `${removeSpacesBetweenWords(weatherState?.description)}N` ??
+                'parCloud'
+            ],
+        )}
+        resizeMode="contain"
+        style={styles.cloudImg}
+      />
+    );
+  }, [weatherState?.description]);
+
   return isGranted ? (
     <ImageBackground
       style={styles.bgImage}
       source={blackImg}
       resizeMode="contain">
       <View style={styles.upView}>
-        <Image
-          source={parCloud}
-          // source={weatherState?.icon}
-          resizeMode="contain"
-          style={styles.cloudImg}
-        />
+        <WeatherImgaesView />
         <View style={styles.upInnerView}>
           <TextComponent
             text={getValBeforePoint(weatherState?.temp)}

@@ -1,133 +1,150 @@
-import React, {useCallback, useEffect} from 'react';
-import {
-  BackHandler,
-  FlatList,
-  Image,
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import React from 'react';
+import {StyleSheet, Text, Image, View, Platform} from 'react-native';
+import {TextComponent} from './TextComponent';
+import {Touchable} from './Touchable';
+import {arrowBack} from '../Assets';
 import {hp, wp} from '../Config/responsive';
 import {Colors} from '../Theme/Variables';
-import {TextComponent} from './TextComponent';
-// import {goBack} from '../Utils';
-import {backIcon, searchIcon} from '../Assets';
-import {Touchable} from './Touchable';
-import TabButton from './TabButton';
 
 export const HeaderComponent = ({
-  onPress,
-  title,
-  search,
-  searchFunction,
-  isCategory,
-  categoryData,
-  headerShow,
-  activeBtn,
+  headerTitle,
+  style,
+  saveReset,
+  icon,
+  backText,
+  saveResetStyle,
   goBack,
+  backTextStyle,
+  titleStyle,
+  numberOfLines,
+  isBack,
+  rightIconStyle,
+  onRightPress,
 }) => {
-  const renderItem = useCallback(({item, index}) => {
-    return (
-      <View>
-        <TabButton
-          onPress={() => onPress(item)}
-          style={styles.tabs(Boolean(activeBtn == item.id))}
-          title={item.title}
+  return (
+    <View style={[styles.TopHeader, {...style}]}>
+      <View style={styles.HeaderLeft}>
+        <Touchable onPress={goBack} style={styles.backMain} disabled={!isBack}>
+          {isBack && (
+            <Image
+              source={arrowBack}
+              style={{
+                resizeMode: 'contain',
+                ...styles.arrowback,
+              }}
+            />
+          )}
+          <TextComponent
+            text={backText}
+            styles={{...styles.backBtn, ...backTextStyle}}
+          />
+        </Touchable>
+      </View>
+      <View style={styles.HeaderCenter}>
+        <TextComponent
+          text={headerTitle}
+          numberOfLines={numberOfLines ?? 1}
+          styles={{...styles.HeaderTitle, ...titleStyle}}
         />
       </View>
-    );
-  });
-
-  // useEffect(() => {
-  //   const backAction = () => {
-  //     goBack(); // Call your goBack function when the back button is pressed
-  //     return true; // Prevent default behavior (exit the app)
-  //   };
-
-  //   const backHandler = BackHandler.addEventListener(
-  //     'hardwareBackPress',
-  //     backAction,
-  //   );
-
-  //   return () => backHandler.remove(); // Remove event listener on component unmount
-  // }, [goBack]);
-
-  return (
-    <View style={{...styles.headerTop, ...headerShow}}>
-      <View style={styles.headerInner}>
-        <Touchable onPress={goBack}>
-          <Image
-            source={backIcon}
-            style={styles.backBtn}
-            resizeMode="contain"
-          />
+      <View style={styles.HeaderRight}>
+        <Touchable style={styles.styleCheck} onPress={onRightPress}>
+          <Image source={icon} style={{...styles.filterIcon, rightIconStyle}} />
         </Touchable>
-        <TextComponent text={title} numberOfLines={1} styles={styles.heading} />
-        <Touchable onPress={searchFunction}>
+        <Touchable style={styles.backMain} onPress={onRightPress}>
           <Image
-            source={search ? searchIcon : ''}
-            style={styles.searchBtn}
-            resizeMode="contain"
+            source={saveReset}
+            style={{...styles.filterIcon, rightIconStyle}}
           />
+
+          {/* <TextComponent
+            text={saveReset}
+            styles={{...styles.backBtn, ...saveResetStyle}}
+          /> */}
         </Touchable>
-      </View>
-      <View style={styles.btnMain}>
-        {isCategory && (
-          <FlatList
-            refreshing={false}
-            data={categoryData}
-            renderItem={renderItem}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              alignItems: 'center',
-              // marginTop: hp('2.5'),
-            }}
-          />
-        )}
       </View>
     </View>
   );
 };
-
 const styles = StyleSheet.create({
-  headerTop: {
-    backgroundColor: Colors.headerBg,
-    borderRadius: 15,
-    borderTopStartRadius: 0,
-    borderTopEndRadius: 0,
-  },
-  headerInner: {
+  TopHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: wp('5'),
-    paddingTop: Platform.OS == 'ios' ? hp('7') : hp('4'),
+    // marginTop: Platform.OS == 'ios' ? hp('6') : hp('3'),
+    paddingHorizontal: wp('3.5'),
     paddingBottom: hp('3'),
-    // verticalAlign: 'middle',
+    backgroundColor: Colors.headerBg,
+    paddingTop: Platform.OS == 'ios' ? hp('8') : hp('3'),
+    height: Platform.OS == 'ios' ? hp('12') : hp('8'),
+    alignItems: 'center',
   },
-  heading: {
-    color: Colors.white,
-    fontSize: hp('2.5'),
+
+  backMain: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    textAlign: 'left',
+    alignItems: 'flex-end',
+
+    // backgroundColor: 'red',
   },
   backBtn: {
-    width: wp('6'),
-    height: hp('3.5'),
+    marginLeft: wp('1.5'),
+    color: Colors.gray,
+    fontSize: hp('2'),
   },
-  searchBtn: {
-    width: wp('5'),
-    height: hp('3.5'),
+  HeaderTitle: {
+    fontSize: hp('2.5'),
+    color: Colors.white,
+    fontWeight: '500',
+    // width: wp('60'),
+    textAlignVertical: 'center',
+    // justifyContent: 'center',
   },
-  tabs: isActive => ({
-    // width: '110%',
-    marginRight: wp('2.2'),
-    marginBottom: hp('2.5'),
-    backgroundColor: isActive
-      ? Colors.primaryColor
-      : 'rgba(255, 255, 255, 0.1)',
-  }),
-  btnMain: {
-    marginLeft: wp('5'),
+  HeaderLeft: {
+    flex: 0.5,
+    // justifyContent: 'center',
+    // backgroundColor: 'blue',
+    // alignItems: 'center',
+    // alignContent: 'center',
+  },
+  arrowback: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    alignSelf: 'center',
+    width: wp('7'),
+  },
+  filterIcon: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    alignSelf: 'center',
+    width: wp('7'),
+    resizeMode: 'contain',
+    height: hp('3'),
+    marginLeft: wp('2'),
+  },
+  styleCheck: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    alignSelf: 'center',
+    width: wp('7'),
+    marginRight: wp('1'),
+    // backgroundColor: 'green'
+  },
+  HeaderCenter: {
+    // flex: 1,
+    alignItems: 'center',
+    // backgroundColor: 'blue',
+    height: hp('5'),
+    textAlign: 'center',
+    marginTop: hp('1'),
+    // width: wp('100'),
+  },
+  HeaderRight: {
+    flex: 0.5,
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    flexDirection: 'row',
   },
 });

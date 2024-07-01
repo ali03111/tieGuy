@@ -45,6 +45,10 @@ function MainNavigator() {
               name="ForgetPasswordScreen"
               component={Screens.ForgetPasswordScreen}
             /> */}
+            <Stack.Screen
+              name="EmergencyContactScreen"
+              component={Screens.EmergencyContactScreen}
+            />
           </>
         )}
         {isLogin && (
@@ -59,6 +63,10 @@ function MainNavigator() {
               component={Screens.SkeletonScreen}
             /> */}
             <Stack.Screen name="MybottomTabs" component={MybottomTabs} />
+            <Stack.Screen
+              name="EmergencyContactScreen"
+              component={Screens.EmergencyContactScreen}
+            />
             {/* <Stack.Screen
               name="TrainingScreen"
               component={Screens.TrainingScreen}

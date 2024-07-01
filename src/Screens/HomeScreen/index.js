@@ -114,7 +114,7 @@ const HomeScreen = ({navigation}) => {
   );
 
   const MarkerForTrack = useCallback(
-    ({res}) => {
+    ({res, index}) => {
       const km = getDistanceFromLatLonInKm(
         startLocation.coords.lat,
         startLocation.coords.long,
@@ -124,7 +124,7 @@ const HomeScreen = ({navigation}) => {
 
       const isNearMe = Boolean(parseFloat(km) <= 5);
 
-      console.log('km on railya track ', km, isNearMe);
+      console.log('km on railya track ', index, km, isNearMe);
       // if (isNearMe && startTracking) localNotifeeNotification();
       return (
         <Marker
@@ -217,7 +217,9 @@ const HomeScreen = ({navigation}) => {
                 </>
               )}
             {railwayTracks.current.length > 0 &&
-              railwayTracks.current.map(res => <MarkerForTrack res={res} />)}
+              railwayTracks.current.map((res, index) => (
+                <MarkerForTrack res={res} index={index} />
+              ))}
           </>
         }
       />

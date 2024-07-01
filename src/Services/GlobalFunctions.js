@@ -271,7 +271,7 @@ const fetchRailwayCrossingAPI = async (lat, long) => {
   const apiKey = MapAPIKey;
   const locations = `${lat},${long}`;
   const radius = '10'; // Radius in meters (adjust as needed)
-  const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=railway%50crossing&location=${locations}&radius=${radius}&key=${apiKey}`;
+  const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=railway%20crossing&location=${locations}&radius=${radius}&key=${apiKey}`;
 
   try {
     const response = await fetch(url);
@@ -391,6 +391,47 @@ const matchIDinTwoArry = (data, ids) => {
   return data.filter(item => ids.includes(item.id));
 };
 
+/**
+ * The AMPMLayout function checks if the given time is between 6 AM and 6 PM.
+ * @returns a boolean value. It returns true if the hours of the given time parameter are between 6
+ * (inclusive) and 19 (exclusive), indicating that it is daytime. Otherwise, it returns false,
+ * indicating that it is nighttime.
+ */
+const AMPMLayout = (onDay, onNight) => {
+  const now = new Date();
+  const hours = now.getHours();
+  const minutes = now.getMinutes();
+  if (hours >= 6 && hours < 19) return onDay ?? true;
+  else return onNight ?? false;
+};
+
+/**
+ * The function `removeSpacesBetweenWords` removes spaces from a given input string.
+ * @param input - The `removeSpacesBetweenWords` function takes a string `input` as a parameter. It
+ * checks if the input contains any spaces. If spaces are found, it removes all spaces from the input
+ * string and returns the modified string. If no spaces are found, it simply returns the input string
+ * as it
+ * @returns The `removeSpacesBetweenWords` function removes spaces between words in the input string
+ * and returns the modified string without spaces. If the input does not contain any spaces, it returns
+ * the input string as it is.
+ */
+function removeSpacesBetweenWords(name) {
+  // Check if the name contains a space
+  if (name && name.includes(' ')) {
+    // Split the name into words
+    let words = name.split(' ');
+
+    // Capitalize the first letter of the second word
+    words[1] = words[1].charAt(0).toUpperCase() + words[1].slice(1);
+
+    // Join the words back together without the space
+    return words.join('');
+  } else {
+    // If there's no space, return the name as it is
+    return name;
+  }
+}
+
 export {
   getSingleCharacter,
   getProperLocation,
@@ -408,4 +449,6 @@ export {
   getDistancesBetweenLocationsArry,
   matchTwoArrays,
   matchIDinTwoArry,
+  AMPMLayout,
+  removeSpacesBetweenWords,
 };

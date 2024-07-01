@@ -6,8 +6,22 @@ export {default as splashTwo} from './Images/splashTwo.png';
 export {default as splashThree} from './Images/splashThree.png';
 export {default as LoginBg} from './Images/loginBg.png';
 export {default as blackImg} from './Images/blackImg.png';
-export {default as parCloud} from './Images/parCloud.png';
+export {default as addNewBtn} from './Images/addNewBtn.png';
+export {default as divider} from './Images/divider.png';
 
+// weatherImages
+
+export {default as parCloud} from './Images/parCloud.png';
+export {default as mist} from './Images/mist.png';
+export {default as rain} from './Images/rain.png';
+export {default as snow} from './Images/snow.png';
+export {default as thunderstorm} from './Images/thunderstorm.png';
+export {default as brokenClouds} from './Images/brokenClouds.png';
+export {default as scatteredClouds} from './Images/brokenClouds.png';
+// export {default as parCloud} from './Images/parCloud.png';
+export {default as clearSkyD} from './Images/clearSkyD.png';
+export {default as clearSkyN} from './Images/clearSkyN.png';
+export {default as fewClouds} from './Images/clearSkyN.png';
 //  Icons
 
 export {default as eye} from './Icons/eye.png';
@@ -20,6 +34,8 @@ export {default as routeIcon} from './Icons/routeIcon.png';
 export {default as Line} from './Icons/Line.png';
 export {default as callIcon} from './Icons/callIcon.png';
 export {default as desMarker} from './Icons/desMarker.png';
+export {default as phone} from './Icons/phone.png';
+export {default as threeDots} from './Icons/threeDots.png';
 
 export {default as username} from './Icons/username.png';
 export {default as user} from './Icons/user.png';
@@ -39,6 +55,7 @@ export {default as home} from './Icons/home.png';
 export {default as profile2} from './Icons/profile2.png';
 export {default as message} from './Icons/message.png';
 export {default as message1} from './Icons/message1.png';
+export {default as sosImage} from './Icons/sosImage.png';
 
 export {default as setting} from './Icons/setting.png';
 export {default as setting1} from './Icons/setting1.png';

@@ -15,6 +15,7 @@ import {
   setting1,
   setting,
   bell,
+  sosImage,
 } from '../Assets';
 import {types} from '../Redux/types';
 import useReduxStore from '../Hooks/UseReduxStore';
@@ -77,19 +78,20 @@ function MybottomTabs() {
       })}>
       <Tab.Screen
         name="HomeScreen"
-        options={tabarComponent(home, home1)}
+        options={tabarComponent(home1, home)}
         component={Screens.HomeScreen}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="FavourateScreen"
         options={tabarComponent(message, message1)}
         component={Screens.HomeScreen}
-      />
+      /> */}
       <Tab.Screen
-        name="SomeComponent"
+        name="SOSScreen"
+        AMPMLayout
         options={tabarComponent(
-          bell,
-          bell,
+          sosImage,
+          sosImage,
           (ImageStyle = {
             width: wp('20'),
             marginTop: hp('-6'),
@@ -101,16 +103,16 @@ function MybottomTabs() {
             // position: 'absolute',
           }),
         )}
-        component={Screens.SeetingScreen}
+        component={Screens.SOSScreen}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="ChatScreen"
         options={tabarComponent(notification, notification1)}
         component={Screens.SeetingScreen}
-      />
+      /> */}
       <Tab.Screen
         name="SettingScreen"
-        options={tabarComponent(setting, setting1)}
+        options={tabarComponent(setting1, setting)}
         component={Screens.SeetingScreen}
       />
     </Tab.Navigator>

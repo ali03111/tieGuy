@@ -67,16 +67,14 @@ export const onBoardingData = [
   {
     id: 0,
     heading: 'Rail Track Alert!',
-    description:
-      'Your safety companion near railtracks.',
+    description: 'Your safety companion near railtracks.',
     image: splashOne,
     splashImage: splashMarine,
   },
   {
     id: 1,
     heading: 'Stay Safe Around Railtracks!',
-    description:
-      'Safety tips for your journey.',
+    description: 'Safety tips for your journey.',
     image: splashTwo,
     splashImage: splashLand,
   },
@@ -226,6 +224,11 @@ export const settingData = [
     title: 'My Profile',
     image: profile,
     screenUrl: 'MyProfileScreen',
+  },
+  {
+    title: 'Emergency Contacts',
+    image: profile,
+    screenUrl: 'EmergencyContactScreen',
   },
   {
     title: 'Change Password',

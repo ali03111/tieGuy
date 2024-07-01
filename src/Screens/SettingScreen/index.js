@@ -29,7 +29,10 @@ const SettingScreen = ({navigation}) => {
   });
   return (
     <>
-      <HeaderComponent title={'Settings'} goBack={() => navigation.goBack()} />
+      <HeaderComponent
+        headerTitle={'SOS Screen'}
+        goBack={() => navigation.goBack()}
+      />
       <ScrollView>
         <View style={styles.catMain}>
           <FlatList

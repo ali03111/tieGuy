@@ -23,12 +23,12 @@ const InputView = ({
   kiloMeter,
   currentCoords,
 }) => {
-  // console.log(
-  //   'pksdbivbiosdbvjsdbvjdsvjksdbvjdsbdsjkbsdjvbsdjsdsd',
-  //   getDistancesBetweenLocationsArry(currentCoords, railwayTracks).filter(
-  //     res => res,
-  //   ),
-  // );
+  console.log(
+    'pksdbivbiosdbvjsdbvjdsvjksdbvjdsbsdfsddsjkbsdjvbsdjsdsd',
+    getDistancesBetweenLocationsArry(currentCoords, railwayTracks).filter(
+      res => parseFloat(res.km) <= 5,
+    ),
+  );
   const KlMeterView = useCallback(() => {
     return (
       <TextComponent
