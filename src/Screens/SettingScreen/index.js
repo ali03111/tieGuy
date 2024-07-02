@@ -30,10 +30,12 @@ const SettingScreen = ({navigation}) => {
   return (
     <>
       <HeaderComponent
-        headerTitle={'SOS Screen'}
+        headerTitle={'Setting'}
         goBack={() => navigation.goBack()}
       />
-      <ScrollView>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{paddingBottom: hp('7')}}>
         <View style={styles.catMain}>
           <FlatList
             refreshing={false}

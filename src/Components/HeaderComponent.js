@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, Image, View, Platform} from 'react-native';
 import {TextComponent} from './TextComponent';
 import {Touchable} from './Touchable';
-import {arrowBack} from '../Assets';
+import {arrow, arrowBack, arrowLeft} from '../Assets';
 import {hp, wp} from '../Config/responsive';
 import {Colors} from '../Theme/Variables';
 
@@ -27,9 +27,10 @@ export const HeaderComponent = ({
         <Touchable onPress={goBack} style={styles.backMain} disabled={!isBack}>
           {isBack && (
             <Image
-              source={arrowBack}
+              source={arrowLeft}
               style={{
                 resizeMode: 'contain',
+                tintColor: 'white',
                 ...styles.arrowback,
               }}
             />

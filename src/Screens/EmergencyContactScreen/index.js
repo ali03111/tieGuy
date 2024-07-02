@@ -9,7 +9,7 @@ import {addNewBtn, callIcon, divider, phone, threeDots} from '../../Assets';
 import {CircleImage} from '../../Components/CircleImage';
 import {TextComponent} from '../../Components/TextComponent';
 
-const EmergencyContactScreen = () => {
+const EmergencyContactScreen = ({navigation}) => {
   const renderItem = useCallback(() => {
     return (
       <View
@@ -27,10 +27,9 @@ const EmergencyContactScreen = () => {
         />
         <View
           style={{
-            width: wp('60'),
+            width: wp('65'),
             paddingLeft: wp('2'),
             alignContent: 'center',
-            // backgroundColor: 'red',
             height: hp('6'),
           }}>
           <TextComponent
@@ -39,7 +38,7 @@ const EmergencyContactScreen = () => {
           />
           <View
             style={{
-              width: wp('60'),
+              width: wp('65'),
               flexDirection: 'row',
               alignItems: 'center',
             }}>
@@ -51,14 +50,29 @@ const EmergencyContactScreen = () => {
             <TextComponent text={'012-3456-7890'} />
           </View>
         </View>
-        <Image source={threeDots} resizeMode="contain" st />
+        <Touchable
+          style={{
+            marginLeft: wp('7'),
+          }}>
+          <Image
+            source={threeDots}
+            resizeMode="contain"
+            style={{
+              width: wp('6'),
+            }}
+          />
+        </Touchable>
       </View>
     );
   });
 
   return (
     <View style={{flexGrow: 1}}>
-      <HeaderComponent headerTitle={'Emergency Contacts'} />
+      <HeaderComponent
+        headerTitle={'Emergency Contacts'}
+        isBack
+        goBack={() => navigation.goBack()}
+      />
       <FlatList
         data={[1, 2, 3, 4, 5, 6, 7]}
         keyExtractor={keyExtractor}

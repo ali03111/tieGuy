@@ -24,6 +24,7 @@ import {
   demokit,
   downloadIcon,
   emailS,
+  groupPeople,
   hadylProfile,
   icon1,
   icon2,
@@ -227,7 +228,7 @@ export const settingData = [
   },
   {
     title: 'Emergency Contacts',
-    image: profile,
+    image: groupPeople,
     screenUrl: 'EmergencyContactScreen',
   },
   {
