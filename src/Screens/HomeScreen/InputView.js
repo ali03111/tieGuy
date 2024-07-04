@@ -53,7 +53,10 @@ const InputView = ({
       }}>
       {isShowBtn && (
         <View style={styles.desView}>
-          <TextComponent text={`Destination ${kiloMeter.current}/km`} />
+          <TextComponent
+            text={`Destination ${kiloMeter.current}/km`}
+            styles={styles.destination}
+          />
           <KlMeterView />
         </View>
       )}

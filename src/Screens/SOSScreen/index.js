@@ -9,6 +9,7 @@ import CheckBox from '@react-native-community/checkbox';
 import {Colors} from '../../Theme/Variables';
 import ThemeButton from '../../Components/ThemeButton';
 import {hp, wp} from '../../Config/responsive';
+import {contactArry} from '../../Utils/localDB';
 
 const SOSScreen = ({navigation}) => {
   const {dynamicNav, laongituteDalta, latitudeDelta, startLocation, valChange} =
@@ -49,7 +50,7 @@ const SOSScreen = ({navigation}) => {
       contacts.map(res => {
         return (
           <View style={styles.contactView}>
-            <TextComponent text={'energency conibsdsdsg'} />
+            <TextComponent text={res?.title} />
             <CheckBox
               disabled={false}
               value={true}
@@ -71,7 +72,7 @@ const SOSScreen = ({navigation}) => {
         showsVerticalScrollIndicator={false}>
         <RenderMap />
         <TextComponent text={'Emergency Contacts'} styles={styles.heading} />
-        <ContactsMapView contacts={[1, 2, 3, 5, 6, 8, 9, 7]} />
+        <ContactsMapView contacts={contactArry} />
         <ThemeButton
           title={'Send Notification'}
           style={{width: wp('95'), alignSelf: 'center', marginTop: hp('2')}}

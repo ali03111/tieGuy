@@ -12,6 +12,7 @@ import {
   eye,
   locationArrow,
   routeIcon,
+  train,
 } from '../../Assets/index';
 import {AutoFillGoogleComp} from '../../Components/AutoFillGoogleComp';
 import KeyBoardWrapper from '../../Components/KeyBoardWrapper';
@@ -136,12 +137,12 @@ const HomeScreen = ({navigation}) => {
           }}>
           <Image
             style={{
-              height: hp('20'),
-              width: wp('15'),
+              height: hp('15'),
+              width: wp('10'),
               display: isNearMe ? 'flex' : 'none',
             }}
             resizeMode="contain"
-            source={desMarker}
+            source={train}
           />
         </Marker>
       );

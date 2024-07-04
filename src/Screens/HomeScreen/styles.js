@@ -82,4 +82,12 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     overflow: 'hidden',
   },
+  destination: {
+    backgroundColor: 'white',
+    paddingVertical: hp('0.5'),
+    paddingHorizontal: wp('1'),
+    borderRadius: 8,
+    overflow: 'hidden',
+    borderWidth: 1,
+  },
 });

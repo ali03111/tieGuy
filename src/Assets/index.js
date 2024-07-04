@@ -37,6 +37,7 @@ export {default as desMarker} from './Icons/desMarker.png';
 export {default as phone} from './Icons/phone.png';
 export {default as threeDots} from './Icons/threeDots.png';
 export {default as groupPeople} from './Icons/groupPeople.png';
+export {default as train} from './Icons/train.png';
 
 export {default as username} from './Icons/username.png';
 export {default as user} from './Icons/user.png';

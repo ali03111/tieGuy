@@ -17,6 +17,26 @@ const App = () => {
     return 3000;
   };
 
+  // useEffect(() => {
+  //   /* It's a function that registers the device to receive push notifications. */
+  //   if (isLogin) {
+  //     setTimeout(() => {
+  //       fcmService.register(
+  //         onRegister,
+  //         onOpenNotification,
+  //         appState.current,
+  //         onNotification,
+  //       );
+  //     }, 5000);
+  //   }
+  //   return () => {
+  //     /* It's a function that unregisters the device from receiving push notifications. */
+  //     if (isLogin) {
+  //       fcmService.unRegister();
+  //     }
+  //   };
+  // }, [isLogin]);
+
   useEffect(async () => {
     (async () => {
       LogBox.ignoreLogs([
