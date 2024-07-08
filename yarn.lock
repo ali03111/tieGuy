@@ -8562,6 +8562,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-image-crop-picker@npm:^0.41.2":
+  version: 0.41.2
+  resolution: "react-native-image-crop-picker@npm:0.41.2"
+  peerDependencies:
+    react-native: ">=0.40.0"
+  checksum: c1333b3b761e948bd0bc856773f68dcc859c7ce39dda3e14d2c32c17d55927735bfc5cbbb7ac5e8bac21feda87c93399f2a596aca7d5b0611cc1e8203d97ad2e
+  languageName: node
+  linkType: hard
+
 "react-native-iphone-screen-helper@npm:^2.0.2":
   version: 2.1.1
   resolution: "react-native-iphone-screen-helper@npm:2.1.1"
@@ -9922,6 +9931,7 @@ __metadata:
     react-native-flash-message: ^0.4.2
     react-native-geolocation-service: ^5.3.1
     react-native-google-places-autocomplete: ^2.5.1
+    react-native-image-crop-picker: ^0.41.2
     react-native-keyboard-aware-scroll-view: ^0.9.5
     react-native-maps: 1.10.3
     react-native-maps-directions: ^1.9.0

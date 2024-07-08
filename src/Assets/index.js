@@ -8,6 +8,7 @@ export {default as LoginBg} from './Images/loginBg.png';
 export {default as blackImg} from './Images/blackImg.png';
 export {default as addNewBtn} from './Images/addNewBtn.png';
 export {default as divider} from './Images/divider.png';
+export {default as blurImg} from './Images/blurImg.png';
 
 // weatherImages
 
@@ -38,6 +39,8 @@ export {default as phone} from './Icons/phone.png';
 export {default as threeDots} from './Icons/threeDots.png';
 export {default as groupPeople} from './Icons/groupPeople.png';
 export {default as train} from './Icons/train.png';
+export {default as uploadBtn} from './Icons/uploadBtn.png';
+export {default as closeIcon} from './Icons/close.png';
 
 export {default as username} from './Icons/username.png';
 export {default as user} from './Icons/user.png';

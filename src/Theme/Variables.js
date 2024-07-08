@@ -11,6 +11,8 @@ const Colors = {
   lightGray: 'rgba(0, 0, 0, 0.50)',
   textGray: 'rgba(32, 32, 32, 0.50)',
   headerBg: '#202020',
+  grayFaded: 'rgba(188, 188, 188, 1)',
+  themeRed: 'rgba(215, 48, 0, 1)',
 };
 
 /** FontSize **/

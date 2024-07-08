@@ -97,5 +97,9 @@
 		<string>Proxima-Nova-Alt-Light.otf</string>
 		<string>Proxima-Nova-Alt-Bold.otf</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>To add profile picture , you need to allow access to your photo gallery</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To add profile picture , you need to allow access to your photo gallery</string>
 </dict>
 </plist>

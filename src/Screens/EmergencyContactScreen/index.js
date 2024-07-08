@@ -8,40 +8,35 @@ import {keyExtractor} from '../../Utils';
 import {addNewBtn, callIcon, divider, phone, threeDots} from '../../Assets';
 import {CircleImage} from '../../Components/CircleImage';
 import {TextComponent} from '../../Components/TextComponent';
+import AddContactModal from './addContactModal';
+import {styles} from './styles';
+import useEmergencyContactScreen from './useEmergencyContactScreen';
 
 const EmergencyContactScreen = ({navigation}) => {
+  const {
+    getValues,
+    handleSubmit,
+    reset,
+    onSaveContact,
+    toggleModal,
+    control,
+    errors,
+    errorMessage,
+    modalState,
+  } = useEmergencyContactScreen();
+
   const renderItem = useCallback(() => {
     return (
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          alignItems: 'center',
-          paddingVertical: hp('1.8'),
-        }}>
+      <View style={styles.contactImg}>
         <CircleImage
           image={
             'https://images.pexels.com/photos/15940451/pexels-photo-15940451/free-photo-of-clouds-over-beach.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load'
           }
           uri={true}
         />
-        <View
-          style={{
-            width: wp('65'),
-            paddingLeft: wp('2'),
-            alignContent: 'center',
-            height: hp('6'),
-          }}>
-          <TextComponent
-            text={'Brother'}
-            styles={{fontWeight: 'bold', height: hp('2')}}
-          />
-          <View
-            style={{
-              width: wp('65'),
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
+        <View style={styles.midleTextView}>
+          <TextComponent text={'Brother'} styles={styles.contactName} />
+          <View style={styles.numberView}>
             <Image
               source={phone}
               resizeMode="contain"
@@ -74,47 +69,34 @@ const EmergencyContactScreen = ({navigation}) => {
         goBack={() => navigation.goBack()}
       />
       <FlatList
-        data={[1, 2, 3, 4, 5, 6, 7]}
+        data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
         keyExtractor={keyExtractor}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <>
-            <Touchable
-              style={{
-                height: hp('6'),
-                alignItem: 'center',
-                marginVertical: hp('1.5'),
-                //   top: hp('3.5'),
-                //   backgroundColor: 'red',
-              }}>
+            <Touchable style={styles.addNewBtn} onPress={toggleModal}>
               <Image
                 source={addNewBtn}
                 resizeMode="contain"
-                style={{flex: 1, width: wp('50'), left: wp('-8')}}
+                style={styles.addBtnImg}
               />
             </Touchable>
-            <View
-              style={{
-                borderBottomColor: 'black',
-                borderBottomWidth: StyleSheet.hairlineWidth,
-              }}
-            />
+            <View style={styles.divider} />
           </>
         }
         renderItem={renderItem}
-        ItemSeparatorComponent={
-          <View
-            style={{
-              borderBottomColor: 'black',
-              borderBottomWidth: StyleSheet.hairlineWidth,
-            }}
-          />
-        }
-        contentContainerStyle={{
-          width: wp('90'),
-          alignSelf: 'center',
-        }}
+        ItemSeparatorComponent={<View style={styles.divider} />}
+        contentContainerStyle={styles.flatListCont}
       />
+      {modalState && (
+        <AddContactModal
+          // userData={{name: 'fsdfsdf', phone: 'skdvnklsdnvsd'}}
+          onSaveContact={onSaveContact}
+          errorMessage={errorMessage}
+          toggleModal={toggleModal}
+          modalState={modalState}
+        />
+      )}
     </View>
   );
 };

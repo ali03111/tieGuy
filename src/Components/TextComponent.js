@@ -8,6 +8,7 @@ export const TextComponent = ({
   styles,
   onPress,
   numberOfLines,
+  fade,
   isWhite,
 }) => {
   return (
@@ -15,7 +16,7 @@ export const TextComponent = ({
       onPress={onPress}
       numberOfLines={numberOfLines}
       style={{
-        color: isWhite ? Colors.white : Colors.black,
+        color: fade ? Colors.grayFaded : isWhite ? Colors.white : Colors.black,
         fontSize: hp('2'),
         ...styles,
       }}>
