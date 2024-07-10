@@ -31,14 +31,12 @@ const useRegister = ({navigate, goBack}) => {
     confirm_password,
     company_name,
   }) => {
-    if (!policy) {
-      dispatch(
-        loginUser({
-          type: 'email',
-          datas: {name, email, number, password, company_name, last_name},
-        }),
-      );
-    } else errorMessage('Please agree terms & conditions.');
+    dispatch(
+      loginUser({
+        type: 'email',
+        datas: {name, email, number, password, company_name, last_name},
+      }),
+    );
   };
   const loginNav = () => navigate('LoginScreen');
 

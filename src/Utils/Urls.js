@@ -1,7 +1,7 @@
 const getCredentials = () => {
   if (__DEV__)
     return {
-      baseURL: 'https://virtualrealitycreators.com/green-boom/api',
+      baseURL: 'https://virtualrealitycreators.com/tieGuy-bakend/api',
       imageURL: 'https://virtualrealitycreators.com/green-boom/',
     };
   else {
@@ -26,8 +26,8 @@ export const imageUrl = url => {
 
 export const MapAPIKey = 'AIzaSyAu-nEBbiOahfUyeMc8Lc1gTTKfete_wnQ';
 
-export const registerUrl = '/register';
-export const loginUrl = '/login-user';
+export const registerUrl = '/signup';
+export const loginUrl = '/login';
 export const logoutUrl = 'auth/logout';
 export const getAgoraTokenUrl = 'getAccessToken/';
 export const sendType = 'customer/send-type';

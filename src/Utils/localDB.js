@@ -265,24 +265,24 @@ export const settingData = [
 ];
 export const contactArry = [
   {
-    title: 'Brother',
-    number: '2484456387438',
+    name: 'Brother',
+    phone: '2484456387438',
   },
   {
-    title: 'Dad',
-    number: '2484456387438',
+    name: 'Dad',
+    phone: '2484456387438',
   },
   {
-    title: 'Cousin',
-    number: '2484456387438',
+    name: 'Cousin',
+    phone: '2484456387438',
   },
   {
-    title: 'Uncle',
-    number: '2484456387438',
+    name: 'Uncle',
+    phone: '2484456387438',
   },
   {
-    title: 'Mate',
-    number: '2484456387438',
+    name: 'Mate',
+    phone: '2484456387438',
   },
 ];
 

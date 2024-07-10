@@ -1,16 +1,31 @@
-import {View, Text, FlatList, Image, StyleSheet} from 'react-native';
+import {View, Text, FlatList, Image, StyleSheet, Alert} from 'react-native';
 import React, {memo, useCallback} from 'react';
 import {HeaderComponent} from '../../Components/HeaderComponent';
 import KeyBoardWrapper from '../../Components/KeyBoardWrapper';
 import {hp, wp} from '../../Config/responsive';
 import {Touchable} from '../../Components/Touchable';
 import {keyExtractor} from '../../Utils';
-import {addNewBtn, callIcon, divider, phone, threeDots} from '../../Assets';
+import {
+  addNewBtn,
+  callIcon,
+  divider,
+  editIcon,
+  phone,
+  threeDots,
+  trashIcon,
+} from '../../Assets';
 import {CircleImage} from '../../Components/CircleImage';
 import {TextComponent} from '../../Components/TextComponent';
 import AddContactModal from './addContactModal';
 import {styles} from './styles';
 import useEmergencyContactScreen from './useEmergencyContactScreen';
+import {
+  Menu,
+  MenuOption,
+  MenuOptions,
+  MenuTrigger,
+} from 'react-native-popup-menu';
+import {contactArry} from '../../Utils/localDB';
 
 const EmergencyContactScreen = ({navigation}) => {
   const {
@@ -19,13 +34,16 @@ const EmergencyContactScreen = ({navigation}) => {
     reset,
     onSaveContact,
     toggleModal,
+    onOpenModal,
+    setContactData,
+    contactData,
     control,
     errors,
     errorMessage,
     modalState,
   } = useEmergencyContactScreen();
 
-  const renderItem = useCallback(() => {
+  const renderItem = useCallback(({item, index}) => {
     return (
       <View style={styles.contactImg}>
         <CircleImage
@@ -35,17 +53,58 @@ const EmergencyContactScreen = ({navigation}) => {
           uri={true}
         />
         <View style={styles.midleTextView}>
-          <TextComponent text={'Brother'} styles={styles.contactName} />
+          <TextComponent text={item?.name} styles={styles.contactName} />
           <View style={styles.numberView}>
             <Image
               source={phone}
               resizeMode="contain"
               style={{width: wp('5')}}
             />
-            <TextComponent text={'012-3456-7890'} />
+            <TextComponent text={item?.phone} />
           </View>
         </View>
-        <Touchable
+        <Menu>
+          <MenuTrigger
+            children={
+              <Touchable
+                style={{
+                  marginLeft: wp('7'),
+                }}
+                disabled>
+                <Image
+                  source={threeDots}
+                  resizeMode="contain"
+                  style={{
+                    width: wp('6'),
+                  }}
+                />
+              </Touchable>
+            }
+          />
+          <MenuOptions optionsContainerStyle={styles.mainMenu}>
+            <MenuOption
+              onSelect={() => onOpenModal(item)}
+              style={styles.menuOption}>
+              <Image
+                source={editIcon}
+                resizeMode="contain"
+                style={styles.menuImg}
+              />
+              <TextComponent text={'Edit'} />
+            </MenuOption>
+            <MenuOption
+              onSelect={() => Alert.alert(`Remove`)}
+              style={styles.menuOption}>
+              <Image
+                source={trashIcon}
+                resizeMode="contain"
+                style={styles.menuImg}
+              />
+              <TextComponent text={'Remove '} styles={{color: 'red'}} />
+            </MenuOption>
+          </MenuOptions>
+        </Menu>
+        {/* <Touchable
           style={{
             marginLeft: wp('7'),
           }}>
@@ -56,10 +115,10 @@ const EmergencyContactScreen = ({navigation}) => {
               width: wp('6'),
             }}
           />
-        </Touchable>
+        </Touchable> */}
       </View>
     );
-  });
+  }, []);
 
   return (
     <View style={{flexGrow: 1}}>
@@ -69,12 +128,21 @@ const EmergencyContactScreen = ({navigation}) => {
         goBack={() => navigation.goBack()}
       />
       <FlatList
-        data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
+        data={contactArry}
         keyExtractor={keyExtractor}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <>
-            <Touchable style={styles.addNewBtn} onPress={toggleModal}>
+            <Touchable
+              style={styles.addNewBtn}
+              onPress={() => {
+                setContactData({
+                  name: '',
+                  phone: '',
+                  img: '',
+                });
+                toggleModal();
+              }}>
               <Image
                 source={addNewBtn}
                 resizeMode="contain"
@@ -90,7 +158,7 @@ const EmergencyContactScreen = ({navigation}) => {
       />
       {modalState && (
         <AddContactModal
-          // userData={{name: 'fsdfsdf', phone: 'skdvnklsdnvsd'}}
+          userData={contactData}
           onSaveContact={onSaveContact}
           errorMessage={errorMessage}
           toggleModal={toggleModal}

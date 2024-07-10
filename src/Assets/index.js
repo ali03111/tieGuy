@@ -41,6 +41,8 @@ export {default as groupPeople} from './Icons/groupPeople.png';
 export {default as train} from './Icons/train.png';
 export {default as uploadBtn} from './Icons/uploadBtn.png';
 export {default as closeIcon} from './Icons/close.png';
+export {default as trashIcon} from './Icons/trashIcon.png';
+export {default as editIcon} from './Icons/editIcon.png';
 
 export {default as username} from './Icons/username.png';
 export {default as user} from './Icons/user.png';

@@ -34,8 +34,6 @@ function MainNavigator() {
         )}
         {!isLogin && (
           <>
-            <Stack.Screen name="MybottomTabs" component={MybottomTabs} />
-
             <Stack.Screen name="LoginScreen" component={Screens.LoginScreen} />
             <Stack.Screen
               name="RegisterScreen"
@@ -44,7 +42,7 @@ function MainNavigator() {
             {/* <Stack.Screen
               name="ForgetPasswordScreen"
               component={Screens.ForgetPasswordScreen}
-            /> */}
+              /> */}
             <Stack.Screen
               name="EmergencyContactScreen"
               component={Screens.EmergencyContactScreen}
@@ -53,6 +51,7 @@ function MainNavigator() {
         )}
         {isLogin && (
           <>
+            <Stack.Screen name="MybottomTabs" component={MybottomTabs} />
             {/* <Stack.Screen
               name="SkeletonScreen"
               component={Screens.SkeletonScreen}
@@ -62,7 +61,6 @@ function MainNavigator() {
               name="SkeletonScreen"
               component={Screens.SkeletonScreen}
             /> */}
-            <Stack.Screen name="MybottomTabs" component={MybottomTabs} />
             <Stack.Screen
               name="EmergencyContactScreen"
               component={Screens.EmergencyContactScreen}

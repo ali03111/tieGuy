@@ -9,11 +9,14 @@ import {Provider} from 'react-redux';
 import {persistor, store} from './src/Redux/Reducer';
 import {PersistGate} from 'redux-persist/integration/react';
 import FlashMessage from 'react-native-flash-message';
+import {MenuProvider} from 'react-native-popup-menu';
 
 const TieGuy = () => (
   <Provider store={store}>
     <PersistGate persistor={persistor} loading={null}>
-      <App />
+      <MenuProvider>
+        <App />
+      </MenuProvider>
       <FlashMessage position="top" />
     </PersistGate>
   </Provider>

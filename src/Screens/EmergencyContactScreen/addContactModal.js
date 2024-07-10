@@ -22,12 +22,18 @@ const AddContactModal = ({
   const [image, setImage] = useState(userData?.image ?? null);
 
   const getImageFromGallery = async () => {
-    const {height, width, size, path, filename, sourceURL} =
+    const {height, width, size, path, filename, sourceURL, localIdentifier} =
       await ImageCropPicker.openPicker({
         width: 300,
         height: 400,
         cropping: true,
       });
+    const uri = Platform.OS === 'ios' ? sourceURL : path;
+    const fileName = filename || 'photo.jpg';
+    setImage({
+      uri,
+      name: fileName,
+    });
     console.log(
       's,jdbvjksdbjkvbsdkjvbjksdbvjksdbjvbsdkjbvsd',
       sourceURL,
@@ -48,13 +54,25 @@ const AddContactModal = ({
         useNativeDriver
         avoidKeyboard={true}
         hideModalContentWhileAnimating
-        onBackButtonPress={toggleModal}
+        onBackButtonPress={() => {
+          setImage(null);
+          setName(null);
+          setPhone(null);
+          toggleModal();
+        }}
         animationType="fade"
         style={styles.bottomModal}>
         <View style={styles.underModal}>
           <Image style={styles.absolute} source={blurImg} />
           <View style={styles.modalData}>
-            <Touchable onPress={toggleModal} style={styles.closeBtn}>
+            <Touchable
+              onPress={() => {
+                setImage(null);
+                setName(null);
+                setPhone(null);
+                toggleModal();
+              }}
+              style={styles.closeBtn}>
               <Image
                 source={closeIcon}
                 resizeMode="contain"
@@ -111,15 +129,21 @@ const AddContactModal = ({
               />
             </View>
             <Touchable onPress={getImageFromGallery} style={styles.uploadBtn}>
-              <Image
-                source={uploadBtn}
-                resizeMode="contain"
-                style={styles.upIcon}
-              />
-              <TextComponent
-                text={'Upload Photo'}
-                styles={{color: Colors.themeOrg, fontSize: hp('1.5')}}
-              />
+              {image?.uri ? (
+                <Image source={{uri: image?.uri}} style={styles.uploadedImg} />
+              ) : (
+                <>
+                  <Image
+                    source={uploadBtn}
+                    resizeMode="contain"
+                    style={styles.upIcon}
+                  />
+                  <TextComponent
+                    text={'Upload Photo'}
+                    styles={{color: Colors.themeOrg, fontSize: hp('1.5')}}
+                  />
+                </>
+              )}
             </Touchable>
             <ThemeButton
               title={'Add Contact'}

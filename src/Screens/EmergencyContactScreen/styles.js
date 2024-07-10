@@ -122,4 +122,29 @@ export const styles = StyleSheet.create({
     fontSize: hp('1.5'),
     marginTop: hp('1'),
   },
+  menuOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: hp('0.5'),
+  },
+  menuImg: {height: hp('3'), width: wp('6'), marginRight: wp('2')},
+  mainMenu: {
+    borderRadius: 10,
+    overflow: 'hidden',
+    paddingLeft: wp('2'),
+    paddingVertical: hp('1'),
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 5,
+  },
+  uploadedImg: {
+    width: wp('90'),
+    height: hp('14'),
+    overflow: 'hidden',
+    borderRadius: 10,
+  },
 });

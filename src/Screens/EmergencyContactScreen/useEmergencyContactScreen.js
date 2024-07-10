@@ -11,6 +11,11 @@ const useEmergencyContactScreen = () => {
     name: '',
     phone: '',
   });
+  const [contactData, setContactData] = useState({
+    name: '',
+    phone: '',
+    img: '',
+  });
 
   const [modal, setModal] = useState(false);
 
@@ -20,6 +25,11 @@ const useEmergencyContactScreen = () => {
       phone: null,
     });
     setModal(!modal);
+  };
+
+  const onOpenModal = data => {
+    setContactData(data);
+    toggleModal();
   };
 
   const regex = /^[A-Za-z ]*$/;
@@ -52,6 +62,9 @@ const useEmergencyContactScreen = () => {
     errorMessage,
     toggleModal,
     modalState: modal,
+    contactData,
+    onOpenModal,
+    setContactData,
   };
 };
 
