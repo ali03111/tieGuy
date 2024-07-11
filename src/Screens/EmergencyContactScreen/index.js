@@ -41,17 +41,14 @@ const EmergencyContactScreen = ({navigation}) => {
     errors,
     errorMessage,
     modalState,
+    allContacts,
+    addedContacts,
   } = useEmergencyContactScreen();
 
   const renderItem = useCallback(({item, index}) => {
     return (
-      <View style={styles.contactImg}>
-        <CircleImage
-          image={
-            'https://images.pexels.com/photos/15940451/pexels-photo-15940451/free-photo-of-clouds-over-beach.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load'
-          }
-          uri={true}
-        />
+      <View style={styles.contactImg} key={index}>
+        <CircleImage image={item?.image?.uri} uri={true} />
         <View style={styles.midleTextView}>
           <TextComponent text={item?.name} styles={styles.contactName} />
           <View style={styles.numberView}>
@@ -128,7 +125,7 @@ const EmergencyContactScreen = ({navigation}) => {
         goBack={() => navigation.goBack()}
       />
       <FlatList
-        data={contactArry}
+        data={[...allContacts, ...addedContacts]}
         keyExtractor={keyExtractor}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={

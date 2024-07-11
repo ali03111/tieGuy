@@ -271,13 +271,20 @@ const fetchRailwayCrossingAPI = async (lat, long) => {
   const apiKey = MapAPIKey;
   const locations = `${lat},${long}`;
   const radius = '10'; // Radius in meters (adjust as needed)
-  const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=railway%20crossing&location=${locations}&radius=${radius}&key=${apiKey}`;
+  const query = 'railway crossing -station'; // Search for railway crossings and exclude stations
+  const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(
+    query,
+  )}&location=${locations}&radius=${radius}&key=${apiKey}`;
 
   try {
     const response = await fetch(url);
     const data = await response.json();
     const results = data.results;
-    const places = results.map(place => ({
+    // Filter out any results that contain "station" in their name
+    const filteredResults = results.filter(
+      place => !place.name.toLowerCase().includes('station'),
+    );
+    const places = filteredResults.map(place => ({
       id: place.place_id,
       name: place.name,
       location: {
@@ -288,7 +295,7 @@ const fetchRailwayCrossingAPI = async (lat, long) => {
     return {ok: true, data: places};
     // setCrossings(places);
   } catch (error) {
-    console.error('Error fetching railway crossings:', error);
+    console.log('Error fetching railway crossings:', error);
     return {ok: false, data: error};
   }
 };
@@ -392,6 +399,20 @@ const matchIDinTwoArry = (data, ids) => {
 };
 
 /**
+ * The function `filterKeyFromArry` filters an array of objects based on a specified key.
+ * @param arry - An array of objects.
+ * @param key - The `key` parameter in the `filterKeyFromArry` function is used to specify the key that
+ * you want to filter the array of objects by. This key will be used to access a specific property in
+ * each object within the array for filtering.
+ * @returns The `filterKeyFromArry` function takes an array `arry` and a key `key`, and filters the
+ * array based on the truthiness of the value at the specified key in each element. The function
+ * returns a new array containing only the elements where the value at the specified key is truthy.
+ */
+const filterKeyFromArry = (arry, key) => {
+  return arry.filter(res => res[key])[0];
+};
+
+/**
  * The AMPMLayout function checks if the given time is between 6 AM and 6 PM.
  * @returns a boolean value. It returns true if the hours of the given time parameter are between 6
  * (inclusive) and 19 (exclusive), indicating that it is daytime. Otherwise, it returns false,
@@ -432,6 +453,17 @@ function removeSpacesBetweenWords(name) {
   }
 }
 
+// Function to get object by ID
+function getObjectById(id, data) {
+  return data.find(obj => obj.id === id);
+}
+
+function generateUniqueId() {
+  const timestamp = Date.now(); // Get the current timestamp
+  const randomNum = Math.random().toString(36).substr(2, 9); // Generate a random string
+  return `${timestamp}${randomNum}`;
+}
+
 export {
   getSingleCharacter,
   getProperLocation,
@@ -451,4 +483,7 @@ export {
   matchIDinTwoArry,
   AMPMLayout,
   removeSpacesBetweenWords,
+  filterKeyFromArry,
+  getObjectById,
+  generateUniqueId,
 };

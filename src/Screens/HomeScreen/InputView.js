@@ -48,18 +48,20 @@ const InputView = ({
       style={{
         alignSelf: 'center',
         position: 'absolute',
-        top: isShowBtn ? hp('40') : hp('50'),
+        top: isShowBtn ? hp('40') : hp('45'),
         zIndex: 1,
       }}>
-      {isShowBtn && (
-        <View style={styles.desView}>
+      <View style={styles.desView}>
+        {isShowBtn ? (
           <TextComponent
             text={`Destination ${kiloMeter.current}/km`}
             styles={styles.destination}
           />
-          <KlMeterView />
-        </View>
-      )}
+        ) : (
+          <View />
+        )}
+        <KlMeterView />
+      </View>
       <View style={styles.inputViewContainer(isShowBtn)}>
         <View style={styles.inputArea}>
           <Image source={locationArrow} style={styles.inputLeftImg} />

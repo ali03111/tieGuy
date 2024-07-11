@@ -9,6 +9,7 @@ import {Colors} from '../../Theme/Variables';
 import {Touchable} from '../../Components/Touchable';
 import ThemeButton from '../../Components/ThemeButton';
 import ImageCropPicker from 'react-native-image-crop-picker';
+import {generateUniqueId} from '../../Services/GlobalFunctions';
 
 const AddContactModal = ({
   userData,
@@ -20,6 +21,8 @@ const AddContactModal = ({
   const [name, setName] = useState(userData?.name ?? null);
   const [phone, setPhone] = useState(userData?.phone ?? null);
   const [image, setImage] = useState(userData?.image ?? null);
+
+  console.log('ksudbvjksdboivbsdoivbsdiobvjksdbvkljbsdklvjbds', userData);
 
   const getImageFromGallery = async () => {
     const {height, width, size, path, filename, sourceURL, localIdentifier} =
@@ -148,7 +151,14 @@ const AddContactModal = ({
             <ThemeButton
               title={'Add Contact'}
               style={{marginTop: hp('2')}}
-              onPress={() => onSaveContact({name, phone, image})}
+              onPress={() =>
+                onSaveContact({
+                  name,
+                  phone,
+                  image,
+                  id: userData?.id ?? generateUniqueId(),
+                })
+              }
             />
           </View>
         </View>

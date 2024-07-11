@@ -146,6 +146,7 @@ const useHomeScreen = ({addListener, navigate}) => {
         location.location?.coords?.lat,
         location.location?.coords?.long,
       );
+      console.log('lksdbvklsdbvlkbsdlvkbsdklvbsdklbvlksdbvksdvksd', data);
       if (ok) {
         railwayTracksRef.current = data;
         setDummy(prev => ++prev);

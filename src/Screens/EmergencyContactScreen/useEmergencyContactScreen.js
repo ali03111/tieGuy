@@ -1,11 +1,25 @@
 import {useState} from 'react';
 import useFormHook from '../../Hooks/UseFormHooks';
 import Schemas from '../../Utils/Validation';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
+import API from '../../Utils/helperFunc';
+import {addContactsUrl, allContactsUrl} from '../../Utils/Urls';
+import {filterKeyFromArry, getObjectById} from '../../Services/GlobalFunctions';
 
 const useEmergencyContactScreen = () => {
   const {handleSubmit, errors, reset, control, getValues} = useFormHook(
     Schemas.logIn,
   );
+
+  const {data} = useQuery({
+    queryKey: ['allContacts'],
+    queryFn: () => API.get(allContactsUrl),
+  });
+
+  console.log('datadatadatadatadatadata', data?.data);
+
+  // Get QueryClient from the context
+  const queryClient = useQueryClient();
 
   const [errorMessage, setErrorMessage] = useState({
     name: '',
@@ -15,7 +29,10 @@ const useEmergencyContactScreen = () => {
     name: '',
     phone: '',
     img: '',
+    id: null,
   });
+
+  const [addedContacts, setAddedContacts] = useState([]);
 
   const [modal, setModal] = useState(false);
 
@@ -32,9 +49,31 @@ const useEmergencyContactScreen = () => {
     toggleModal();
   };
 
+  const {mutate} = useMutation({
+    mutationFn: body => {
+      return API.post(addContactsUrl, body);
+    },
+    onSuccess: ({ok, data}) => {
+      if (ok) {
+        queryClient.invalidateQueries({
+          queryKey: ['allAppointData'],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ['homeData'],
+        });
+        successMessage(data?.message);
+      } else errorMessage(data?.message);
+    },
+  });
+
   const regex = /^[A-Za-z ]*$/;
 
-  const onSaveContact = ({name, phone, image}) => {
+  const onSaveContact = ({name, phone, image, id}) => {
+    console.log(
+      filterKeyFromArry(addedContacts, 'id'),
+      'oisdbvksbdoivbsdovbsdbo',
+    );
+
     if (name == null || name == '' || !regex.test(name)) {
       setErrorMessage(prev => ({
         ...prev,
@@ -43,7 +82,14 @@ const useEmergencyContactScreen = () => {
     } else if (phone == null || phone == '') {
       setErrorMessage(prev => ({name: null, phone: `Please enter you number`}));
     } else {
-      console.log('slkjdbvlkjsbdklvbsdlkbvklsdbvsd', name, phone);
+      if (id == filterKeyFromArry(addedContacts, 'id')?.id) {
+        setAddedContacts(prev => [
+          ...prev,
+          {...getObjectById(id, addedContacts), name, phone, image, id},
+        ]);
+      } else if (id == filterKeyFromArry([], 'id')?.id) {
+      } else setAddedContacts([...addedContacts, {name, phone, image, id}]);
+
       setErrorMessage({
         name: null,
         phone: null,
@@ -65,6 +111,8 @@ const useEmergencyContactScreen = () => {
     contactData,
     onOpenModal,
     setContactData,
+    allContacts: [],
+    addedContacts,
   };
 };
 

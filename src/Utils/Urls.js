@@ -28,17 +28,8 @@ export const MapAPIKey = 'AIzaSyAu-nEBbiOahfUyeMc8Lc1gTTKfete_wnQ';
 
 export const registerUrl = '/signup';
 export const loginUrl = '/login';
+export const allContactsUrl = '/contacts';
+export const addContactsUrl = '/add-contact';
+export const VerifyUserUrl = '/verify';
+
 export const logoutUrl = 'auth/logout';
-export const getAgoraTokenUrl = 'getAccessToken/';
-export const sendType = 'customer/send-type';
-export const tabButtonType = 'customer/training-media/';
-export const msdSheets = 'customer/msdsSheet-list/';
-export const catalogBroucher = 'customer/catalogBrouchers-list/';
-export const updateUser = '/customer/update-user/';
-export const salesPitch = '/customer/all-perfectSale/';
-export const productListApi = '/customer/product-list/';
-export const singleProduct = '/customer/product-data/';
-export const orderKit = '/customer/order-kit-list/';
-export const kitForm = '/customer/add-order-kit/';
-export const welcomeVideo = '/customer/welcome-video/';
-export const faqHtml = '/customer/faqs-list/';

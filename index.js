@@ -10,16 +10,21 @@ import {persistor, store} from './src/Redux/Reducer';
 import {PersistGate} from 'redux-persist/integration/react';
 import FlashMessage from 'react-native-flash-message';
 import {MenuProvider} from 'react-native-popup-menu';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 const TieGuy = () => (
-  <Provider store={store}>
-    <PersistGate persistor={persistor} loading={null}>
-      <MenuProvider>
-        <App />
-      </MenuProvider>
-      <FlashMessage position="top" />
-    </PersistGate>
-  </Provider>
+  <QueryClientProvider client={queryClient}>
+    <Provider store={store}>
+      <PersistGate persistor={persistor} loading={null}>
+        <MenuProvider>
+          <App />
+        </MenuProvider>
+        <FlashMessage position="top" />
+      </PersistGate>
+    </Provider>
+  </QueryClientProvider>
 );
 
 //ADD this

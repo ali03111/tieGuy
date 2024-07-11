@@ -44,6 +44,7 @@
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
     "@react-navigation/stack": "^6.3.29",
+    "@tanstack/react-query": "^5.51.1",
     "geolib": "^3.3.4",
     "jetify": "^1.0.2",
     "moment": "^2.30.1",

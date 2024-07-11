@@ -1,11 +1,11 @@
 import {create} from 'apisauce';
-import {baseURL, fcmToken, getAllUser, notifyUserUrl} from './Urls';
+import {VerifyUserUrl, baseURL} from './Urls';
 import {store} from '../Redux/Reducer';
 import {loadingFalse, loadingTrue} from '../Redux/Action/isloadingAction';
 import {Platform} from 'react-native';
 import {logOutUser} from '../Redux/Action/AuthAction';
 import {types} from '../Redux/types';
-import moment from 'moment';
+import {logOutFirebase, logoutService} from '../Services/AuthServices';
 
 const API = create({
   baseURL,
@@ -13,12 +13,9 @@ const API = create({
   //   timeoutErrorMessage: 'Please try Again...',
 });
 
-const hideLoaderAPIs = [notifyUserUrl, getAllUser, fcmToken];
+const hideLoaderAPIs = [VerifyUserUrl];
 // const hideLoaderAPIs = ['/playcount', '/playlist', '/home-content'];
 
-/* The `API.addRequestTransform` function is adding a request transformation to the API instance. In
-this specific case, the provided function is intercepting outgoing requests and modifying them
-before they are sent. */
 API.addRequestTransform(config => {
   if (!hideLoaderAPIs.includes(config.url)) store.dispatch(loadingTrue());
   const {Auth} = store.getState();
@@ -28,18 +25,15 @@ API.addRequestTransform(config => {
   return config;
 });
 
-/* The `API.addResponseTransform` function is adding a response transformation to the API instance. In
-this specific case, the provided function is intercepting incoming responses and modifying them
-before they are processed further. */
 API.addResponseTransform(response => {
   setTimeout(() => store.dispatch(loadingFalse()), 500);
   const {Auth} = store.getState();
-  console.log('token111', Auth.token);
+  console.log('token111', Auth.token, response?.originalError?.message);
   if (
     response?.originalError?.message == 'Request failed with status code 401' &&
     Auth.token != ''
   )
-    store.dispatch({type: types.LogoutType});
+    store.dispatch(logOutUser());
 
   return response;
 });
@@ -47,8 +41,6 @@ API.addResponseTransform(response => {
 const {get} = API;
 
 //^ altering the get()
-/* The code snippet `API.get = async (url, params, axiosConfig) => { ... }` is overriding the default
-behavior of the `get` method in the `API` object. */
 API.get = async (url, params, axiosConfig) => {
   const response = await get(url, params, axiosConfig);
   // if (response.ok) {
@@ -56,51 +48,192 @@ API.get = async (url, params, axiosConfig) => {
   // }
 };
 
-/**
- * The function `formDataFunc` sends a POST request with form data including an image to a specified
- * URL, handling authentication and error responses.
- * @param url - The `url` parameter in the `formDataFunc` function is the endpoint URL where the form
- * data will be sent. This is typically the API endpoint that will handle the form data submission.
- * @param body - The `formDataFunc` function you provided seems to be a function for handling form data
- * and making a POST request to a specified URL. It constructs a FormData object with the provided body
- * data and sends it along with the request.
- * @param imageKey - The `imageKey` parameter in the `formDataFunc` function represents the key under
- * which the image data will be appended to the FormData object. This key is used to identify the image
- * data when sending a multipart/form-data request.
- * @param isArray - The `isArray` parameter in the `formDataFunc` function is used to determine whether
- * the data being sent in the request is an array or not. If `isArray` is `true`, it indicates that the
- * data to be sent is an array. This information can be useful when constructing the request body
- * @returns The `formDataFunc` function returns a Promise that resolves to an object with a `data`
- * property containing the response data from the fetch request and an `ok` property indicating whether
- * the request was successful (`true`) or not (`false`).
- */
+// const formDataFunc = (url, body) => {
+//   const {Auth} = store.getState();
+
+//   var myHeaders = new Headers();
+//   myHeaders.append('Accept', 'application/json');
+//   myHeaders.append('Authorization', `Bearer ${Auth.token}`);
+//   myHeaders.append('Content-Type', 'multipart/form-data');
+
+//   // const formData = new FormData();
+//   // Object.entries(body).forEach(([key, val]) => {
+//   //   if (key === 'photos' && Array.isArray(val)) {
+//   //     val.forEach((res, index) => {
+//   //       formData.append(`photos`, {
+//   //         name: res?.fileName,
+//   //         type: res?.type,
+//   //         uri:
+//   //           Platform.OS == 'ios' ? res?.uri.replace('file://', '') : res?.uri,
+//   //       });
+//   //     });
+//   //   } else {
+//   //     formData.append(key, val);
+//   //   }
+//   // });
+//   var requestOptions = {
+//     method: 'POST',
+//     headers: myHeaders,
+//     body: body,
+//     redirect: 'follow',
+//   };
+
+//   return fetch(url, requestOptions)
+//     .then(res => res.json())
+//     .then(res => res)
+//     .catch(err => err);
+// };
+
+// export {formDataFunc};
+
+const fetchPostWithToken = (url, body, isFormData, imageKey, isArray) => {
+  const {Auth} = store.getState('Auth');
+  const fullUrl = baseURL + url;
+  store.dispatch(loadingTrue());
+  console.log(
+    'Auth Token',
+    createFormData(body, imageKey, isArray)?.getAll(),
+    createFormData(body, imageKey, isArray)?.getParts(),
+    isFormData,
+  );
+
+  var requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type':
+        isFormData == true ? 'multipart/form-data' : 'application/json',
+      Authorization: `Bearer ${Auth.token}`,
+    },
+    body:
+      isFormData == true
+        ? createFormData(body, imageKey, isArray)
+        : JSON.stringify(body),
+    redirect: 'follow',
+  };
+
+  return fetch(fullUrl, requestOptions)
+    .then(response => {
+      if (!response.ok) {
+        return {ok: false, res: response}; // Return the response data
+      } else {
+        return response.json();
+      }
+    })
+    .then(response => {
+      console.log('response1', response);
+      return {ok: response?.ok ?? true, res: response}; // Return the response data
+    })
+    .catch(error => {
+      console.error('error1', error);
+      throw {ok: false, res: error}; // Re-throw the error to propagate it to the caller
+    });
+};
+
+const createFormData = (photos, imageKey, isArray) => {
+  console.log(photos, isArray, 'oekleiaaake');
+  const data = new FormData();
+
+  Object.entries(photos).forEach(([key, val]) => {
+    console.log(
+      'oisdhviosbdoivbosidbvoisdbiovbsiodbvoisdfdfdfddbivosbdovbsdiovboisd',
+    );
+    isArray
+      ? data.append(imageKey, {
+          name: val?.fileName,
+          type: val?.type,
+          uri:
+            Platform.OS == 'ios' ? val?.uri.replace('file://', '') : val?.uri,
+        })
+      : data.append(imageKey, {
+          name: photos[imageKey]?.fileName,
+          type: photos[imageKey]?.type,
+          uri:
+            Platform.OS == 'ios'
+              ? photos[imageKey]?.uri.replace('file://', '')
+              : photos[imageKey]?.uri,
+        });
+    // } else {
+    //   data.append(key, val);
+    // }
+  });
+
+  console.log('sdkljbvkjlsdbvkljbsdkjvbsdkbvjsdv', data);
+
+  // Object.keys(body).forEach(key => {
+  //   console.log({body}, 'dldldlq');
+  //   data.append(key, body[key]);
+  // });
+
+  return data;
+};
+
+const fetchGetWithToken = async url => {
+  const {Auth} = store.getState('Auth');
+  const fullUrl = baseURL + url;
+  // console.log(Auth.token, Auth.userData, 'Auth Token', fullUrl);
+
+  try {
+    const response = await fetch(fullUrl, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${Auth.token}`, // Assuming a Bearer token authentication
+        // Add other headers if needed
+      },
+    });
+    if (!response.ok) {
+      store.dispatch({type: types.LogoutType});
+      throw new Error('Network response was not ok.');
+    }
+
+    // console.log(data, 'alskdjfklajsdfkljadlsfjaklsdjfl2kds444ajf2lkdjs');
+    const data = await response.json();
+
+    console.log('datadatadatadatadatadatadatadata', data);
+
+    return data; // Return the fetched data
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error; // Rethrow the error to handle it at the caller's level if needed
+  }
+  // store.dispatch({type: types.LogoutType});
+};
+
 const formDataFunc = (url, body, imageKey, isArray) => {
   const {Auth} = store.getState();
-  console.log(
-    'bjdv dv hj hj dhjs dshj bdh∫√ dhjksbvsdhj',
-    url,
-    body,
-    imageKey,
-    isArray,
-  );
+
   var myHeaders = new Headers();
   myHeaders.append('Accept', 'application/json');
   myHeaders.append('Authorization', `Bearer ${Auth.token}`);
   myHeaders.append('Content-Type', 'multipart/form-data');
 
   const formData = new FormData();
-  Object.entries(body).forEach(([key, value]) => {
-    if (body?.profileData?.type) {
-      formData.append(imageKey, {
-        uri: body?.profileData.uri,
-        type: body?.profileData.type,
-        name: body?.profileData.fileName,
-      });
+  Object.entries(body).forEach(([key, val]) => {
+    if (key == imageKey) {
+      isArray
+        ? val.forEach((res, index) => {
+            formData.append(imageKey, {
+              name: res?.fileName,
+              type: res?.type,
+              uri:
+                Platform.OS == 'ios'
+                  ? res?.uri.replace('file://', '')
+                  : res?.uri,
+            });
+          })
+        : formData.append(imageKey, {
+            name: body[imageKey]?.fileName,
+            type: body[imageKey]?.type,
+            uri:
+              Platform.OS == 'ios'
+                ? body[imageKey]?.uri.replace('file://', '')
+                : body[imageKey]?.uri,
+          });
+    } else {
+      formData.append(key, val);
     }
-    formData.append(key, value);
   });
   console.log('asdasd123', formData);
-
   var requestOptions = {
     method: 'POST',
     headers: myHeaders,
@@ -111,8 +244,13 @@ const formDataFunc = (url, body, imageKey, isArray) => {
   console.log(newUrl, 'aasdas');
   return fetch(newUrl, requestOptions)
     .then(res => res.json())
-    .then(res => {
+    .then(async res => {
       console.log('test', res);
+      if (res?.message == 'Unauthenticated.') {
+        await logoutService();
+        store.dispatch(logOutUser());
+        store.dispatch(loadingFalse());
+      }
       return {data: res, ok: true};
     })
     .catch(err => {
@@ -121,111 +259,6 @@ const formDataFunc = (url, body, imageKey, isArray) => {
     });
 };
 
-/**
- * The function `timeLayout` takes a time input and formats it to display in 12-hour clock format with
- * AM/PM indication.
- * @returns The function `timeLayout` takes a time parameter and returns the time formatted in 'hh:mm
- * A' (hours:minutes AM/PM) using the moment.js library.
- */
-const timeLayout = time => {
-  return moment(time).format('hh:mm A');
-};
-
-/**
- * The function AMPMLayout determines if the given time is in the AM or PM period.
- * @returns The function `AMPMLayout` is returning a boolean value based on whether the input time is
- * in the AM or PM period. It uses the `moment` library to format the input time and check if it is
- * 'AM'.
- */
-const AMPMLayout = time => {
-  return Boolean(moment(time).format('A') == 'AM');
-};
-
-/**
- * The `contentTime` function in JavaScript formats a given time value into hours, minutes, and seconds
- * with an optional format parameter.
- * @param time - The `contentTime` function takes a time value in seconds and an optional boolean
- * format parameter. If the format parameter is set to true, the function will return the time in a
- * formatted string with hours, minutes, and seconds. If the format parameter is false or not provided,
- * the function will return
- * @param [format=false] - The `format` parameter in the `contentTime` function is a boolean parameter
- * that determines whether the time should be formatted in a detailed way or in a simplified way. When
- * `format` is set to `false`, the function returns the time in the format `mm:ss`. When `format`
- * @returns The `contentTime` function returns either the formatted time in hours, minutes, and seconds
- * if the `format` parameter is set to `true`, or it returns the time in the format `mm:ss` if `format`
- * is `false`.
- */
-const contentTime = (time, format = false) => {
-  if (!format) {
-    const hour = moment.utc(time * 1000).format('HH');
-    const minute = moment.utc(time * 1000).format('mm');
-    const second = moment.utc(time * 1000).format('ss');
-    return hour == '00' ? `${minute}:${second}` : `${minute}:${second}`;
-  }
-  const hour = moment.utc(time * 1000).format('HH');
-  const minute = moment.utc(time * 1000).format('mm');
-  const second = moment.utc(time * 1000).format('ss');
-  const hoursFormatted = hour !== '00' ? `${hour} hour ` : '';
-  const minutesFormatted = minute !== '00' ? `${minute} minutes` : '';
-  const secondFormatted = second !== '00' ? `${second} seconds` : '';
-  return [hoursFormatted, minutesFormatted, secondFormatted].join('');
-};
-
-/**
- * The function `secondsToTime` converts a given time in seconds to an object containing hours,
- * minutes, and seconds.
- * @returns The function `secondsToTime` returns an object with properties `seconds`, `minutes`, and
- * `hours`, where each property contains a string value representing the corresponding time unit
- * (seconds, minutes, hours) calculated from the input `timeInSeconds`.
- */
-export const secondsToTime = timeInSeconds => {
-  const hours = Math.floor(timeInSeconds / 3600)
-    .toString()
-    .padStart(2, '0');
-  const minutes = Math.floor((timeInSeconds % 3600) / 60)
-    .toString()
-    .padStart(2, '0');
-  const seconds = Math.floor(timeInSeconds % 60)
-    .toString()
-    .padStart(2, '0');
-  return {seconds, minutes, hours};
-};
-
-const randomNanoIdGenerator = () => nanoid();
-const keyExtractor = item => item?.id;
-
-/**
- * The function `durationAsString` calculates the duration between the current time and a given date in
- * days, hours, and minutes.
- * @returns The function `durationAsString` takes a date as input, calculates the duration between that
- * date and the current date, and returns a formatted string representing the duration in terms of
- * days, hours, and minutes. The formatted string includes the number of days (if any), hours (if any),
- * and minutes (if any) in the format "X days X hours X minutes".
- */
-const durationAsString = date => {
-  const start = new Date();
-  const currentTime = new Date(date);
-  currentTime.setDate(start.getDate());
-  if (start.getTime() > currentTime.getTime())
-    currentTime.setDate(start.getDate() + 1);
-
-  const duration = moment.duration(moment(currentTime).diff(moment(start)));
-
-  //Get Days
-  const days = Math.floor(duration.asDays()); // .asDays returns float but we are interested in full days only
-  const daysFormatted = days ? `${days}day ` : ''; // if no full days then do not display it at all
-
-  //Get Hours
-  const hours = duration.hours();
-  const hoursFormatted = hours ? `${hours}hr ` : '';
-
-  //Get Minutes
-  const minutes = duration.minutes();
-  const minutesFormatted = minutes ? `${minutes}min` : '';
-
-  return [daysFormatted, hoursFormatted, minutesFormatted].join('');
-};
-
-export {formDataFunc, contentTime};
+export {formDataFunc, fetchPostWithToken, fetchGetWithToken};
 
 export default API;
