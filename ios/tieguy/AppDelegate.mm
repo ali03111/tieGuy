@@ -1,6 +1,6 @@
 #import "AppDelegate.h"
 #import <GoogleMaps/GoogleMaps.h>
-
+#import <RNGoogleSignin/RNGoogleSignin.h>
 #import <React/RCTBundleURLProvider.h>
 #import <Firebase.h>
 

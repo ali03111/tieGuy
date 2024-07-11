@@ -43,6 +43,7 @@ export {default as uploadBtn} from './Icons/uploadBtn.png';
 export {default as closeIcon} from './Icons/close.png';
 export {default as trashIcon} from './Icons/trashIcon.png';
 export {default as editIcon} from './Icons/editIcon.png';
+export {default as contact} from './Icons/contact.png';
 
 export {default as username} from './Icons/username.png';
 export {default as user} from './Icons/user.png';
@@ -72,6 +73,7 @@ export {default as trainingPDFIcon} from './Icons/trainingPDFIcon.png';
 export {default as arrowrightblack} from './Icons/arrowrightblack.png';
 export {default as profile} from './Icons/profile.png';
 export {default as locksetting} from './Icons/lock.png';
+export {default as lock} from './Icons/locksetting.png';
 export {default as about} from './Icons/about.png';
 export {default as privacy} from './Icons/privacy.png';
 export {default as terms} from './Icons/terms.png';

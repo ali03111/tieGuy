@@ -21,6 +21,10 @@ const useLogin = ({navigate, goBack}) => {
     setRemember(!remember);
   };
 
+  const socialLoginFun = type => {
+    dispatch(loginUser({type, datas: {}}));
+  };
+
   const onPress = () => navigate('RegisterScreen');
 
   /**
@@ -43,6 +47,7 @@ const useLogin = ({navigate, goBack}) => {
     rememberValue,
     onPress,
     loginUser: loginUserFun,
+    socialLoginFun,
   };
 };
 

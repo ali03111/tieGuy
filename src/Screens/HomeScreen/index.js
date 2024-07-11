@@ -137,7 +137,7 @@ const HomeScreen = ({navigation}) => {
           }}>
           <Image
             style={{
-              height: hp('15'),
+              height: hp('5'),
               width: wp('10'),
               display: isNearMe ? 'flex' : 'none',
             }}

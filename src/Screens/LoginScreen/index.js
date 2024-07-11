@@ -42,6 +42,7 @@ const LoginScreen = ({navigation}) => {
     facebookLoginFunc,
     rememberValue,
     remember,
+    socialLoginFun,
   } = useLogin(navigation);
   return (
     <ImageBackground source={LoginBg} style={styles.ImgBg}>
@@ -112,7 +113,7 @@ const LoginScreen = ({navigation}) => {
             <TextComponent text={'Or Log In with'} styles={styles.barText} />
             <View style={styles.barLine}></View>
           </View>
-          <SocialBottomComp />
+          <SocialBottomComp onSocialPress={socialLoginFun} />
           <View style={styles.dontHave}>
             <TextComponent
               text={'Don’t have an account?'}

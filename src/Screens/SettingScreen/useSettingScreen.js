@@ -17,7 +17,7 @@ const useSettingScreen = ({navigate, goBack}) => {
   const onConfirm = () => {
     setAlert(false);
     setTimeout(async () => {
-      await logoutService();
+      // await logoutService();
       dispatch(logOutUser());
     }, 900);
   };

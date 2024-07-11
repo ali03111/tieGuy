@@ -50,7 +50,7 @@ const SOSScreen = ({navigation}) => {
       contacts.map(res => {
         return (
           <View style={styles.contactView}>
-            <TextComponent text={res?.title} />
+            <TextComponent text={res?.name} />
             <CheckBox
               disabled={false}
               value={true}

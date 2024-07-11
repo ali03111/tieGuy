@@ -101,5 +101,28 @@
 	<string>To add profile picture , you need to allow access to your photo gallery</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>To add profile picture , you need to allow access to your photo gallery</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array/>
+		</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>TieGuy</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array/>
+		</dict>
+	</array>
+	<key>GIDClientID</key>
+	<string>664658424087-lcsk0ihine61evfk8n3umt9c5ot3j0ao.apps.googleusercontent.com</string>
 </dict>
 </plist>

@@ -33,7 +33,7 @@ import {
   icon5,
   icon6,
   linaProfile,
-  locksetting,
+  lock,
   logout,
   messageS,
   microphoneS,
@@ -233,7 +233,7 @@ export const settingData = [
   },
   {
     title: 'Change Password',
-    image: locksetting,
+    image: lock,
     screenUrl: 'ChangePasswordScreen',
   },
   {
