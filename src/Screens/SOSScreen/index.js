@@ -12,8 +12,14 @@ import {hp, wp} from '../../Config/responsive';
 import {contactArry} from '../../Utils/localDB';
 
 const SOSScreen = ({navigation}) => {
-  const {dynamicNav, laongituteDalta, latitudeDelta, startLocation, valChange} =
-    useSOSScreen(navigation);
+  const {
+    dynamicNav,
+    laongituteDalta,
+    latitudeDelta,
+    startLocation,
+    valChange,
+    allContacts,
+  } = useSOSScreen(navigation);
 
   const RenderMap = useCallback(
     ({childern}) => {
@@ -72,7 +78,7 @@ const SOSScreen = ({navigation}) => {
         showsVerticalScrollIndicator={false}>
         <RenderMap />
         <TextComponent text={'Emergency Contacts'} styles={styles.heading} />
-        <ContactsMapView contacts={contactArry} />
+        <ContactsMapView contacts={allContacts} />
         <ThemeButton
           title={'Send Notification'}
           style={{width: wp('95'), alignSelf: 'center', marginTop: hp('2')}}

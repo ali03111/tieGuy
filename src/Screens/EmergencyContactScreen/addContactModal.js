@@ -10,6 +10,7 @@ import {Touchable} from '../../Components/Touchable';
 import ThemeButton from '../../Components/ThemeButton';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import {generateUniqueId} from '../../Services/GlobalFunctions';
+import {imageUrl} from '../../Utils/Urls';
 
 const AddContactModal = ({
   userData,
@@ -21,8 +22,6 @@ const AddContactModal = ({
   const [name, setName] = useState(userData?.name ?? null);
   const [phone, setPhone] = useState(userData?.phone ?? null);
   const [image, setImage] = useState(userData?.image ?? null);
-
-  console.log('ksudbvjksdboivbsdoivbsdiobvjksdbvkljbsdklvjbds', userData);
 
   const getImageFromGallery = async () => {
     const {height, width, size, path, filename, sourceURL, localIdentifier} =
@@ -37,15 +36,15 @@ const AddContactModal = ({
       uri,
       name: fileName,
     });
-    console.log(
-      's,jdbvjksdbjkvbsdkjvbjksdbvjksdbjvbsdkjbvsd',
-      sourceURL,
-      height,
-      width,
-      size,
-      path,
-      filename,
-    );
+    // console.log(
+    //   's,jdbvjksdbjkvbsdkjvbjksdbvjksdbjvbsdkjbvsd',
+    //   sourceURL,
+    //   height,
+    //   width,
+    //   size,
+    //   path,
+    //   filename,
+    // );
   };
 
   return (
@@ -132,8 +131,11 @@ const AddContactModal = ({
               />
             </View>
             <Touchable onPress={getImageFromGallery} style={styles.uploadBtn}>
-              {image?.uri ? (
-                <Image source={{uri: image?.uri}} style={styles.uploadedImg} />
+              {image?.uri || image ? (
+                <Image
+                  source={{uri: image?.uri ?? imageUrl(image)}}
+                  style={styles.uploadedImg}
+                />
               ) : (
                 <>
                   <Image

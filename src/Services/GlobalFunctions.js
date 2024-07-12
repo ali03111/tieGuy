@@ -454,7 +454,7 @@ function removeSpacesBetweenWords(name) {
 }
 
 // Function to get object by ID
-function getObjectById(id, data) {
+function getObjectById(data, id) {
   return data.find(obj => obj.id === id);
 }
 
@@ -462,6 +462,22 @@ function generateUniqueId() {
   const timestamp = Date.now(); // Get the current timestamp
   const randomNum = Math.random().toString(36).substr(2, 9); // Generate a random string
   return `${timestamp}${randomNum}`;
+}
+
+function updateArryObjById(data, id, newObject) {
+  // Create a copy of the data array
+  let newArry = [...data];
+
+  // Find the index of the object with the specified id
+  let index = newArry.findIndex(obj => obj.id === id);
+
+  // If the object is found, update it with the new object
+  if (index !== -1) {
+    newArry[index] = newObject;
+  }
+
+  // Return the updated array
+  return newArry;
 }
 
 export {
@@ -486,4 +502,5 @@ export {
   filterKeyFromArry,
   getObjectById,
   generateUniqueId,
+  updateArryObjById,
 };

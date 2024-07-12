@@ -1,10 +1,19 @@
-import {useState} from 'react';
+import {useCallback, useState} from 'react';
 import useFormHook from '../../Hooks/UseFormHooks';
 import Schemas from '../../Utils/Validation';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import API from '../../Utils/helperFunc';
-import {addContactsUrl, allContactsUrl} from '../../Utils/Urls';
-import {filterKeyFromArry, getObjectById} from '../../Services/GlobalFunctions';
+import API, {formDataFunc} from '../../Utils/helperFunc';
+import {
+  addContactsUrl,
+  allContactsUrl,
+  deleteContactUrl,
+  updateContactUrl,
+} from '../../Utils/Urls';
+import {
+  filterKeyFromArry,
+  getObjectById,
+  updateArryObjById,
+} from '../../Services/GlobalFunctions';
 
 const useEmergencyContactScreen = () => {
   const {handleSubmit, errors, reset, control, getValues} = useFormHook(
@@ -15,8 +24,6 @@ const useEmergencyContactScreen = () => {
     queryKey: ['allContacts'],
     queryFn: () => API.get(allContactsUrl),
   });
-
-  console.log('datadatadatadatadatadata', data?.data);
 
   // Get QueryClient from the context
   const queryClient = useQueryClient();
@@ -33,6 +40,7 @@ const useEmergencyContactScreen = () => {
   });
 
   const [addedContacts, setAddedContacts] = useState([]);
+  const [onlyLocalCont, setOnlyLocalCont] = useState(false);
 
   const [modal, setModal] = useState(false);
 
@@ -49,17 +57,50 @@ const useEmergencyContactScreen = () => {
     toggleModal();
   };
 
+  const onRefresh = useCallback(() => {
+    queryClient.fetchQuery({
+      queryKey: ['allContacts'],
+      staleTime: 1000,
+    });
+  }, []);
+
   const {mutate} = useMutation({
     mutationFn: body => {
-      return API.post(addContactsUrl, body);
+      return formDataFunc(addContactsUrl, body, 'image');
     },
     onSuccess: ({ok, data}) => {
       if (ok) {
         queryClient.invalidateQueries({
-          queryKey: ['allAppointData'],
+          queryKey: ['allContacts'],
         });
+        setAddedContacts([]);
+        successMessage(data?.message);
+      } else errorMessage(data?.message);
+    },
+  });
+  const {mutateAsync} = useMutation({
+    mutationFn: body => {
+      return formDataFunc(updateContactUrl, body, 'image');
+    },
+    onSuccess: ({ok, data}) => {
+      if (ok) {
         queryClient.invalidateQueries({
-          queryKey: ['homeData'],
+          queryKey: ['allContacts'],
+        });
+        setAddedContacts([]);
+        setOnlyLocalCont(false);
+        successMessage(data?.message);
+      } else errorMessage(data?.message);
+    },
+  });
+  const deleteContact = useMutation({
+    mutationFn: body => {
+      return API.post(deleteContactUrl, body);
+    },
+    onSuccess: ({ok, data}) => {
+      if (ok) {
+        queryClient.invalidateQueries({
+          queryKey: ['allContacts'],
         });
         successMessage(data?.message);
       } else errorMessage(data?.message);
@@ -70,8 +111,10 @@ const useEmergencyContactScreen = () => {
 
   const onSaveContact = ({name, phone, image, id}) => {
     console.log(
-      filterKeyFromArry(addedContacts, 'id'),
-      'oisdbvksbdoivbsdovbsdbo',
+      "id == filterKeyFromArry(addedContasdfsdfsdcts, 'id')?.id",
+      id == getObjectById(data?.data?.contacts, 'id')?.id,
+      id,
+      getObjectById(data?.data?.contacts, 'id')?.id,
     );
 
     if (name == null || name == '' || !regex.test(name)) {
@@ -82,13 +125,21 @@ const useEmergencyContactScreen = () => {
     } else if (phone == null || phone == '') {
       setErrorMessage(prev => ({name: null, phone: `Please enter you number`}));
     } else {
-      if (id == filterKeyFromArry(addedContacts, 'id')?.id) {
-        setAddedContacts(prev => [
-          ...prev,
-          {...getObjectById(id, addedContacts), name, phone, image, id},
-        ]);
-      } else if (id == filterKeyFromArry([], 'id')?.id) {
-      } else setAddedContacts([...addedContacts, {name, phone, image, id}]);
+      if (id == getObjectById(addedContacts, id)?.id) {
+        // setAddedContacts(
+        //   updateArryObjById(addedContacts, id, {name, phone, image, id}),
+        // );
+        // mutate({name, phone, image, id});
+      } else if (id == getObjectById(data?.data?.contacts, id)?.id) {
+        setAddedContacts(
+          updateArryObjById(data?.data?.contacts, id, {name, phone, image, id}),
+        );
+        setOnlyLocalCont(true);
+        mutateAsync({name, phone, image, id});
+      } else {
+        setAddedContacts([...addedContacts, {name, phone, image, id}]);
+        mutate({name, phone, image, id});
+      }
 
       setErrorMessage({
         name: null,
@@ -111,7 +162,11 @@ const useEmergencyContactScreen = () => {
     contactData,
     onOpenModal,
     setContactData,
-    allContacts: [],
+    deleteContact,
+    onRefresh,
+    allContacts: onlyLocalCont
+      ? addedContacts
+      : [...(data?.data?.contacts ?? []), ...addedContacts],
     addedContacts,
   };
 };

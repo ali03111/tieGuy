@@ -26,6 +26,7 @@ import {
   MenuTrigger,
 } from 'react-native-popup-menu';
 import {contactArry} from '../../Utils/localDB';
+import {imageUrl} from '../../Utils/Urls';
 
 const EmergencyContactScreen = ({navigation}) => {
   const {
@@ -36,6 +37,8 @@ const EmergencyContactScreen = ({navigation}) => {
     toggleModal,
     onOpenModal,
     setContactData,
+    onRefresh,
+    deleteContact,
     contactData,
     control,
     errors,
@@ -48,7 +51,10 @@ const EmergencyContactScreen = ({navigation}) => {
   const renderItem = useCallback(({item, index}) => {
     return (
       <View style={styles.contactImg} key={index}>
-        <CircleImage image={item?.image?.uri} uri={true} />
+        <CircleImage
+          image={item?.image?.uri ?? imageUrl(item?.image)}
+          uri={true}
+        />
         <View style={styles.midleTextView}>
           <TextComponent text={item?.name} styles={styles.contactName} />
           <View style={styles.numberView}>
@@ -80,7 +86,10 @@ const EmergencyContactScreen = ({navigation}) => {
           />
           <MenuOptions optionsContainerStyle={styles.mainMenu}>
             <MenuOption
-              onSelect={() => onOpenModal(item)}
+              onSelect={() => {
+                console.log('slkjdbvkjlsdbvlkjsbdklvbdklvbsdkbvlskd', item);
+                onOpenModal(item);
+              }}
               style={styles.menuOption}>
               <Image
                 source={editIcon}
@@ -90,7 +99,7 @@ const EmergencyContactScreen = ({navigation}) => {
               <TextComponent text={'Edit'} />
             </MenuOption>
             <MenuOption
-              onSelect={() => Alert.alert(`Remove`)}
+              onSelect={() => deleteContact.mutate({id: item?.id})}
               style={styles.menuOption}>
               <Image
                 source={trashIcon}
@@ -125,9 +134,11 @@ const EmergencyContactScreen = ({navigation}) => {
         goBack={() => navigation.goBack()}
       />
       <FlatList
-        data={[...allContacts, ...addedContacts]}
+        data={allContacts}
         keyExtractor={keyExtractor}
         showsVerticalScrollIndicator={false}
+        onRefresh={onRefresh}
+        refreshing={false}
         ListHeaderComponent={
           <>
             <Touchable

@@ -2,13 +2,13 @@ const getCredentials = () => {
   if (__DEV__)
     return {
       baseURL: 'https://virtualrealitycreators.com/tieGuy-bakend/api',
-      imageURL: 'https://virtualrealitycreators.com/green-boom/',
+      imageURL: 'https://virtualrealitycreators.com/tieGuy-bakend/storage/',
     };
   else {
     console.log = () => {};
     return {
-      baseURL: 'https://virtualrealitycreators.com/green-boom/api',
-      imageURL: 'https://virtualrealitycreators.com/green-boom/',
+      baseURL: 'https://virtualrealitycreators.com/tieGuy-bakend/api',
+      imageURL: 'https://virtualrealitycreators.com/tieGuy-bakend/storage/',
     };
   }
 };
@@ -30,6 +30,8 @@ export const registerUrl = '/signup';
 export const loginUrl = '/login';
 export const allContactsUrl = '/contacts';
 export const addContactsUrl = '/add-contact';
+export const updateContactUrl = '/update-contact';
+export const deleteContactUrl = '/delete-contact';
 export const VerifyUserUrl = '/verify';
 
 export const logoutUrl = 'auth/logout';

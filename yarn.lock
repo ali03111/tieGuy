@@ -8553,13 +8553,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-blurhash@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "react-native-blurhash@npm:2.0.2"
+"react-native-blurhash@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "react-native-blurhash@npm:2.0.3"
   peerDependencies:
     react: ">=16.8.1"
     react-native: ">=0.60.0-rc.0 <1.0.x"
-  checksum: 9277b01fa8982a1896cd1d6166cea38b3e9786681faac212b53c977aa2308ca9f153ee56e7fa5a8585eb09da6c519f986e46b9e2943872935f01f894451bfbbc
+  checksum: 3beb6a3a5b3ff119f983c8e950c81e3826ecce5e9d614155cdeb26294622eaa8fc55764902a2bad6c417cc764b8c9ae0a6a7cce3661ede50c62b62a54faceea5
+  languageName: node
+  linkType: hard
+
+"react-native-fast-image@npm:^8.6.3":
+  version: 8.6.3
+  resolution: "react-native-fast-image@npm:8.6.3"
+  peerDependencies:
+    react: ^17 || ^18
+    react-native: ">=0.60.0"
+  checksum: 29289cb6b2eae0983c8922b22e2d9de3be07322bb7991c5def19f95eadefaedb0e308ff0b38cc1d0444e8bd4fe94a7621a99a2d3d9298100bcb60b3144677234
   languageName: node
   linkType: hard
 
@@ -9971,7 +9981,8 @@ __metadata:
     react-hook-form: ^7.43.9
     react-native: 0.73.6
     react-native-awesome-alerts: ^2.0.0
-    react-native-blurhash: ^2.0.2
+    react-native-blurhash: ^2.0.3
+    react-native-fast-image: ^8.6.3
     react-native-flash-message: ^0.4.2
     react-native-geolocation-service: ^5.3.1
     react-native-google-places-autocomplete: ^2.5.1

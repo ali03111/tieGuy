@@ -34,8 +34,6 @@ function MainNavigator() {
         )}
         {!isLogin && (
           <>
-            <Stack.Screen name="MybottomTabs" component={MybottomTabs} />
-
             <Stack.Screen name="LoginScreen" component={Screens.LoginScreen} />
             <Stack.Screen
               name="RegisterScreen"

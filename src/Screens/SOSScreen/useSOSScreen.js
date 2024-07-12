@@ -15,6 +15,9 @@ import {
 } from '../../Services/LocalNotificationService';
 import {getDistance} from 'geolib';
 import {errorMessage} from '../../Config/NotificationMessage';
+import {useQuery} from '@tanstack/react-query';
+import API from '../../Utils/helperFunc';
+import {allContactsUrl} from '../../Utils/Urls';
 
 const useSOSScreen = ({addListener, navigate}) => {
   const {width, height} = Dimensions.get('window');
@@ -50,6 +53,11 @@ const useSOSScreen = ({addListener, navigate}) => {
     // if (ok) setRailwayTracks(data);
   };
 
+  const {data} = useQuery({
+    queryKey: ['allContacts'],
+    queryFn: () => API.get(allContactsUrl),
+  });
+
   const useEffectFun = () => {
     setTheValForMap();
   };
@@ -72,6 +80,7 @@ const useSOSScreen = ({addListener, navigate}) => {
     valChange,
     dynamicNav,
     startLocation,
+    allContacts: data?.data?.contacts ?? [],
   };
 };
 

@@ -200,7 +200,9 @@ const fetchGetWithToken = async url => {
 };
 
 const formDataFunc = (url, body, imageKey, isArray) => {
+  console.log('jkdvjksdvkjsvdbklvbsdlkbvlksdbvlksdbklvbsdlk');
   const {Auth} = store.getState();
+  store.dispatch(loadingTrue());
 
   var myHeaders = new Headers();
   myHeaders.append('Accept', 'application/json');
@@ -208,32 +210,18 @@ const formDataFunc = (url, body, imageKey, isArray) => {
   myHeaders.append('Content-Type', 'multipart/form-data');
 
   const formData = new FormData();
-  Object.entries(body).forEach(([key, val]) => {
-    if (key == imageKey) {
-      isArray
-        ? val.forEach((res, index) => {
-            formData.append(imageKey, {
-              name: res?.fileName,
-              type: res?.type,
-              uri:
-                Platform.OS == 'ios'
-                  ? res?.uri.replace('file://', '')
-                  : res?.uri,
-            });
-          })
-        : formData.append(imageKey, {
-            name: body[imageKey]?.fileName,
-            type: body[imageKey]?.type,
-            uri:
-              Platform.OS == 'ios'
-                ? body[imageKey]?.uri.replace('file://', '')
-                : body[imageKey]?.uri,
-          });
-    } else {
-      formData.append(key, val);
+  Object.entries(body).forEach(([key, value]) => {
+    if (body[imageKey]?.type) {
+      formData.append(imageKey, {
+        uri: body[imageKey].uri,
+        type: body[imageKey]?.type || 'image/jpeg',
+        name: body[imageKey].name,
+      });
     }
+    formData.append(key, value);
   });
   console.log('asdasd123', formData);
+
   var requestOptions = {
     method: 'POST',
     headers: myHeaders,
@@ -244,13 +232,8 @@ const formDataFunc = (url, body, imageKey, isArray) => {
   console.log(newUrl, 'aasdas');
   return fetch(newUrl, requestOptions)
     .then(res => res.json())
-    .then(async res => {
+    .then(res => {
       console.log('test', res);
-      if (res?.message == 'Unauthenticated.') {
-        await logoutService();
-        store.dispatch(logOutUser());
-        store.dispatch(loadingFalse());
-      }
       return {data: res, ok: true};
     })
     .catch(err => {
