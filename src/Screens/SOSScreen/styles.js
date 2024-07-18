@@ -42,4 +42,23 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  contactImg: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: hp('1.8'),
+  },
+  midleTextView: {
+    width: wp('65'),
+    paddingLeft: wp('2'),
+    alignContent: 'center',
+    height: hp('6'),
+  },
+  contactName: {fontWeight: 'bold', height: hp('3')},
+  numberView: {
+    width: wp('65'),
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: hp('3'),
+  },
 });

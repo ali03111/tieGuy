@@ -110,13 +110,6 @@ const useEmergencyContactScreen = () => {
   const regex = /^[A-Za-z ]*$/;
 
   const onSaveContact = ({name, phone, image, id}) => {
-    console.log(
-      "id == filterKeyFromArry(addedContasdfsdfsdcts, 'id')?.id",
-      id == getObjectById(data?.data?.contacts, 'id')?.id,
-      id,
-      getObjectById(data?.data?.contacts, 'id')?.id,
-    );
-
     if (name == null || name == '' || !regex.test(name)) {
       setErrorMessage(prev => ({
         ...prev,

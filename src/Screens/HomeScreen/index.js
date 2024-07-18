@@ -230,7 +230,7 @@ const HomeScreen = ({navigation}) => {
           startLocationDes={startLocation.description}
         />
       </View>
-      <EmergencyCardComp />
+      <EmergencyCardComp onPress={() => dynamicNav('EmergencyContactScreen')} />
     </KeyBoardWrapper>
   );
 };

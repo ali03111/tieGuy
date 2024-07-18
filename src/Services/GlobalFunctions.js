@@ -271,19 +271,44 @@ const fetchRailwayCrossingAPI = async (lat, long) => {
   const apiKey = MapAPIKey;
   const locations = `${lat},${long}`;
   const radius = '10'; // Radius in meters (adjust as needed)
-  const query = 'railway crossing -station'; // Search for railway crossings and exclude stations
-  const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(
-    query,
-  )}&location=${locations}&radius=${radius}&key=${apiKey}`;
+  const queries = [
+    'railway crossing -station',
+    'level crossing',
+    'crossing gate',
+    'grade crossing',
+    'railway gate',
+    'railroad crossing',
+    'train crossing',
+    'rail crossing',
+    'railroad grade crossing',
+    'railway level crossing',
+    'train tracks crossing',
+    'railway signal crossing',
+    'train tracks',
+  ]; // List of queries to run
+  const urls = queries.map(
+    query =>
+      `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(
+        query,
+      )}&location=${locations}&radius=${radius}&key=${apiKey}`,
+  );
 
   try {
-    const response = await fetch(url);
-    const data = await response.json();
-    const results = data.results;
+    const results = await Promise.all(
+      urls.map(url => fetch(url).then(response => response.json())),
+    );
+    const combinedResults = results.flatMap(result => result.results);
+
+    console.log(
+      'kjsvdjkvsdjkvjksdvkjsdvjksdbvjksbdjkvbsdkjvblsdkvbsdlkbvskldvbklsdv',
+      combinedResults,
+    );
+
     // Filter out any results that contain "station" in their name
-    const filteredResults = results.filter(
+    const filteredResults = combinedResults.filter(
       place => !place.name.toLowerCase().includes('station'),
     );
+
     const places = filteredResults.map(place => ({
       id: place.place_id,
       name: place.name,
@@ -292,13 +317,50 @@ const fetchRailwayCrossingAPI = async (lat, long) => {
         longitude: place.geometry.location.lng,
       },
     }));
+
     return {ok: true, data: places};
-    // setCrossings(places);
   } catch (error) {
-    console.log('Error fetching railway crossings:', error);
+    console.error('Error fetching data from Google Places API:', error);
     return {ok: false, data: error};
   }
 };
+
+// const fetchRailwayCrossingAPI = async (lat, long) => {
+//   const apiKey = MapAPIKey;
+//   const locations = `${lat},${long}`;
+//   const radius = '10'; // Radius in meters (adjust as needed)
+//   const query = '(railway crossing -station) OR (ave OR avenue)'; // Search for railway crossings and exclude stations
+//   const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(
+//     query,
+//   )}&location=${locations}&radius=${radius}&key=${apiKey}`;
+
+//   try {
+//     const response = await fetch(url);
+//     const data = await response.json();
+//     const results = data.results;
+//     console.log(
+//       'lisdbvklbsdbsdlkbsldkbvklsdbklsdbvklsdbklvbsdklvbskldbvlksbdvbsd',
+//       JSON.stringify(results),
+//     );
+//     // Filter out any results that contain "station" in their name
+//     const filteredResults = results.filter(
+//       place => !place.name.toLowerCase().includes('station'),
+//     );
+//     const places = filteredResults.map(place => ({
+//       id: place.place_id,
+//       name: place.name,
+//       location: {
+//         latitude: place.geometry.location.lat,
+//         longitude: place.geometry.location.lng,
+//       },
+//     }));
+//     return {ok: true, data: places};
+//     // setCrossings(places);
+//   } catch (error) {
+//     console.log('Error fetching railway crossings:', error);
+//     return {ok: false, data: error};
+//   }
+// };
 
 function getValBeforePoint(value) {
   //    input = 353.68558
@@ -409,7 +471,7 @@ const matchIDinTwoArry = (data, ids) => {
  * returns a new array containing only the elements where the value at the specified key is truthy.
  */
 const filterKeyFromArry = (arry, key) => {
-  return arry.filter(res => res[key])[0];
+  return arry.map(res => res[key]);
 };
 
 /**

@@ -8753,6 +8753,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-sms@npm:^1.11.0":
+  version: 1.11.0
+  resolution: "react-native-sms@npm:1.11.0"
+  checksum: 52c73d4280e7a2fa90c8fdfd8fe796468448a0ff32bfba51789597768707187da7819e6be90b5b94b58ead2afd82f22f26b87f65022416d7802511afd36a070b
+  languageName: node
+  linkType: hard
+
 "react-native-vector-icons@npm:^10.1.0":
   version: 10.1.0
   resolution: "react-native-vector-icons@npm:10.1.0"
@@ -9997,6 +10004,7 @@ __metadata:
     react-native-responsive-screen: ^1.4.2
     react-native-safe-area-context: ^4.9.0
     react-native-screens: ^3.29.0
+    react-native-sms: ^1.11.0
     react-native-vector-icons: ^10.1.0
     react-native-weather-api: ^3.4.0
     react-redux: ^8.0.5

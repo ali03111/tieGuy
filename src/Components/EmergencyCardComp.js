@@ -5,7 +5,7 @@ import {TextComponent} from './TextComponent';
 import {callIcon} from '../Assets';
 import {Touchable} from './Touchable';
 
-const EmergencyCardComp = () => {
+const EmergencyCardComp = ({onPress}) => {
   return (
     <View style={styles.mainView}>
       <View style={{marginTop: hp('2')}}>
@@ -16,7 +16,7 @@ const EmergencyCardComp = () => {
           styles={{fontSize: hp('1.6'), marginTop: hp('1')}}
         />
       </View>
-      <Touchable style={{marginLeft: wp('12')}}>
+      <Touchable style={{marginLeft: wp('12')}} onPress={onPress}>
         <Image
           source={callIcon}
           resizeMode="contain"

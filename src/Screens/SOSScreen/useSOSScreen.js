@@ -2,6 +2,7 @@ import {useEffect, useRef, useState} from 'react';
 import {Dimensions, Platform} from 'react-native';
 import {
   fetchRailwayCrossingAPI,
+  filterKeyFromArry,
   getDistanceFromLatLonInKm,
   getDistancesBetweenLocationsArry,
   getProperLocation,
@@ -18,6 +19,7 @@ import {errorMessage} from '../../Config/NotificationMessage';
 import {useQuery} from '@tanstack/react-query';
 import API from '../../Utils/helperFunc';
 import {allContactsUrl} from '../../Utils/Urls';
+import SendSMS from 'react-native-sms';
 
 const useSOSScreen = ({addListener, navigate}) => {
   const {width, height} = Dimensions.get('window');
@@ -45,12 +47,35 @@ const useSOSScreen = ({addListener, navigate}) => {
     },
   });
 
+  const [contacts, setContacts] = useState([]);
+
   const setTheValForMap = async () => {
     const location = await getProperLocation();
     if (location?.ok == true) {
       valChange('startLocation', location?.location ?? location);
     }
     // if (ok) setRailwayTracks(data);
+  };
+
+  const sendMessage = () => {
+    SendSMS.send(
+      {
+        body: 'The default body of the SMS!',
+        recipients: filterKeyFromArry(data?.data?.contacts, 'phone'),
+        successTypes: ['sent', 'queued'],
+        allowAndroidSendWithoutReadPermission: true,
+      },
+      (completed, cancelled, error) => {
+        console.log(
+          'SMS Callback: completed: ' +
+            completed +
+            ' cancelled: ' +
+            cancelled +
+            'error: ' +
+            error,
+        );
+      },
+    );
   };
 
   const {data} = useQuery({
@@ -81,6 +106,9 @@ const useSOSScreen = ({addListener, navigate}) => {
     dynamicNav,
     startLocation,
     allContacts: data?.data?.contacts ?? [],
+    sendMessage,
+    setContacts,
+    selectedContacts: contacts,
   };
 };
 

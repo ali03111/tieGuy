@@ -1,4 +1,4 @@
-import {View, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView, Image} from 'react-native';
 import React, {memo, useCallback} from 'react';
 import {HeaderComponent} from '../../Components/HeaderComponent';
 import MapView from 'react-native-maps';
@@ -10,6 +10,9 @@ import {Colors} from '../../Theme/Variables';
 import ThemeButton from '../../Components/ThemeButton';
 import {hp, wp} from '../../Config/responsive';
 import {contactArry} from '../../Utils/localDB';
+import {CircleImage} from '../../Components/CircleImage';
+import {phone} from '../../Assets';
+import {imageUrl} from '../../Utils/Urls';
 
 const SOSScreen = ({navigation}) => {
   const {
@@ -19,6 +22,9 @@ const SOSScreen = ({navigation}) => {
     startLocation,
     valChange,
     allContacts,
+    sendMessage,
+    selectedContacts,
+    setContacts,
   } = useSOSScreen(navigation);
 
   const RenderMap = useCallback(
@@ -53,13 +59,26 @@ const SOSScreen = ({navigation}) => {
   const ContactsMapView = ({contacts}) => {
     return (
       contacts.length > 0 &&
-      contacts.map(res => {
+      contacts.map((res, index) => {
         return (
-          <View style={styles.contactView}>
-            <TextComponent text={res?.name} />
+          <View style={styles.contactView} key={index}>
+            <CircleImage image={imageUrl(res?.image)} uri={true} />
+            <View style={styles.midleTextView}>
+              <TextComponent text={res?.name} styles={styles.contactName} />
+              <View style={styles.numberView}>
+                <Image
+                  source={phone}
+                  resizeMode="contain"
+                  style={{width: wp('5')}}
+                />
+                <TextComponent text={res?.phone} />
+              </View>
+            </View>
             <CheckBox
-              disabled={false}
-              value={true}
+              value={Boolean(selectedContacts.includes(res?.phone))}
+              // onValueChange={() => setContacts(prev=>{
+              //   if(prev)
+              // })}
               onCheckColor={Colors.primaryColor}
               onTintColor={Colors.primaryColor}
             />
@@ -82,6 +101,7 @@ const SOSScreen = ({navigation}) => {
         <ThemeButton
           title={'Send Notification'}
           style={{width: wp('95'), alignSelf: 'center', marginTop: hp('2')}}
+          onPress={sendMessage}
         />
       </ScrollView>
     </View>
