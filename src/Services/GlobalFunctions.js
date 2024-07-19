@@ -542,6 +542,21 @@ function updateArryObjById(data, id, newObject) {
   return newArry;
 }
 
+// input (first_name,email) ; output (first name ,email)
+
+function formatString(input) {
+  // Check if the input is "email" and return it as is
+  if (input === 'email') {
+    return input;
+  }
+
+  // Split the input by underscore, capitalize each word, and join them with a space
+  return input
+    .split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
 export {
   getSingleCharacter,
   getProperLocation,
@@ -565,4 +580,5 @@ export {
   getObjectById,
   generateUniqueId,
   updateArryObjById,
+  formatString,
 };

@@ -52,23 +52,19 @@ function MainNavigator() {
         {isLogin && (
           <>
             <Stack.Screen name="MybottomTabs" component={MybottomTabs} />
-            {/* <Stack.Screen
-              name="SkeletonScreen"
-              component={Screens.SkeletonScreen}
-            /> */}
+            <Stack.Screen
+              name="EditProfileScreen"
+              component={Screens.EditProfileScreen}
+            />
 
-            {/* <Stack.Screen
-              name="SkeletonScreen"
-              component={Screens.SkeletonScreen}
-            /> */}
+            <Stack.Screen
+              name="ChangePasswordScreen"
+              component={Screens.ChangePasswordScreen}
+            />
             <Stack.Screen
               name="EmergencyContactScreen"
               component={Screens.EmergencyContactScreen}
             />
-            {/* <Stack.Screen
-              name="TrainingScreen"
-              component={Screens.TrainingScreen}
-            /> */}
           </>
         )}
       </Stack.Navigator>

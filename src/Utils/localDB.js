@@ -224,7 +224,7 @@ export const settingData = [
   {
     title: 'My Profile',
     image: profile,
-    screenUrl: 'MyProfileScreen',
+    screenUrl: 'EditProfileScreen',
   },
   {
     title: 'Emergency Contacts',
@@ -237,7 +237,7 @@ export const settingData = [
     screenUrl: 'ChangePasswordScreen',
   },
   {
-    title: 'About Green Boom',
+    title: 'About Tieguy',
     image: about,
     pageUrl: 'https://www.greenboom.com/about',
   },

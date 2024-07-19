@@ -6,3 +6,5 @@ export {default as flash} from './flash';
 export {default as SeetingScreen} from './SettingScreen';
 export {default as SOSScreen} from './SOSScreen';
 export {default as EmergencyContactScreen} from './EmergencyContactScreen';
+export {default as EditProfileScreen} from './EditProfileScreen';
+export {default as ChangePasswordScreen} from './ChangePasswordScreen';

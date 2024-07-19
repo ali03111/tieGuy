@@ -76,9 +76,11 @@ const SOSScreen = ({navigation}) => {
             </View>
             <CheckBox
               value={Boolean(selectedContacts.includes(res?.phone))}
-              // onValueChange={() => setContacts(prev=>{
-              //   if(prev)
-              // })}
+              onValueChange={() => {
+                if (selectedContacts.includes(res?.phone))
+                  setContacts(prev => prev.filter(val => val != res.phone));
+                else setContacts([...selectedContacts, res?.phone]);
+              }}
               onCheckColor={Colors.primaryColor}
               onTintColor={Colors.primaryColor}
             />

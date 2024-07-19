@@ -61,7 +61,7 @@ const useSOSScreen = ({addListener, navigate}) => {
     SendSMS.send(
       {
         body: 'The default body of the SMS!',
-        recipients: filterKeyFromArry(data?.data?.contacts, 'phone'),
+        recipients: contacts,
         successTypes: ['sent', 'queued'],
         allowAndroidSendWithoutReadPermission: true,
       },
@@ -78,10 +78,16 @@ const useSOSScreen = ({addListener, navigate}) => {
     );
   };
 
-  const {data} = useQuery({
+  const {data, isSuccess} = useQuery({
     queryKey: ['allContacts'],
     queryFn: () => API.get(allContactsUrl),
   });
+
+  useEffect(() => {
+    if (isSuccess) {
+      setContacts(filterKeyFromArry(data?.data?.contacts ?? [], 'phone'));
+    }
+  }, [isSuccess]);
 
   const useEffectFun = () => {
     setTheValForMap();

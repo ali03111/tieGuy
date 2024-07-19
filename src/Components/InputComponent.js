@@ -27,6 +27,9 @@ export const InputComponent = ({
   inputIconStyle,
   inputLines,
   multiline,
+  errorsTextStyle,
+  plColor,
+  tintColor,
 }) => {
   const [show, setShow] = useState(!isSecure);
   const handleClick = () => setShow(!show);
@@ -65,7 +68,7 @@ export const InputComponent = ({
                 style: {...styles.input(isSecure), ...textStyle},
                 secureTextEntry: !show,
                 onChangeText: onChange,
-                placeholderTextColor: Colors.white,
+                placeholderTextColor: plColor ?? Colors.white,
                 fontSize: hp('1.8'),
                 autoCapitalize,
                 autoCorrect: false,
@@ -79,7 +82,7 @@ export const InputComponent = ({
                   source={show ? eye : eyeOff}
                   style={{
                     resizeMode: 'contain',
-                    tintColor: Colors.white,
+                    tintColor: tintColor ?? Colors.white,
                   }}
                 />
               </Touchable>
@@ -101,7 +104,9 @@ export const InputComponent = ({
               // width: Sizes.width * 0.9,
             }
           }>
-          <Text style={[styles.error]}>{errors[name]?.message}</Text>
+          <Text style={{...styles.error, ...errorsTextStyle}}>
+            {errors[name]?.message}
+          </Text>
         </View>
       )}
     </>
