@@ -12,38 +12,60 @@ import {logoScreen} from './src/Assets';
 import Overlay from './src/Components/Overlay';
 import useReduxStore from './src/Hooks/UseReduxStore';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {IOSNotifyPer, reqPerNotiAND} from './src/Services/GlobalFunctions';
+import PushNotification, {Importance} from 'react-native-push-notification';
+import {Settings} from 'react-native-fbsdk-next';
 
 const App = () => {
   const [isVisible, setIsVisible] = useState(true);
   const Hide_Splash_Screen = () => {
     setIsVisible(false);
   };
-  const {getState, dispatch} = useReduxStore();
+  const {getState} = useReduxStore();
   const {isloading} = getState('isloading');
+  const {isLogin, userData} = getState('Auth');
+
+  useEffect(() => {
+    /**
+     * Initialize the sdk
+     */
+    (function initializeSDK() {
+      Settings.initializeSDK();
+    })();
+
+    /**
+     * Set app id
+     */
+
+    Settings.setAppID('1190249341991041');
+  }, []);
 
   const time = () => {
     return 3000;
   };
 
-  // useEffect(() => {
-  //   /* It's a function that registers the device to receive push notifications. */
-  //   if (isLogin) {
-  //     setTimeout(() => {
-  //       fcmService.register(
-  //         onRegister,
-  //         onOpenNotification,
-  //         appState.current,
-  //         onNotification,
-  //       );
-  //     }, 5000);
-  //   }
-  //   return () => {
-  //     /* It's a function that unregisters the device from receiving push notifications. */
-  //     if (isLogin) {
-  //       fcmService.unRegister();
-  //     }
-  //   };
-  // }, [isLogin]);
+  useEffect(() => {
+    /* It's a function that registers the device to receive push notifications. */
+    if (isLogin) {
+      setTimeout(() => {
+        PushNotification.configure({
+          onNotification: function (notification) {
+            console.log('Local Notification', notification);
+          },
+          popInitialNotification: true,
+          requestPermissions: true,
+          permissions: {
+            alert: true,
+            badge: true,
+            sound: true,
+          },
+        });
+
+        // if (Platform.OS == 'ios') IOSNotifyPer();
+        // else reqPerNotiAND();
+      }, 5000);
+    }
+  }, [isLogin]);
 
   useEffect(async () => {
     GoogleSignin.configure({

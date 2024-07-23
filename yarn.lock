@@ -1754,6 +1754,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@invertase/react-native-apple-authentication@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "@invertase/react-native-apple-authentication@npm:2.3.0"
+  checksum: 7e70b69cdf61c81e955392fa63827dd675a7c1ae029683f21f1f591cf4564d6ca277a55e594b4a3c1636bbf056bf32ceffe699ea1da20f3fa90d00ab6422b4b0
+  languageName: node
+  linkType: hard
+
 "@isaacs/cliui@npm:^8.0.2":
   version: 8.0.2
   resolution: "@isaacs/cliui@npm:8.0.2"
@@ -8573,6 +8580,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-fbsdk-next@npm:^13.0.0":
+  version: 13.0.0
+  resolution: "react-native-fbsdk-next@npm:13.0.0"
+  peerDependencies:
+    expo: ">=47.0.0"
+    react-native: ">=0.63.3"
+  peerDependenciesMeta:
+    expo:
+      optional: true
+  checksum: ba0cd96ad369b5607b27fad3cc49cdc58a3428a7c90343caac52af019fe43b8558b449edbb9a2dcf215d6280c985b7724e1a65ee5999f7532c97400124aebf3b
+  languageName: node
+  linkType: hard
+
 "react-native-flash-message@npm:^0.4.2":
   version: 0.4.2
   resolution: "react-native-flash-message@npm:0.4.2"
@@ -9957,6 +9977,7 @@ __metadata:
     "@babel/preset-env": ^7.20.0
     "@babel/runtime": ^7.20.0
     "@hookform/resolvers": ^3.3.4
+    "@invertase/react-native-apple-authentication": ^2.3.0
     "@notifee/react-native": ^7.8.2
     "@react-native-async-storage/async-storage": ^1.23.1
     "@react-native-community/checkbox": ^0.5.17
@@ -9990,6 +10011,7 @@ __metadata:
     react-native-awesome-alerts: ^2.0.0
     react-native-blurhash: ^2.0.3
     react-native-fast-image: ^8.6.3
+    react-native-fbsdk-next: ^13.0.0
     react-native-flash-message: ^0.4.2
     react-native-geolocation-service: ^5.3.1
     react-native-google-places-autocomplete: ^2.5.1

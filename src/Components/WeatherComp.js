@@ -37,6 +37,7 @@ import Images, {
   clearSkyD,
   clearSkyN,
   fewClouds,
+  lightRain,
 } from '../Assets';
 import {TextComponent} from './TextComponent';
 import {Colors, FontSize} from '../Theme/Variables';
@@ -62,24 +63,20 @@ const WeatherComp = ({addListener, startLocationDes}) => {
     fewClouds,
     smoke: brokenClouds,
     haze: brokenClouds,
-    'sand/dust whirls': brokenClouds,
+    'sand/dustWhirls': brokenClouds,
     fog: brokenClouds,
     sand: brokenClouds,
     dust: brokenClouds,
-    'volcanic ash': brokenClouds,
+    volcanicAsh: brokenClouds,
     squalls: brokenClouds,
     tornado: brokenClouds,
-    'overcast clouds': brokenClouds,
+    overcastClouds: brokenClouds,
+    veryHeavyrain: rain,
+    heavyIntensityrain: rain,
+    lightRain,
   };
 
   const [isGranted, setIsGranted] = useState(false);
-
-  const checkPermission = async () => {
-    const {hasLocationPermission} = await getProperLocation();
-    console.log('sldbkljsbdkvbsdkvbksdbvksdbvd', hasLocationPermission);
-    if (hasLocationPermission?.ok == true) setIsGranted(true);
-    else setIsGranted(true);
-  };
 
   const getWeatherLo = async () => {
     // await checkPermission();

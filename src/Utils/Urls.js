@@ -35,4 +35,5 @@ export const deleteContactUrl = '/delete-contact';
 export const VerifyUserUrl = '/verify';
 export const updateProfileUrl = '/update_profile';
 
+export const DeleteAccUrl = '/user/delete';
 export const logoutUrl = 'auth/logout';

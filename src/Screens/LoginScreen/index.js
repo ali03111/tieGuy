@@ -88,7 +88,7 @@ const LoginScreen = ({navigation}) => {
           </View>
 
           <View style={styles.rememberSec}>
-            <View style={styles.checkContainer}>
+            {/* <View style={styles.checkContainer}>
               <Touchable style={styles.checkContainer} onPress={handleClick}>
                 <Image
                   source={check ? tickfill : tickemp}
@@ -100,11 +100,11 @@ const LoginScreen = ({navigation}) => {
                 />
               </Touchable>
               <TextComponent text={'Remember me'} styles={styles.remStyle} />
-            </View>
+            </View> */}
             <TextComponent
               text={'Forgot Password?'}
               styles={styles.forgetText}
-              onPress={() => navigation.navigate('ForgetPasswordScreen')}
+              onPress={() => navigation.navigate('ForgotPasswordScreen')}
             />
           </View>
 

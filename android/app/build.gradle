@@ -117,6 +117,7 @@ dependencies {
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:flipper-integration")
 implementation platform('com.google.firebase:firebase-bom:33.1.0')
+implementation 'com.facebook.android:facebook-android-sdk:latest.release'
 implementation 'com.google.firebase:firebase-analytics'
     implementation project(':react-native-vector-icons')
     if (hermesEnabled.toBoolean()) {

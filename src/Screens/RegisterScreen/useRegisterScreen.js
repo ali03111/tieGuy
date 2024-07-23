@@ -38,6 +38,11 @@ const useRegister = ({navigate, goBack}) => {
       }),
     );
   };
+
+  const socialLoginFun = type => {
+    dispatch(loginUser({type, datas: {}}));
+  };
+
   const loginNav = () => navigate('LoginScreen');
 
   const [policy, setPolicy] = useState(true);
@@ -62,6 +67,7 @@ const useRegister = ({navigate, goBack}) => {
     signUpButton,
     PolicyValue,
     policy,
+    socialLoginFun,
   };
 };
 

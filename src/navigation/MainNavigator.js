@@ -39,10 +39,10 @@ function MainNavigator() {
               name="RegisterScreen"
               component={Screens.RegisterScreen}
             />
-            {/* <Stack.Screen
-              name="ForgetPasswordScreen"
-              component={Screens.ForgetPasswordScreen}
-              /> */}
+            <Stack.Screen
+              name="ForgotPasswordScreen"
+              component={Screens.ForgotPasswordScreen}
+            />
             <Stack.Screen
               name="EmergencyContactScreen"
               component={Screens.EmergencyContactScreen}
@@ -64,6 +64,10 @@ function MainNavigator() {
             <Stack.Screen
               name="EmergencyContactScreen"
               component={Screens.EmergencyContactScreen}
+            />
+            <Stack.Screen
+              name="SubscriptionScreen"
+              component={Screens.SubscriptionScreen}
             />
           </>
         )}

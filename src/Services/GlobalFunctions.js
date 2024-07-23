@@ -8,6 +8,7 @@ import {
   check,
   openSettings,
   request,
+  requestNotifications,
 } from 'react-native-permissions';
 import {store} from '../Redux/Reducer';
 import {loadingFalse, loadingTrue} from '../Redux/Action/isloadingAction';
@@ -39,6 +40,60 @@ const checkPer = async () => {
   } catch (err) {
     console.error('Permission check failed:', err);
     return false;
+  }
+};
+const reqPerNotiAND = async () => {
+  const granted = await PermissionsAndroid.request(
+    PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+  );
+  return granted;
+};
+
+const checkPerNotiAND = async () => {
+  try {
+    const granted = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+      // ||
+      // PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION ||
+      // PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+    );
+    console.log('grantedgrantedgrantedgrantedgrantedgrantedgranted', granted);
+    return granted == PermissionsAndroid.RESULTS.GRANTED;
+  } catch (err) {
+    console.error('Permission check failed:', err);
+    return false;
+  }
+};
+
+const IOSNotifyPer = async () => {
+  try {
+    const {status} = await requestNotifications(['alert', 'sound', 'badge']);
+    if (status === 'granted') return true;
+    else {
+      Alert.alert(
+        'Warning',
+        `Push notifications have been ${status}. You will not receive any important notification unless enabled from settings.`,
+        [
+          {
+            text: 'Cancel',
+            onPress: () => null,
+            style: 'cancel',
+          },
+          {
+            text: 'Open Setting',
+            onPress: () => {
+              openSettings().catch(() => console.warn('Cannot open settings'));
+            },
+          },
+        ],
+        {
+          userInterfaceStyle: 'light',
+        },
+      );
+    }
+    return false;
+  } catch (error) {
+    console.log('Requested persmission rejected ', error);
   }
 };
 
@@ -581,4 +636,7 @@ export {
   generateUniqueId,
   updateArryObjById,
   formatString,
+  IOSNotifyPer,
+  checkPerNotiAND,
+  reqPerNotiAND,
 };

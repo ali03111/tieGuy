@@ -3,12 +3,19 @@
 #import <RNGoogleSignin/RNGoogleSignin.h>
 #import <React/RCTBundleURLProvider.h>
 #import <Firebase.h>
+#import <RNGoogleSignin/RNGoogleSignin.h>
+#import <AuthenticationServices/AuthenticationServices.h>
+#import <SafariServices/SafariServices.h>
+#import <FBSDKCoreKit/FBSDKCoreKit-Swift.h>
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   [FIRApp configure];
+  [FBSDKApplicationDelegate.sharedInstance initializeSDK]; // <- add this
+  [[FBSDKApplicationDelegate sharedInstance] application:application
+                        didFinishLaunchingWithOptions:launchOptions];
     [GMSServices provideAPIKey:@"AIzaSyAu-nEBbiOahfUyeMc8Lc1gTTKfete_wnQ"]; // add this line using the api key obtained from Google Console
   self.moduleName = @"tieguy";
   // You can add your custom initial props in the dictionary below.

@@ -50,6 +50,7 @@ const RegisterScreen = ({navigation}) => {
     signUpButton,
     PolicyValue,
     policy,
+    socialLoginFun,
   } = useRegister(navigation);
   return (
     <ImageBackground source={LoginBg} style={styles.ImgBg}>
@@ -147,7 +148,7 @@ const RegisterScreen = ({navigation}) => {
             <TextComponent text={'Or Sign Up with'} styles={styles.barText} />
             <View style={styles.barLine}></View>
           </View>
-          <SocialBottomComp />
+          <SocialBottomComp onSocialPress={socialLoginFun} />
           <View style={styles.dontHave}>
             <TextComponent
               text={'Already have an account?'}

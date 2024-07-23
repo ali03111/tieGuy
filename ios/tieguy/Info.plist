@@ -107,7 +107,9 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
-			<array/>
+			<array>
+				<string>fb1190249341991041</string>
+			</array>
 		</dict>
 		<dict>
 			<key>CFBundleURLSchemes</key>
@@ -119,10 +121,26 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
-			<array/>
+			<array>
+				<string>com.googleusercontent.apps.664658424087-lcsk0ihine61evfk8n3umt9c5ot3j0ao</string>
+			</array>
 		</dict>
 	</array>
 	<key>GIDClientID</key>
 	<string>664658424087-lcsk0ihine61evfk8n3umt9c5ot3j0ao.apps.googleusercontent.com</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
+	<key>NSUserNotificationsUsageDescription</key>
+	<string>To notify about the track, Please allow the notification permission</string>
+	<key>FacebookAppID</key>
+	<string>1190249341991041</string>
+	<key>FacebookClientToken</key>
+	<string>b83487d35da4a85fdaa6cdfae933bd27</string>
+	<key>FacebookDisplayName</key>
+	<string>TieGuy</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+	</array>
 </dict>
 </plist>

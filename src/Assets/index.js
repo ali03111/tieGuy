@@ -23,6 +23,8 @@ export {default as scatteredClouds} from './Images/brokenClouds.png';
 export {default as clearSkyD} from './Images/clearSkyD.png';
 export {default as clearSkyN} from './Images/clearSkyN.png';
 export {default as fewClouds} from './Images/clearSkyN.png';
+export {default as lightRain} from './Images/lightRain.png';
+
 //  Icons
 
 export {default as eye} from './Icons/eye.png';
@@ -45,6 +47,7 @@ export {default as trashIcon} from './Icons/trashIcon.png';
 export {default as editIcon} from './Icons/editIcon.png';
 export {default as contact} from './Icons/contact.png';
 export {default as addProfileImage} from './Icons/addProfileImage.png';
+export {default as deleteAcc} from './Icons/deleteIcon.png';
 
 export {default as username} from './Icons/username.png';
 export {default as user} from './Icons/user.png';

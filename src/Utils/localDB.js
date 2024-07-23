@@ -20,6 +20,7 @@ import {
   biomass,
   callS,
   contact,
+  deleteAcc,
   demo,
   demokit,
   downloadIcon,
@@ -244,12 +245,12 @@ export const settingData = [
   {
     title: 'Privacy Policy',
     image: privacy,
-    pageUrl: 'https://www.greenboom.com/privacy',
+    pageUrl: 'https://tieguy.staginganideos.com/privacy_policy',
   },
   {
     title: 'Terms and Conditions',
     image: terms,
-    pageUrl: 'https://www.greenboom.com/terms',
+    pageUrl: 'https://tieguy.staginganideos.com/terms_and_conditions',
   },
   {
     title: 'Contact us',
@@ -257,10 +258,16 @@ export const settingData = [
     screenUrl: 'ContactScreen',
   },
   {
+    title: 'Delete Account',
+    image: deleteAcc,
+    screenUrl: '',
+    onPress: 'deleteAlert',
+  },
+  {
     title: 'Log out',
     image: logout,
     screenUrl: '',
-    logOut: 'onCancel',
+    onPress: 'logoutAlert',
   },
 ];
 export const contactArry = [

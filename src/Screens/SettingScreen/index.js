@@ -12,7 +12,15 @@ import Icon from 'react-native-vector-icons/Feather';
 import {AlertDesign} from '../../Components/AlertDesign';
 
 const SettingScreen = ({navigation}) => {
-  const {onCancel, onConfirm, tabScreen, alert} = useSettingScreen(navigation);
+  const {
+    onCancel,
+    onConfirm,
+    tabScreen,
+    alert,
+    deleteAlert,
+    logoutAlert,
+    toggleAlert,
+  } = useSettingScreen(navigation);
   const renderItem = useCallback(({item, index}) => {
     return (
       <Touchable style={styles.cardBtn} onPress={() => tabScreen(item)}>
@@ -47,12 +55,29 @@ const SettingScreen = ({navigation}) => {
             }}
           />
           <AlertDesign
-            isVisible={alert}
-            onConfirm={onConfirm}
-            onCancel={onCancel}
-            title={'Log Out?'}
-            message={'Are you sure, you want to log out?'}
+            isVisible={
+              (deleteAlert == true && deleteAlert) ||
+              (logoutAlert == true && logoutAlert)
+            }
+            message={
+              (logoutAlert && 'Are you sure you want to logout?') ||
+              (deleteAlert &&
+                'Are you sure that you want to delete your account?')
+            }
+            title={'Warning'}
             confirmText={'Yes, I want to'}
+            onConfirm={() =>
+              onConfirm(
+                (logoutAlert && 'logoutAlert') ||
+                  (deleteAlert && 'deleteAlert'),
+              )
+            }
+            onCancel={() =>
+              toggleAlert(
+                (logoutAlert && 'logoutAlert') ||
+                  (deleteAlert && 'deleteAlert'),
+              )
+            }
           />
         </View>
       </ScrollView>

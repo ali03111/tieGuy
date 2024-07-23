@@ -74,7 +74,7 @@ const loginSaga = function* ({payload: {datas, type}}) {
         'Error: [auth/internal-error] The supplied auth credential is incorrect, malformed or has expired.',
     );
     errorMessage(
-      errorValidation
+      !errorValidation
         ? 'Credential is wrong'
         : error.message.split(' ').slice(1).join(' ') ?? error,
     );
@@ -115,7 +115,7 @@ function* registerSaga({payload: {datas}}) {
         'Error: [auth/internal-error] The supplied auth credential is incorrect, malformed or has expired.',
     );
     errorMessage(
-      errorValidation
+      !errorValidation
         ? 'Credential is wrong'
         : error.message.split(' ').slice(1).join(' ') ?? error,
     );
