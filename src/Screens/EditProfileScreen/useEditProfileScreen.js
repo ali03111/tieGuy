@@ -32,6 +32,7 @@ export default function useEditProfileScreen() {
         dispatch(loadingFalse());
         successMessage('Your profile updated sucessfully!');
       }
+      dispatch(loadingFalse());
     },
     onError: ({message}) => {
       dispatch(loadingFalse());
@@ -45,17 +46,26 @@ export default function useEditProfileScreen() {
 
   //GET IMAGE From Mobile
   const uploadFromGalary = async () => {
-    const {height, width, size, path, filename, sourceURL, localIdentifier} =
-      await ImageCropPicker.openPicker({
-        width: 300,
-        height: 400,
-        cropping: true,
-      });
+    const {
+      height,
+      width,
+      size,
+      path,
+      filename,
+      sourceURL,
+      localIdentifier,
+      mime,
+    } = await ImageCropPicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+    });
     const uri = Platform.OS === 'ios' ? sourceURL : path;
     const fileName = filename || 'photo.jpg';
     setProfileData({
       uri,
       name: fileName,
+      type: mime,
     });
   };
 

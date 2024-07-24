@@ -200,7 +200,6 @@ const fetchGetWithToken = async url => {
 };
 
 const formDataFunc = (url, body, imageKey, isArray) => {
-  console.log('jkdvjksdvkjsvdbklvbsdlkbvlksdbvlksdbklvbsdlk');
   const {Auth} = store.getState();
   store.dispatch(loadingTrue());
 
@@ -221,7 +220,6 @@ const formDataFunc = (url, body, imageKey, isArray) => {
     formData.append(key, value);
   });
   console.log('asdasd123', formData);
-
   var requestOptions = {
     method: 'POST',
     headers: myHeaders,
@@ -232,8 +230,13 @@ const formDataFunc = (url, body, imageKey, isArray) => {
   console.log(newUrl, 'aasdas');
   return fetch(newUrl, requestOptions)
     .then(res => res.json())
-    .then(res => {
+    .then(async res => {
       console.log('test', res);
+      if (res?.message == 'Unauthenticated.') {
+        await logoutService();
+        store.dispatch(logOutUser());
+        store.dispatch(loadingFalse());
+      }
       return {data: res, ok: true};
     })
     .catch(err => {

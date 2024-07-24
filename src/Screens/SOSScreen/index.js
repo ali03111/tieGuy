@@ -69,7 +69,7 @@ const SOSScreen = ({navigation}) => {
                 <Image
                   source={phone}
                   resizeMode="contain"
-                  style={{width: wp('5')}}
+                  style={{width: wp('5'), marginRight: wp('1')}}
                 />
                 <TextComponent text={res?.phone} />
               </View>

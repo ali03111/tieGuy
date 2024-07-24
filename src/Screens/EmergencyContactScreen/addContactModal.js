@@ -24,17 +24,26 @@ const AddContactModal = ({
   const [image, setImage] = useState(userData?.image ?? null);
 
   const getImageFromGallery = async () => {
-    const {height, width, size, path, filename, sourceURL, localIdentifier} =
-      await ImageCropPicker.openPicker({
-        width: 300,
-        height: 400,
-        cropping: true,
-      });
+    const {
+      height,
+      width,
+      size,
+      path,
+      filename,
+      sourceURL,
+      localIdentifier,
+      mime,
+    } = await ImageCropPicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+    });
     const uri = Platform.OS === 'ios' ? sourceURL : path;
     const fileName = filename || 'photo.jpg';
     setImage({
       uri,
       name: fileName,
+      type: mime,
     });
     // console.log(
     //   's,jdbvjksdbjkvbsdkjvbjksdbvjksdbjvbsdkjbvsd',
@@ -82,7 +91,7 @@ const AddContactModal = ({
               />
             </Touchable>
             <TextComponent
-              text={'Add Emergency Contacts'}
+              text={'Add Emergency Contact'}
               styles={styles.emergencyText}
             />
             <TextComponent text={'Name'} styles={{fontSize: hp('1.8')}} />
@@ -151,7 +160,7 @@ const AddContactModal = ({
               )}
             </Touchable>
             <ThemeButton
-              title={'Add Contact'}
+              title={'Add'}
               style={{marginTop: hp('2')}}
               onPress={() =>
                 onSaveContact({
