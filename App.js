@@ -15,6 +15,7 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {IOSNotifyPer, reqPerNotiAND} from './src/Services/GlobalFunctions';
 import PushNotification, {Importance} from 'react-native-push-notification';
 import {Settings} from 'react-native-fbsdk-next';
+import Purchases, {LOG_LEVEL} from 'react-native-purchases';
 
 const App = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -24,6 +25,20 @@ const App = () => {
   const {getState} = useReduxStore();
   const {isloading} = getState('isloading');
   const {isLogin, userData} = getState('Auth');
+
+  /**
+   * The function `revenewCat` configures the Purchases library with the appropriate API key based on
+   * the platform (iOS or Android).
+   */
+  const revenewCat = async () => {
+    Purchases.setLogLevel(LOG_LEVEL.VERBOSE);
+    const configured = await Purchases.isConfigured();
+    if (Platform.OS === 'ios') {
+      await Purchases.configure({apiKey: 'appl_KkReTYDfpRwQdDMvgLfIGkxFXbI'});
+    } else if (Platform.OS === 'android') {
+      await Purchases.configure({apiKey: 'goog_zVmRcmkWtsEyTSxouECGkmOATcz'});
+    }
+  };
 
   useEffect(() => {
     /**
@@ -76,7 +91,7 @@ const App = () => {
           ? '664658424087-lcsk0ihine61evfk8n3umt9c5ot3j0ao.apps.googleusercontent.com'
           : '664658424087-v2dlr35kebo9c9d8u305f2hgjeiqvosv.apps.googleusercontent.com',
     });
-    (async () => {
+    revenewCat()(async () => {
       LogBox.ignoreLogs([
         'VirtualizedLists should never be nested',
         'ViewPropTypes will be removed from React Native',

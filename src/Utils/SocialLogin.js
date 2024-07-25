@@ -74,8 +74,8 @@ export const googleLogin = async () => {
     showPlayServicesUpdateDialog: true,
   });
   if (!hasPlayService) throw new Error('play services not available');
-  // const isSignIn = await GoogleSignin.isSignedIn();
-  // if (isSignIn) await logOutWithGoogle();
+  const isSignIn = await GoogleSignin.isSignedIn();
+  if (isSignIn) await logOutWithGoogle();
   console.log('isSIngIN ');
   const {idToken, user} = await GoogleSignin.signIn();
   console.log('tpken', idToken, user);

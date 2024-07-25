@@ -100,11 +100,13 @@ const SOSScreen = ({navigation}) => {
         <RenderMap />
         <TextComponent text={'Emergency Contacts'} styles={styles.heading} />
         <ContactsMapView contacts={allContacts} />
-        <ThemeButton
-          title={'Send Notification'}
-          style={{width: wp('95'), alignSelf: 'center', marginTop: hp('2')}}
-          onPress={sendMessage}
-        />
+        {selectedContacts.length > 0 && (
+          <ThemeButton
+            title={'Send Notification'}
+            style={{width: wp('95'), alignSelf: 'center', marginTop: hp('2')}}
+            onPress={sendMessage}
+          />
+        )}
       </ScrollView>
     </View>
   );

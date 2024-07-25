@@ -9,6 +9,9 @@ export {default as blackImg} from './Images/blackImg.png';
 export {default as addNewBtn} from './Images/addNewBtn.png';
 export {default as divider} from './Images/divider.png';
 export {default as blurImg} from './Images/blurImg.png';
+export {default as monthlyPkStar} from './Images/monthlyPkStar.png';
+export {default as triangle} from './Images/triangle.png';
+export {default as tickSquare} from './Images/tickSquare.png';
 
 // weatherImages
 
