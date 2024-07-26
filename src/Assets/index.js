@@ -25,7 +25,7 @@ export {default as scatteredClouds} from './Images/brokenClouds.png';
 // export {default as parCloud} from './Images/parCloud.png';
 export {default as clearSkyD} from './Images/clearSkyD.png';
 export {default as clearSkyN} from './Images/clearSkyN.png';
-export {default as fewClouds} from './Images/clearSkyN.png';
+export {default as fewClouds} from './Images/brokenClouds.png';
 export {default as lightRain} from './Images/lightRain.png';
 
 //  Icons

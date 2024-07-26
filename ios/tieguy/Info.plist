@@ -20,8 +20,47 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb1190249341991041</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>TieGuy</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.664658424087-lcsk0ihine61evfk8n3umt9c5ot3j0ao</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>FacebookAppID</key>
+	<string>1190249341991041</string>
+	<key>FacebookClientToken</key>
+	<string>b83487d35da4a85fdaa6cdfae933bd27</string>
+	<key>FacebookDisplayName</key>
+	<string>TieGuy</string>
+	<key>GIDClientID</key>
+	<string>664658424087-lcsk0ihine61evfk8n3umt9c5ot3j0ao.apps.googleusercontent.com</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -31,26 +70,18 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Please allow location to track the location</string>
+	<key>NSCameraUsageDescription</key>
+	<string>To add profile picture , you need to allow access to your photo gallery</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>To track your location , you need to allow access to your location</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>To track your location , you need to allow access to your location</string>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
-	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>armv7</string>
-	</array>
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>To track your location , you need to allow access to your location</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To add profile picture , you need to allow access to your photo gallery</string>
+	<key>NSUserNotificationsUsageDescription</key>
+	<string>To notify about the track, Please allow the notification permission</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Quicksand-Bold.ttf</string>
@@ -97,50 +128,25 @@
 		<string>Proxima-Nova-Alt-Light.otf</string>
 		<string>Proxima-Nova-Alt-Bold.otf</string>
 	</array>
-	<key>NSCameraUsageDescription</key>
-	<string>To add profile picture , you need to allow access to your photo gallery</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>To add profile picture , you need to allow access to your photo gallery</string>
-	<key>CFBundleURLTypes</key>
+	<key>UIBackgroundModes</key>
 	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>fb1190249341991041</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>TieGuy</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.664658424087-lcsk0ihine61evfk8n3umt9c5ot3j0ao</string>
-			</array>
-		</dict>
+		<string>fetch</string>
+		<string>location</string>
+		<string>remote-notification</string>
 	</array>
-	<key>GIDClientID</key>
-	<string>664658424087-lcsk0ihine61evfk8n3umt9c5ot3j0ao.apps.googleusercontent.com</string>
-	<key>LSApplicationCategoryType</key>
-	<string></string>
-	<key>NSUserNotificationsUsageDescription</key>
-	<string>To notify about the track, Please allow the notification permission</string>
-	<key>FacebookAppID</key>
-	<string>1190249341991041</string>
-	<key>FacebookClientToken</key>
-	<string>b83487d35da4a85fdaa6cdfae933bd27</string>
-	<key>FacebookDisplayName</key>
-	<string>TieGuy</string>
-	<key>LSApplicationQueriesSchemes</key>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIRequiredDeviceCapabilities</key>
 	<array>
-		<string>fbapi</string>
+		<string>armv7</string>
 	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>

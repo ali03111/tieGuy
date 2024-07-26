@@ -83,6 +83,7 @@ const App = () => {
   }, [isLogin]);
 
   useEffect(async () => {
+    revenewCat();
     GoogleSignin.configure({
       iosClientId:
         '664658424087-lcsk0ihine61evfk8n3umt9c5ot3j0ao.apps.googleusercontent.com',
@@ -91,7 +92,7 @@ const App = () => {
           ? '664658424087-lcsk0ihine61evfk8n3umt9c5ot3j0ao.apps.googleusercontent.com'
           : '664658424087-v2dlr35kebo9c9d8u305f2hgjeiqvosv.apps.googleusercontent.com',
     });
-    revenewCat()(async () => {
+    (async () => {
       LogBox.ignoreLogs([
         'VirtualizedLists should never be nested',
         'ViewPropTypes will be removed from React Native',

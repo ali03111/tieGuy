@@ -1,21 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {Alert, Platform} from 'react-native';
-import IAP, {
-  initConnection,
-  purchaseErrorListener,
-  purchaseUpdatedListener,
-  flushFailedPurchasesCachedAsPendingAndroid,
-  getProducts,
-  getSubscriptions,
-  useIAP,
-  requestSubscription,
-  getAvailablePurchases,
-  transactionListener,
-  clearTransactionIOS,
-  TransactionReason,
-  finishTransaction,
-  acknowledgePurchaseAndroid,
-} from 'react-native-iap';
 import useReduxStore from '../../Hooks/UseReduxStore';
 import API from '../../Utils/helperFunc';
 import {
@@ -26,7 +10,6 @@ import {
 import {errorMessage, successMessage} from '../../Config/NotificationMessage';
 import {loadingFalse, loadingTrue} from '../../Redux/Action/isloadingAction';
 import {types} from '../../Redux/types';
-import {Platform} from 'react-native';
 import Purchases from 'react-native-purchases';
 
 // const SKU = ['21436209'];
@@ -37,6 +20,10 @@ const SKU = Platform.select({
 });
 
 function useSubscriptionScreen({navigate, goBack}) {
+  const {getState} = useReduxStore();
+
+  const {userData} = getState('Auth');
+
   /**
    * The function `getDataRenewCat` retrieves available subscription packages for a given revenuecat
    * customer ID.
@@ -95,13 +82,19 @@ function useSubscriptionScreen({navigate, goBack}) {
 
   /** The above code is written in JavaScript and is using the useEffect hook from React. **/
   useEffect(async () => {
+    await getDataRenewCat();
     Purchases.addCustomerInfoUpdateListener(info => {
       const {activeSubscriptions} = info;
       console.log('========>>>>>', activeSubscriptions);
     });
-    getDataRenewCat();
   }, []);
 
-  return {products, buySubscription, fetchData, startTrial, userData};
+  return {
+    products: [],
+    buySubscription: () => {},
+    fetchData: [],
+    startTrial: false,
+    userData,
+  };
 }
 export default useSubscriptionScreen;
