@@ -1,12 +1,18 @@
 import React from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-const KeyBoardWrapper = ({children, scroll, styles, bounces}) => (
+const KeyBoardWrapper = ({
+  children,
+  scroll,
+  styles,
+  bounces,
+  keyboardShouldPersistTaps,
+}) => (
   <KeyboardAwareScrollView
     showsVerticalScrollIndicator={false}
     bounces={bounces ?? true}
     scrollEnabled={scroll ?? true}
-    // keyboardShouldPersistTaps={'always'}
+    keyboardShouldPersistTaps={keyboardShouldPersistTaps ?? 'never'}
     contentContainerStyle={{flexGrow: 1, ...styles}}>
     {children}
   </KeyboardAwareScrollView>

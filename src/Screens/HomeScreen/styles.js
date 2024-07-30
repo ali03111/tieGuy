@@ -38,6 +38,7 @@ export const styles = StyleSheet.create({
     // alignItems: 'center',
     // paddingTop: hp('6'),
     // backgroundColor: 'green',
+    // marginBottom: hp('2'),
   },
   inputLeftImg: {
     width: wp('8'),

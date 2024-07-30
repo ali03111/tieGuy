@@ -67,18 +67,7 @@ const loginSaga = function* ({payload: {datas, type}}) {
       }
     }
   } catch (error) {
-    const newError = error;
-    const errorValidation = Boolean(
-      newError.toString() ==
-        'Error: [auth/internal-error] An internal error has occurred, please try again.' ||
-        'Error: [auth/internal-error] The supplied auth credential is incorrect, malformed or has expired.',
-    );
-    errorMessage(
-      !errorValidation
-        ? 'Credential is wrong'
-        : error.message.split(' ').slice(1).join(' ') ?? error,
-    );
-    console.log('err', newError.toString());
+    errorMessage(error?.message.split(' ').slice(1).join(' ') ?? error);
   } finally {
     yield put(loadingFalse());
   }
@@ -108,17 +97,7 @@ function* registerSaga({payload: {datas}}) {
       }
     }
   } catch (error) {
-    const newError = error;
-    const errorValidation = Boolean(
-      newError.toString() ==
-        'Error: [auth/internal-error] An internal error has occurred, please try again.' ||
-        'Error: [auth/internal-error] The supplied auth credential is incorrect, malformed or has expired.',
-    );
-    errorMessage(
-      !errorValidation
-        ? 'Credential is wrong'
-        : error.message.split(' ').slice(1).join(' ') ?? error,
-    );
+    errorMessage(error?.message.split(' ').slice(1).join(' ') ?? error);
     console.log('err', newError.toString());
   } finally {
     // delay(4000);

@@ -74,6 +74,7 @@ const WeatherComp = ({addListener, startLocationDes}) => {
     veryHeavyrain: rain,
     heavyIntensityrain: rain,
     lightRain,
+    drizzle: rain,
   };
 
   const [isGranted, setIsGranted] = useState(false);

@@ -1,5 +1,5 @@
 import React, {useCallback, useRef, useState} from 'react';
-import {View, Text, Touchable, Image} from 'react-native';
+import {View, Text, Touchable, Image, Platform} from 'react-native';
 import useReduxStore from '../../Hooks/UseReduxStore';
 
 import useHomeScreen from './useHomeScreen';
@@ -47,6 +47,11 @@ const HomeScreen = ({navigation}) => {
 
   const isShowBtn = Boolean(
     endLocation?.coords.lat != null && endLocation?.coords.lat != '',
+  );
+
+  console.log(
+    'kjsdbvlkbsdlbvklsdblkbsdlbsdklbvlksdbklbsdlkvlksdvlksdblkbvd',
+    Platform,
   );
 
   const CurrentMarker = useCallback(() => {
@@ -151,7 +156,11 @@ const HomeScreen = ({navigation}) => {
   );
 
   return (
-    <KeyBoardWrapper styles={styles.homeMain} scroll={true} bounces={false}>
+    <KeyBoardWrapper
+      styles={styles.homeMain}
+      scroll={true}
+      bounces={false}
+      keyboardShouldPersistTaps={'always'}>
       <InputView
         startValFun={val => valChange('startLocation', val)}
         endValFun={val => {
@@ -224,12 +233,20 @@ const HomeScreen = ({navigation}) => {
           </>
         }
       />
-      <View style={{marginTop: !isShowBtn ? hp('6') : hp('7.8')}}>
+      <View
+        style={{
+          marginTop: !isShowBtn
+            ? Platform.OS == 'ios'
+              ? hp('8')
+              : hp('6')
+            : hp('7.8'),
+        }}>
         <WeatherComp
           addListener={navigation.addListener}
           startLocationDes={startLocation.description}
         />
       </View>
+      {/* <EmergencyCardComp onPress={() => localNotifeeNotification()} /> */}
       <EmergencyCardComp onPress={() => dynamicNav('EmergencyContactScreen')} />
     </KeyBoardWrapper>
   );

@@ -1,14 +1,14 @@
 const getCredentials = () => {
   if (__DEV__)
     return {
-      baseURL: 'https://virtualrealitycreators.com/tieGuy-bakend/api',
-      imageURL: 'https://virtualrealitycreators.com/tieGuy-bakend/storage/',
+      baseURL: 'https://tieguy.app/tieGuy-bakend/api',
+      imageURL: 'https://tieguy.app/tieGuy-bakend/storage/',
     };
   else {
     console.log = () => {};
     return {
-      baseURL: 'https://virtualrealitycreators.com/tieGuy-bakend/api',
-      imageURL: 'https://virtualrealitycreators.com/tieGuy-bakend/storage/',
+      baseURL: 'https://tieguy.app/tieGuy-bakend/api',
+      imageURL: 'https://tieguy.app/tieGuy-bakend/storage/',
     };
   }
 };
@@ -24,7 +24,8 @@ export const imageUrl = url => {
   // : 'https://res.cloudinary.com/dd6tdswt5/image/upload/v1684830799/UserImages/mhysa2zj0sbmvnw69b35.jpg';
 };
 
-export const MapAPIKey = 'AIzaSyAu-nEBbiOahfUyeMc8Lc1gTTKfete_wnQ';
+export const MapAPIKey = 'AIzaSyC6VSTz1py7rZiAUO6Hb9ilFCrX5SmaI2w';
+// export const MapAPIKey = 'AIzaSyAu-nEBbiOahfUyeMc8Lc1gTTKfete_wnQ';
 
 export const registerUrl = '/signup';
 export const loginUrl = '/login';

@@ -196,6 +196,7 @@ const fetchGetWithToken = async url => {
     console.error('Error fetching data:', error);
     throw error; // Rethrow the error to handle it at the caller's level if needed
   }
+  //
   // store.dispatch({type: types.LogoutType});
 };
 

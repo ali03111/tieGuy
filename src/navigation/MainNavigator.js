@@ -43,10 +43,6 @@ function MainNavigator() {
               name="ForgotPasswordScreen"
               component={Screens.ForgotPasswordScreen}
             />
-            <Stack.Screen
-              name="EmergencyContactScreen"
-              component={Screens.EmergencyContactScreen}
-            />
           </>
         )}
         {isLogin && (

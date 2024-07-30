@@ -11,6 +11,7 @@ import ThemeButton from '../../Components/ThemeButton';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import {generateUniqueId} from '../../Services/GlobalFunctions';
 import {imageUrl} from '../../Utils/Urls';
+import KeyBoardWrapper from '../../Components/KeyBoardWrapper';
 
 const AddContactModal = ({
   userData,
@@ -57,7 +58,7 @@ const AddContactModal = ({
   };
 
   return (
-    <View style={styles.mainView}>
+    <KeyBoardWrapper styles={styles.mainView}>
       <Modal
         isVisible={modalState}
         animationInTiming={100}
@@ -174,7 +175,7 @@ const AddContactModal = ({
           </View>
         </View>
       </Modal>
-    </View>
+    </KeyBoardWrapper>
   );
 };
 

@@ -76,8 +76,7 @@ const InputView = ({
               marginLeft: wp('1'),
             }}
             textInputStyle={{color: Colors.primaryColor}}
-            onChangeText={e => {}}
-            isEdit={false}
+            // isEdit={false}
             // onChangeText={e => {}}
           />
         </View>

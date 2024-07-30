@@ -40,7 +40,8 @@ export const styles = StyleSheet.create({
   },
   bottomModal: {
     justifyContent: 'flex-end',
-    margin: 0,
+    // margin: 0,
+    flex: 1,
   },
   absolute: {
     position: 'absolute',

@@ -19,6 +19,8 @@ import {
 } from '../Assets';
 import {types} from '../Redux/types';
 import useReduxStore from '../Hooks/UseReduxStore';
+import {fetchGetWithToken} from '../Utils/helperFunc';
+import {VerifyUserUrl} from '../Utils/Urls';
 
 globalStyles = {};
 const isIOS = Boolean(Platform.OS == 'ios');
@@ -41,6 +43,8 @@ const Tab = createBottomTabNavigator();
 
 function MybottomTabs() {
   const {getState, dispatch} = useReduxStore();
+
+  fetchGetWithToken(VerifyUserUrl);
 
   return (
     <Tab.Navigator
