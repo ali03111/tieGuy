@@ -33,6 +33,7 @@ function useSubscriptionScreen({navigate, goBack}) {
    * `monthlyPackages`.
    */
   const getDataRenewCat = async revenuecat_customer_id => {
+    console.log('kjdbvklsdbvklsdbvklbs');
     return new Promise(async (resolve, reject) => {
       try {
         const offerings = await Purchases.getOfferings();
@@ -48,6 +49,7 @@ function useSubscriptionScreen({navigate, goBack}) {
         console.log('======>>>>>', yearlyPackages, monthlyPackages);
         resolve({ok: true, datas: [yearlyPackages, monthlyPackages]});
       } catch (e) {
+        console.log('kljsdbvklsdbvklsbdklvbsdklvbksdlbvksd', e);
         reject({ok: false, datas: e});
       }
     });
@@ -81,12 +83,12 @@ function useSubscriptionScreen({navigate, goBack}) {
   };
 
   /** The above code is written in JavaScript and is using the useEffect hook from React. **/
-  useEffect(async () => {
-    await getDataRenewCat();
+  useEffect(() => {
     Purchases.addCustomerInfoUpdateListener(info => {
       const {activeSubscriptions} = info;
       console.log('========>>>>>', activeSubscriptions);
     });
+    getDataRenewCat();
   }, []);
 
   return {

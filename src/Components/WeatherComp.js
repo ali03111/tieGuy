@@ -75,7 +75,15 @@ const WeatherComp = ({addListener, startLocationDes}) => {
     heavyIntensityrain: rain,
     lightRain,
     drizzle: rain,
+    thunderstormWithLightrain: rain,
+    thunderstormWithHeavyrain: rain,
+    thunderstormWithrain: rain,
   };
+
+  console.log(
+    'jkdsbklbsdklvbdsvds',
+    removeSpacesBetweenWords(weatherState?.description),
+  );
 
   const [isGranted, setIsGranted] = useState(false);
 
@@ -119,22 +127,24 @@ const WeatherComp = ({addListener, startLocationDes}) => {
   const WeatherImgaesView = useCallback(() => {
     return (
       <Image
-        source={AMPMLayout(
-          weatherImgaes[
-            removeSpacesBetweenWords(weatherState?.description ?? 'parCloud')
-          ] ??
+        source={
+          AMPMLayout(
             weatherImgaes[
-              `${removeSpacesBetweenWords(weatherState?.description)}D` ??
-                'parCloud'
-            ],
-          weatherImgaes[
-            removeSpacesBetweenWords(weatherState?.description ?? 'parCloud')
-          ] ??
+              removeSpacesBetweenWords(weatherState?.description ?? 'parCloud')
+            ] ??
+              weatherImgaes[
+                `${removeSpacesBetweenWords(weatherState?.description)}D` ??
+                  'parCloud'
+              ],
             weatherImgaes[
-              `${removeSpacesBetweenWords(weatherState?.description)}N` ??
-                'parCloud'
-            ],
-        )}
+              removeSpacesBetweenWords(weatherState?.description ?? 'parCloud')
+            ] ??
+              weatherImgaes[
+                `${removeSpacesBetweenWords(weatherState?.description)}N` ??
+                  'parCloud'
+              ],
+          ) ?? AMPMLayout(weatherImgaes['parCloud'])
+        }
         resizeMode="contain"
         style={styles.cloudImg}
       />

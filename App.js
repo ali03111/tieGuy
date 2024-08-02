@@ -33,9 +33,10 @@ const App = () => {
   const revenewCat = async () => {
     Purchases.setLogLevel(LOG_LEVEL.VERBOSE);
     const configured = await Purchases.isConfigured();
-    if (Platform.OS === 'ios') {
+    console.log('ksdbvjksdbkjsbdjkvbsdjkbjsbkjsdbvklsdb', configured);
+    if (Platform.OS == 'ios') {
       await Purchases.configure({apiKey: 'appl_KkReTYDfpRwQdDMvgLfIGkxFXbI'});
-    } else if (Platform.OS === 'android') {
+    } else if (Platform.OS == 'android') {
       await Purchases.configure({apiKey: 'goog_zVmRcmkWtsEyTSxouECGkmOATcz'});
     }
   };
@@ -82,8 +83,11 @@ const App = () => {
     }
   }, [isLogin]);
 
-  useEffect(async () => {
+  useEffect(() => {
     revenewCat();
+  }, []);
+
+  useEffect(async () => {
     GoogleSignin.configure({
       iosClientId:
         '664658424087-lcsk0ihine61evfk8n3umt9c5ot3j0ao.apps.googleusercontent.com',
