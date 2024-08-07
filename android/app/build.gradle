@@ -79,8 +79,9 @@ android {
         applicationId "com.tieguy"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3
+        versionCode 5
         versionName "1.0"
+               missingDimensionStrategy 'store', 'play'
     }
     signingConfigs {
         debug {
@@ -119,6 +120,7 @@ dependencies {
 implementation platform('com.google.firebase:firebase-bom:33.1.0')
 implementation 'com.facebook.android:facebook-android-sdk:latest.release'
 implementation 'com.google.firebase:firebase-analytics'
+implementation 'com.revenuecat.purchases:purchases:7.0.0'
     implementation project(':react-native-vector-icons')
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")

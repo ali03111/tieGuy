@@ -35,6 +35,7 @@ const HomeScreen = ({navigation}) => {
     previousRouteCoordinates,
     startTracking,
     kiloMeterRef,
+    startDescription,
     dynamicNav,
     updateState,
     valChange,
@@ -49,10 +50,10 @@ const HomeScreen = ({navigation}) => {
     endLocation?.coords.lat != null && endLocation?.coords.lat != '',
   );
 
-  console.log(
-    'kjsdbvlkbsdlbvklsdblkbsdlbsdklbvlksdbklbsdlkvlksdvlksdblkbvd',
-    Platform,
-  );
+  // console.log(
+  //   'kjsdbvlkbsdlbvklsdblkbsdlbsdklbvlksdbklbsdlkvlksdvlksdblkbvd',
+  //   Platform,
+  // );
 
   const CurrentMarker = useCallback(() => {
     return (
@@ -130,7 +131,6 @@ const HomeScreen = ({navigation}) => {
 
       const isNearMe = Boolean(parseFloat(km) <= 5);
 
-      console.log('km on railya track ', index, km, isNearMe);
       // if (isNearMe && startTracking) localNotifeeNotification();
       return (
         <Marker
@@ -169,10 +169,10 @@ const HomeScreen = ({navigation}) => {
         }}
         chageDes={(locationType, des) => updateDescription(locationType, des)}
         endLocation={endLocation?.description}
-        startLocation={startLocation?.description}
+        startLocation={startDescription ?? startLocation?.description}
         startYourTracking={() => {
           valChange('startTracking', true);
-          startYourTracking();
+          // startYourTracking();
         }}
         isShowBtn={isShowBtn}
         isTrackingStart={startTracking}

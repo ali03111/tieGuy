@@ -69,6 +69,12 @@ export async function localNotifeeNotification() {
       pressAction: {
         id: 'default',
       },
+      autoCancel: true,
+      circularLargeIcon: true,
+      lightUpScreen: true,
+    },
+    ios: {
+      critical: true,
     },
   });
   // notifee.setBadgeCount(1).then(() => console.log('Badge count set!'));

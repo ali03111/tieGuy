@@ -340,6 +340,7 @@ const fetchRailwayCrossingAPI = async (lat, long) => {
     'train tracks crossing',
     'railway signal crossing',
     'train tracks',
+    // 'gym',
   ]; // List of queries to run
   const urls = queries.map(
     query =>

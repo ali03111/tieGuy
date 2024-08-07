@@ -55,7 +55,7 @@ const WeatherComp = ({addListener, startLocationDes}) => {
     mist,
     rain,
     snow,
-    thunderstorm,
+    thunderstorm: rain,
     brokenClouds,
     scatteredClouds,
     clearSkyD,
@@ -80,11 +80,6 @@ const WeatherComp = ({addListener, startLocationDes}) => {
     thunderstormWithrain: rain,
   };
 
-  console.log(
-    'jkdsbklbsdklvbdsvds',
-    removeSpacesBetweenWords(weatherState?.description),
-  );
-
   const [isGranted, setIsGranted] = useState(false);
 
   const getWeatherLo = async () => {
@@ -103,7 +98,6 @@ const WeatherComp = ({addListener, startLocationDes}) => {
         })
           .then(() => {
             let data = new showWeather();
-            console.log('         lsdbklvbsdlkvbsdklvbsldkbvlksbdvsd', data);
             setWeatherState(data);
             temp = data.temp;
             wind = data.wind;

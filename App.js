@@ -16,6 +16,7 @@ import {IOSNotifyPer, reqPerNotiAND} from './src/Services/GlobalFunctions';
 import PushNotification, {Importance} from 'react-native-push-notification';
 import {Settings} from 'react-native-fbsdk-next';
 import Purchases, {LOG_LEVEL} from 'react-native-purchases';
+import Geolocation from '@react-native-community/geolocation';
 
 const App = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -37,7 +38,7 @@ const App = () => {
     if (Platform.OS == 'ios') {
       await Purchases.configure({apiKey: 'appl_KkReTYDfpRwQdDMvgLfIGkxFXbI'});
     } else if (Platform.OS == 'android') {
-      await Purchases.configure({apiKey: 'goog_zVmRcmkWtsEyTSxouECGkmOATcz'});
+      await Purchases.configure({apiKey: 'goog_WmdCHUTsQKFwGFkifDEoqTnFItb'});
     }
   };
 
@@ -59,6 +60,17 @@ const App = () => {
   const time = () => {
     return 3000;
   };
+
+  useEffect(() => {
+    Geolocation.setRNConfiguration({
+      config: {
+        skipPermissionRequests: true,
+        authorizationLevel: 'always' | 'whenInUse' | 'auto',
+        enableBackgroundLocationUpdates: true,
+        locationProvider: 'playServices' | 'android' | 'auto',
+      },
+    });
+  }, []);
 
   useEffect(() => {
     /* It's a function that registers the device to receive push notifications. */

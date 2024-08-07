@@ -90,8 +90,8 @@ pod 'GoogleMaps'
   pod 'FirebaseCore', :modular_headers => true
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
   permissions_path = '../node_modules/react-native-permissions/ios'
-# pod 'RNPurchases', :path => '../node_modules/react-native-purchases',
-pod 'RevenueCat', '~> 4.15', :inhibit_warnings => true
+pod 'RNPurchases', :path => '../node_modules/react-native-purchases', :inhibit_warnings => true
+# pod 'RevenueCat', '~> 4.15', :inhibit_warnings => true
   
   target 'tieguyTests' do
     inherit! :complete

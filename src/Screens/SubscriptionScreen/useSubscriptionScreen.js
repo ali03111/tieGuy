@@ -15,7 +15,10 @@ import Purchases from 'react-native-purchases';
 // const SKU = ['21436209'];
 // const SKU = ['monthly_18012024'];
 const SKU = Platform.select({
-  android: ['monthly_18012024', 'yearly_18012024'],
+  android: [
+    'monthly_18012024:monthly18012024',
+    'yearly_18012024:yearly18012024',
+  ],
   ios: ['monthly_18012024', 'yearly_18012024'],
 });
 
@@ -36,7 +39,7 @@ function useSubscriptionScreen({navigate, goBack}) {
     console.log('kjdbvklsdbvklsdbvklbs');
     return new Promise(async (resolve, reject) => {
       try {
-        const offerings = await Purchases.getOfferings();
+        const offerings = await Purchases.getOfferings(SKU);
         console.log('packages', offerings);
         const allProducts = offerings.current.availablePackages;
         console.log('allProducts', allProducts);

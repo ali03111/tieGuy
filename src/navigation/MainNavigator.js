@@ -47,11 +47,11 @@ function MainNavigator() {
         )}
         {isLogin && (
           <>
+            <Stack.Screen name="MybottomTabs" component={MybottomTabs} />
             <Stack.Screen
               name="SubscriptionScreen"
               component={Screens.SubscriptionScreen}
             />
-            <Stack.Screen name="MybottomTabs" component={MybottomTabs} />
             <Stack.Screen
               name="EditProfileScreen"
               component={Screens.EditProfileScreen}
