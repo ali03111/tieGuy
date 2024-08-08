@@ -23,12 +23,6 @@ const InputView = ({
   kiloMeter,
   currentCoords,
 }) => {
-  // console.log(
-  //   'pksdbivbiosdbvjsdbvjdsvjksdbvjdsbsdfsddsjkbsdjvbsdjsdsd',
-  //   getDistancesBetweenLocationsArry(currentCoords, railwayTracks).filter(
-  //     res => parseFloat(res.km) <= 5,
-  //   ),
-  // );
   const KlMeterView = useCallback(() => {
     return (
       <TextComponent
@@ -41,7 +35,7 @@ const InputView = ({
         isWhite={true}
       />
     );
-  }, [railwayTracks]);
+  }, [railwayTracks, currentCoords.lat]);
 
   return (
     <View
@@ -76,7 +70,7 @@ const InputView = ({
               marginLeft: wp('1'),
             }}
             textInputStyle={{color: Colors.primaryColor}}
-            // isEdit={false}
+            isEdit={false}
             // onChangeText={e => {}}
           />
         </View>

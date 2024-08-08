@@ -84,7 +84,7 @@ const HomeScreen = ({navigation}) => {
         />
       </>
     );
-  }, [startLocation?.description]);
+  }, [startLocation?.description, startLocation.coords.lat]);
 
   const RenderMap = useCallback(
     ({childern}) => {
@@ -93,8 +93,8 @@ const HomeScreen = ({navigation}) => {
         <MapView
           // provider={PROVIDER_GOOGLE} // remove if not using Google Maps
           style={styles.staticMapImg}
-          // followsUserLocation={true}
-          // showsUserLocation={true}
+          followsUserLocation={true}
+          showsUserLocation={true}
           // zoomEnabled={true}
           // focusable={true}
           // moveOnMarkerPress
@@ -112,7 +112,7 @@ const HomeScreen = ({navigation}) => {
             longitudeDelta: laongituteDalta,
           }}
           rotateEnabled={true}>
-          <CurrentMarker />
+          {/* <CurrentMarker /> */}
           {childern}
         </MapView>
       );

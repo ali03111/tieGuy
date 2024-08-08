@@ -493,13 +493,10 @@ function getDistancesBetweenLocationsArry(currentLocation, locations) {
     };
   });
 }
-
-const matchTwoArrays = (matchFrom, matchTheArry, needToGetId) => {
+const matchTwoArrays = (matchFrom, matchTheArry) => {
   let matchFromArry = [...matchFrom];
   // Create a Set of nutrition IDs for faster lookup
-  let nutritionIds = needToGetId
-    ? new Set(matchTheArry.map(matchTheArry => matchTheArry.id))
-    : matchTheArry;
+  let nutritionIds = new Set(matchTheArry.map(matchTheArry => matchTheArry.id));
 
   // Match nutritions with ingredients
   matchFromArry.forEach(matchFrom => {
@@ -512,8 +509,28 @@ const matchTwoArrays = (matchFrom, matchTheArry, needToGetId) => {
   return matchFromArry;
 };
 
+function removeDuplicates(array) {
+  // Create a Set to track unique IDs
+  const seen = new Set();
+
+  // Filter the array to include only unique IDs
+  return array.filter(item => {
+    if (seen.has(item.id)) {
+      return false; // This ID is a duplicate
+    } else {
+      seen.add(item.id);
+      return true; // This ID is unique
+    }
+  });
+}
+
 const matchIDinTwoArry = (data, ids) => {
   return data.filter(item => ids.includes(item.id));
+};
+
+const matchIDBetweenTwoArry = (data, ids) => {
+  const idList = ids.map(item => item.id);
+  return data.filter(item => idList.includes(item.id));
 };
 
 /**
@@ -640,4 +657,6 @@ export {
   IOSNotifyPer,
   checkPerNotiAND,
   reqPerNotiAND,
+  matchIDBetweenTwoArry,
+  removeDuplicates,
 };

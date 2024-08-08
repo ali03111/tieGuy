@@ -47,7 +47,7 @@ export const localNotification = () => {
   });
 };
 
-export async function localNotifeeNotification() {
+export async function localNotifeeNotification(id) {
   // Request permissions (required for iOS)
   await notifee.requestPermission();
 
@@ -59,7 +59,7 @@ export async function localNotifeeNotification() {
 
   // Display a notification
   await notifee.displayNotification({
-    title: 'Railway Crossing Alert',
+    title: id,
     body: 'Here is a railway crossing near you!',
 
     android: {

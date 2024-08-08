@@ -5,8 +5,11 @@ import {
   getDistanceFromLatLonInKm,
   getDistancesBetweenLocationsArry,
   getProperLocation,
+  matchIDBetweenTwoArry,
   matchIDinTwoArry,
   matchTwoArrays,
+  removeDuplicateIds,
+  removeDuplicates,
 } from '../../Services/GlobalFunctions';
 import Geolocation from '@react-native-community/geolocation';
 import {
@@ -66,8 +69,9 @@ const useHomeScreen = ({addListener, navigate}) => {
 
   const [trackThatNotify, setTrackThatNotify] = useState([]);
 
-  const startYourTracking = async (lat, long) => {
-    console.log('sjkdvjksdvjksdvjskdb', locationData);
+  const trackThatNotifyRef = useRef([]);
+
+  const startYourTracking = async (latitude, longitude) => {
     Geolocation.watchPosition(
       async position => {
         const {latitude, longitude} = position.coords;
@@ -80,51 +84,53 @@ const useHomeScreen = ({addListener, navigate}) => {
         });
         if (startTracking) getKiloMeter(position.coords);
         const {ok, data} = await fetchRailwayCrossingAPI(latitude, longitude);
-        console.log(
-          'skjdvcjklsvdcjkvsdklbvcklsadbvclkasdbcklbasklcbaklsbcklasbcklabsa',
-          data,
-        );
+
         if (ok) {
-          console.log(
-            'kjsvdcjkvsdjkcvjkasvckljasbvlkcbvaslkcbvasklavsclkvasjas',
-            getDistancesBetweenLocationsArry(
-              {lat: latitude, long: longitude},
-              data,
-            ),
-          );
+          const afterDubRemove = removeDuplicates(data);
 
           const afterFilterTrack = getDistancesBetweenLocationsArry(
             {lat: latitude, long: longitude},
-            data,
-          ).filter(res => parseFloat(res.km) <= 2);
-
-          console.log(
-            'sdbvlkbsldkbvklsdblkvsdlkvndvksdvnsdlkvn',
-            afterFilterTrack,
-          );
+            afterDubRemove,
+          ).filter(res => parseFloat(res.km) <= 0.5);
 
           if (afterFilterTrack.length > 0) {
-            const lengthOfTrack = trackThatNotify.length ?? 0;
+            const lengthOfTrack = trackThatNotifyRef.current.length ?? 0;
 
-            let afterMatch = matchIDinTwoArry(
+            let afterMatch = matchIDBetweenTwoArry(
               afterFilterTrack,
-              trackThatNotify,
+              trackThatNotifyRef.current,
             );
 
-            setTrackThatNotify(
-              afterMatch.length > 0 ? afterMatch : afterFilterTrack,
+            const newFilterArry =
+              afterMatch.length > 0 ? afterMatch : afterFilterTrack;
+            const needToNotify = matchTwoArrays(
+              newFilterArry,
+              trackThatNotifyRef.current,
             );
-            setTimeout(() => {
-              if (
-                trackThatNotify.length == 0 ||
-                trackThatNotify.length > lengthOfTrack
-              )
-                localNotifeeNotification();
-            }, 500);
+            // setTrackThatNotify(newFilterArry);
+
+            needToNotify.map(res => {
+              if (res.match == false) {
+                trackThatNotifyRef.current = [
+                  ...trackThatNotifyRef.current,
+                  res,
+                ];
+                setTrackThatNotify(prev => [...prev, res]);
+                localNotifeeNotification(res?.id);
+              }
+            });
+            // setTimeout(() => {
+            //   if (
+            //     newFilterArry.length == 0 ||
+            //     newFilterArry.length > lengthOfTrack
+            //   ) {
+            //     localNotifeeNotification();
+            //   }
+            // }, 500);
             // trackThatNotify.map(res=> res)
             // localNotification()
           }
-          railwayTracksRef.current = data;
+          railwayTracksRef.current = afterDubRemove;
           setDummy(prev => ++prev);
           // setRailwayTracks(data);
         }
@@ -134,8 +140,8 @@ const useHomeScreen = ({addListener, navigate}) => {
       },
       {
         enableHighAccuracy: true,
-        fastestInterval: 1,
-        distanceFilter: 1,
+        fastestInterval: 100,
+        distanceFilter: 20,
         useSignificantChanges: true,
       },
     );
@@ -162,12 +168,17 @@ const useHomeScreen = ({addListener, navigate}) => {
         'startDescription',
         location?.location?.description ?? location?.description,
       );
+      await fetchRailwayCrossingAPI(
+        location.location?.coords?.lat ?? location?.coords?.lat,
+        location.location?.coords?.long ?? location?.coords?.long,
+      );
       const {ok, data} = await fetchRailwayCrossingAPI(
-        location.location?.coords?.lat,
-        location.location?.coords?.long,
+        location.location?.coords?.lat ?? location?.coords?.lat,
+        location.location?.coords?.long ?? location?.coords?.long,
       );
       if (ok) {
-        railwayTracksRef.current = data;
+        const removeDuplicateIds = removeDuplicates(data);
+        railwayTracksRef.current = removeDuplicateIds;
         setDummy(prev => ++prev);
       }
       setTimeout(async () => {
@@ -215,7 +226,7 @@ const useHomeScreen = ({addListener, navigate}) => {
   };
 
   const stopTracking = () => {
-    Geolocation.clearWatch(watchId.current);
+    // Geolocation.clearWatch(watchId.current);
     valChange('startTracking', false);
     // localNotifeeNotification();
   };
