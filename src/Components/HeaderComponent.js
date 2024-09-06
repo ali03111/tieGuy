@@ -26,19 +26,17 @@ export const HeaderComponent = ({
       <View style={styles.HeaderLeft}>
         <Touchable onPress={goBack} style={styles.backMain} disabled={!isBack}>
           {isBack && (
-            <Image
-              source={arrowLeft}
-              style={{
-                resizeMode: 'contain',
-                tintColor: 'white',
-                ...styles.arrowback,
-              }}
-            />
+            <>
+              <Image
+                source={arrowLeft}
+                style={{
+                  resizeMode: 'contain',
+                  tintColor: 'white',
+                  ...styles.arrowback,
+                }}
+              />
+            </>
           )}
-          <TextComponent
-            text={backText}
-            styles={{...styles.backBtn, ...backTextStyle}}
-          />
         </Touchable>
       </View>
       <View style={styles.HeaderCenter}>

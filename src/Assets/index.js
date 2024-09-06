@@ -12,6 +12,9 @@ export {default as blurImg} from './Images/blurImg.png';
 export {default as monthlyPkStar} from './Images/monthlyPkStar.png';
 export {default as triangle} from './Images/triangle.png';
 export {default as tickSquare} from './Images/tickSquare.png';
+export {default as clipboardClose} from './Images/clipboardClose.png';
+export {default as dataNotFound1} from './Images/dataNotFound1.png';
+export {default as dataNotFound2} from './Images/dataNotFound2.png';
 
 // weatherImages
 

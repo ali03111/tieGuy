@@ -3,13 +3,16 @@ import {View, Text, Image, ScrollView, FlatList} from 'react-native';
 import {TextComponent} from '../../Components/TextComponent';
 import {styles} from './styles';
 import useSettingScreen from './useSettingScreen';
-import {catData, settingData} from '../../Utils/localDB';
-import {arrowrightsmall, downloadIcon} from '../../Assets';
+import {allSubID, catData, settingData} from '../../Utils/localDB';
+import {arrowrightsmall, downloadIcon, user} from '../../Assets';
 import {hp} from '../../Config/responsive';
 import {HeaderComponent} from '../../Components/HeaderComponent';
 import {Touchable} from '../../Components/Touchable';
 import Icon from 'react-native-vector-icons/Feather';
 import {AlertDesign} from '../../Components/AlertDesign';
+import BlurImage from '../../Components/BlurImage';
+import {imageUrl} from '../../Utils/Urls';
+import {hasOneMonthPassed} from '../../Services/GlobalFunctions';
 
 const SettingScreen = ({navigation}) => {
   const {
@@ -20,6 +23,7 @@ const SettingScreen = ({navigation}) => {
     deleteAlert,
     logoutAlert,
     toggleAlert,
+    userData,
   } = useSettingScreen(navigation);
   const renderItem = useCallback(({item, index}) => {
     return (
@@ -43,8 +47,45 @@ const SettingScreen = ({navigation}) => {
       />
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: hp('7')}}>
+        contentContainerStyle={{paddingBottom: hp('7'), paddingTop: hp('2')}}>
         <View style={styles.catMain}>
+          {/* <CircleImage
+          uri={true}
+          image={imageUrl(userData?.profile_image)}
+          styles={styles.profileImg}
+        /> */}
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <BlurImage
+              blurhash={'LKK1wP_3yYIU4.jsWrt7_NRjMdt7'}
+              radius={75}
+              isURI={true}
+              styles={styles.ProfileImage}
+              uri={imageUrl(userData?.profile_image)}
+            />
+          </View>
+          <TextComponent text={userData?.first_name} styles={styles.userName} />
+          <TextComponent
+            text={
+              userData?.identifier
+                ? allSubID[userData?.identifier]
+                : !hasOneMonthPassed(userData?.start_trial_at) &&
+                  userData?.revenuecat_customer_id != null
+                ? 'One Month Free Trial'
+                : hasOneMonthPassed(userData?.start_trial_at)
+                ? 'Free trial ended'
+                : 'One Month Free Trial'
+            }
+            styles={styles.trailText}
+            onPress={() =>
+              userData?.identifier == null &&
+              navigation.navigate('AfterSubscriptionScreen')
+            }
+          />
+
           <FlatList
             refreshing={false}
             data={settingData}

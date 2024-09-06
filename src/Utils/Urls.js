@@ -19,12 +19,15 @@ export const apendUrl = url => {
   return baseURL + url;
 };
 export const imageUrl = url => {
-  console.log(url, 'sdfksdfl;jlsdkj');
   return url ? imageURL + url : '';
   // : 'https://res.cloudinary.com/dd6tdswt5/image/upload/v1684830799/UserImages/mhysa2zj0sbmvnw69b35.jpg';
 };
 
-export const MapAPIKey = 'AIzaSyC6VSTz1py7rZiAUO6Hb9ilFCrX5SmaI2w';
+export const aboutUrl = 'https://trackpal.co/about_us';
+export const privacyUrl = 'https://trackpal.co/privacy_policy';
+export const termsUrl = 'https://trackpal.co/terms_and_conditions';
+
+export const MapAPIKey = 'AIzaSyAF-COUBSLnPj1qp_7dgQ0IYV3XiwJwJ4M'; // tieGUY
 // export const MapAPIKey = 'AIzaSyAu-nEBbiOahfUyeMc8Lc1gTTKfete_wnQ';
 
 export const registerUrl = '/signup';
@@ -35,6 +38,8 @@ export const updateContactUrl = '/update-contact';
 export const deleteContactUrl = '/delete-contact';
 export const VerifyUserUrl = '/verify';
 export const updateProfileUrl = '/update_profile';
+export const AfterSubBuyUrl = '/validate-receipt';
+export const StartTrialUrl = '/trial-start';
 
 export const DeleteAccUrl = '/user/delete';
 export const logoutUrl = 'auth/logout';

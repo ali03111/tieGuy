@@ -5,6 +5,7 @@ import {
   getDistanceFromLatLonInKm,
   getDistancesBetweenLocationsArry,
   getProperLocation,
+  hasOneMonthPassed,
   matchIDBetweenTwoArry,
   matchIDinTwoArry,
   matchTwoArrays,
@@ -18,8 +19,12 @@ import {
 } from '../../Services/LocalNotificationService';
 import {getDistance} from 'geolib';
 import {errorMessage} from '../../Config/NotificationMessage';
+import useReduxStore from '../../Hooks/UseReduxStore';
 
 const useHomeScreen = ({addListener, navigate}) => {
+  const {getState} = useReduxStore();
+  const {userData} = getState('Auth');
+
   const {width, height} = Dimensions.get('window');
   // const ACPT_RATIO = width / height;
   // const latitudeDelta = Platform.OS == 'ios' ? 0.09 : 0.001;
@@ -62,6 +67,7 @@ const useHomeScreen = ({addListener, navigate}) => {
   });
 
   const [dummy, setDummy] = useState(1);
+  const [subAlert, setSubAlert] = useState(false);
 
   const railwayTracksRef = useRef([]);
 
@@ -87,48 +93,52 @@ const useHomeScreen = ({addListener, navigate}) => {
 
         if (ok) {
           const afterDubRemove = removeDuplicates(data);
+          if (
+            !hasOneMonthPassed(userData?.start_trial_at) ||
+            userData?.identifier != null
+          ) {
+            const afterFilterTrack = getDistancesBetweenLocationsArry(
+              {lat: latitude, long: longitude},
+              afterDubRemove,
+            ).filter(res => parseFloat(res.km) <= 0.5);
 
-          const afterFilterTrack = getDistancesBetweenLocationsArry(
-            {lat: latitude, long: longitude},
-            afterDubRemove,
-          ).filter(res => parseFloat(res.km) <= 0.5);
+            if (afterFilterTrack.length > 0) {
+              const lengthOfTrack = trackThatNotifyRef.current.length ?? 0;
 
-          if (afterFilterTrack.length > 0) {
-            const lengthOfTrack = trackThatNotifyRef.current.length ?? 0;
+              let afterMatch = matchIDBetweenTwoArry(
+                afterFilterTrack,
+                trackThatNotifyRef.current,
+              );
 
-            let afterMatch = matchIDBetweenTwoArry(
-              afterFilterTrack,
-              trackThatNotifyRef.current,
-            );
+              const newFilterArry =
+                afterMatch.length > 0 ? afterMatch : afterFilterTrack;
+              const needToNotify = matchTwoArrays(
+                newFilterArry,
+                trackThatNotifyRef.current,
+              );
+              // setTrackThatNotify(newFilterArry);
 
-            const newFilterArry =
-              afterMatch.length > 0 ? afterMatch : afterFilterTrack;
-            const needToNotify = matchTwoArrays(
-              newFilterArry,
-              trackThatNotifyRef.current,
-            );
-            // setTrackThatNotify(newFilterArry);
-
-            needToNotify.map(res => {
-              if (res.match == false) {
-                trackThatNotifyRef.current = [
-                  ...trackThatNotifyRef.current,
-                  res,
-                ];
-                setTrackThatNotify(prev => [...prev, res]);
-                localNotifeeNotification(res?.id);
-              }
-            });
-            // setTimeout(() => {
-            //   if (
-            //     newFilterArry.length == 0 ||
-            //     newFilterArry.length > lengthOfTrack
-            //   ) {
-            //     localNotifeeNotification();
-            //   }
-            // }, 500);
-            // trackThatNotify.map(res=> res)
-            // localNotification()
+              needToNotify.map(res => {
+                if (res.match == false) {
+                  trackThatNotifyRef.current = [
+                    ...trackThatNotifyRef.current,
+                    res,
+                  ];
+                  setTrackThatNotify(prev => [...prev, res]);
+                  localNotifeeNotification(res?.id);
+                }
+              });
+              // setTimeout(() => {
+              //   if (
+              //     newFilterArry.length == 0 ||
+              //     newFilterArry.length > lengthOfTrack
+              //   ) {
+              //     localNotifeeNotification();
+              //   }
+              // }, 500);
+              // trackThatNotify.map(res=> res)
+              // localNotification()
+            }
           }
           railwayTracksRef.current = afterDubRemove;
           setDummy(prev => ++prev);
@@ -237,6 +247,20 @@ const useHomeScreen = ({addListener, navigate}) => {
 
   useEffect(useEffectFun, []);
 
+  useEffect(() => {
+    const event = addListener('focus', () => {
+      setTimeout(() => {
+        console.log('ksjldbvlksdbklvbsdlkvblskdbvsdbvlbskd', userData);
+        if (
+          hasOneMonthPassed(userData?.start_trial_at) &&
+          userData?.identifier == null
+        )
+          setSubAlert(true);
+      }, 1000);
+    });
+    return event;
+  }, []);
+
   const {startLocation, endLocation, startTracking, startDescription} =
     locationData;
 
@@ -286,6 +310,9 @@ const useHomeScreen = ({addListener, navigate}) => {
     kiloMeterRef,
     getKiloMeter,
     startDescription,
+    subAlert,
+    setSubAlert,
+    userData,
   };
 };
 

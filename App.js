@@ -17,6 +17,9 @@ import PushNotification, {Importance} from 'react-native-push-notification';
 import {Settings} from 'react-native-fbsdk-next';
 import Purchases, {LOG_LEVEL} from 'react-native-purchases';
 import Geolocation from '@react-native-community/geolocation';
+import {withIAPContext} from 'react-native-iap';
+import {fetchGetWithToken} from './src/Utils/helperFunc';
+import {VerifyUserUrl} from './src/Utils/Urls';
 
 const App = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -75,6 +78,7 @@ const App = () => {
   useEffect(() => {
     /* It's a function that registers the device to receive push notifications. */
     if (isLogin) {
+      fetchGetWithToken(VerifyUserUrl);
       setTimeout(() => {
         PushNotification.configure({
           onNotification: function (notification) {
@@ -152,4 +156,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default withIAPContext(App);

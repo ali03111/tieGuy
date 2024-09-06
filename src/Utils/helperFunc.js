@@ -6,6 +6,8 @@ import {Platform} from 'react-native';
 import {logOutUser} from '../Redux/Action/AuthAction';
 import {types} from '../Redux/types';
 import {logOutFirebase, logoutService} from '../Services/AuthServices';
+import Purchases from 'react-native-purchases';
+import {allSubID} from './localDB';
 
 const API = create({
   baseURL,
@@ -167,6 +169,10 @@ const createFormData = (photos, imageKey, isArray) => {
   return data;
 };
 
+const getUserDataFromRevenewCat = async () => {
+  return await Purchases.getCustomerInfo();
+};
+
 const fetchGetWithToken = async url => {
   const {Auth} = store.getState('Auth');
   const fullUrl = baseURL + url;
@@ -181,16 +187,38 @@ const fetchGetWithToken = async url => {
         // Add other headers if needed
       },
     });
+    const getData = await getUserDataFromRevenewCat();
+    const activeSubscriptions =
+      getData.entitlements.active['AppStorePlans'] ?? undefined;
+
     if (!response.ok) {
       store.dispatch({type: types.LogoutType});
       throw new Error('Network response was not ok.');
+    } else if (response.ok) {
+      const data = await response.json();
+
+      if (activeSubscriptions != undefined) {
+        store.dispatch({
+          type: types.UpdateProfile,
+          payload: {
+            ...data,
+            planName: allSubID[activeSubscriptions?.productIdentifier] ?? null,
+            identifier: activeSubscriptions?.productIdentifier,
+          },
+        });
+      } else {
+        store.dispatch({
+          type: types.UpdateProfile,
+          payload: {...data, planName: null, identifier: null},
+        });
+      }
+
+      // console.log(data, 'alskdjfklajsdfkljadlsfjaklsdjfl2kds444ajf2lkdjs');
+
+      return data; // Return the fetched data
     }
-
-    // console.log(data, 'alskdjfklajsdfkljadlsfjaklsdjfl2kds444ajf2lkdjs');
-    const data = await response.json();
-
-    return data; // Return the fetched data
   } catch (error) {
+    store.dispatch({type: types.LogoutType});
     console.error('Error fetching data:', error);
     throw error; // Rethrow the error to handle it at the caller's level if needed
   }
@@ -244,6 +272,11 @@ const formDataFunc = (url, body, imageKey, isArray) => {
     });
 };
 
-export {formDataFunc, fetchPostWithToken, fetchGetWithToken};
+export {
+  formDataFunc,
+  fetchPostWithToken,
+  fetchGetWithToken,
+  getUserDataFromRevenewCat,
+};
 
 export default API;

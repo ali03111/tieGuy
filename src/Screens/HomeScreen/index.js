@@ -24,6 +24,7 @@ import MapViewDirections from 'react-native-maps-directions';
 import {MapAPIKey} from '../../Utils/Urls';
 import {getDistanceFromLatLonInKm} from '../../Services/GlobalFunctions';
 import {localNotifeeNotification} from '../../Services/LocalNotificationService';
+import {AlertDesign} from '../../Components/AlertDesign';
 
 const HomeScreen = ({navigation}) => {
   const {
@@ -36,6 +37,9 @@ const HomeScreen = ({navigation}) => {
     startTracking,
     kiloMeterRef,
     startDescription,
+    subAlert,
+    userData,
+    setSubAlert,
     dynamicNav,
     updateState,
     valChange,
@@ -49,11 +53,6 @@ const HomeScreen = ({navigation}) => {
   const isShowBtn = Boolean(
     endLocation?.coords.lat != null && endLocation?.coords.lat != '',
   );
-
-  // console.log(
-  //   'kjsdbvlkbsdlbvklsdblkbsdlbsdklbvlksdbklbsdlkvlksdvlksdblkbvd',
-  //   Platform,
-  // );
 
   const CurrentMarker = useCallback(() => {
     return (
@@ -88,19 +87,12 @@ const HomeScreen = ({navigation}) => {
 
   const RenderMap = useCallback(
     ({childern}) => {
-      // console.log('skd nv.ksndl;vnsdlnvsndlvsd', endLocation);
       return (
         <MapView
           // provider={PROVIDER_GOOGLE} // remove if not using Google Maps
           style={styles.staticMapImg}
           followsUserLocation={true}
           showsUserLocation={true}
-          // zoomEnabled={true}
-          // focusable={true}
-          // moveOnMarkerPress
-          // zoomTapEnabled
-          // showsMyLocationButton
-          // mapType="satelliteFlyover"
           region={{
             latitude: startLocation.coords.lat
               ? startLocation.coords.lat
@@ -180,6 +172,7 @@ const HomeScreen = ({navigation}) => {
         railwayTracks={railwayTracks.current}
         kiloMeter={kiloMeterRef}
         currentCoords={startLocation.coords}
+        userData={userData}
       />
       <RenderMap
         childern={
@@ -244,13 +237,29 @@ const HomeScreen = ({navigation}) => {
         <WeatherComp
           addListener={navigation.addListener}
           startLocationDes={startLocation.description}
+          startLocation={startLocation}
         />
       </View>
-      {/* <EmergencyCardComp onPress={() => localNotifeeNotification()} /> */}
       <EmergencyCardComp onPress={() => dynamicNav('EmergencyContactScreen')} />
+
+      <AlertDesign
+        isVisible={subAlert}
+        message={
+          'Your subscription has been expired, kindly re-subscribe to use the app features!'
+        }
+        title={'Warning'}
+        confirmText={'Re-Subscribe'}
+        onConfirm={() => {
+          setSubAlert(false);
+          setTimeout(() => {
+            dynamicNav('AfterSubscriptionScreen');
+          }, 500);
+        }}
+        onCancel={() => setSubAlert(false)}
+        msgStyle={{textAlign: 'center'}}
+      />
     </KeyBoardWrapper>
   );
 };
 
 export default HomeScreen;
-// 13 SIGNS You Might Be Undervaluing Yourself

@@ -42,8 +42,6 @@ const tabarComponent = (activeImage, unActiveImage, ImageStyle) => {
 const Tab = createBottomTabNavigator();
 
 function MybottomTabs() {
-  const {getState, dispatch} = useReduxStore();
-
   fetchGetWithToken(VerifyUserUrl);
 
   return (

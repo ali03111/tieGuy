@@ -64,6 +64,7 @@ import {
   videoThumb,
   water,
 } from '../Assets';
+import {aboutUrl, privacyUrl, termsUrl} from './Urls';
 
 export const onBoardingData = [
   {
@@ -240,22 +241,17 @@ export const settingData = [
   {
     title: 'About Tieguy',
     image: about,
-    pageUrl: 'https://www.greenboom.com/about',
+    pageUrl: aboutUrl,
   },
   {
     title: 'Privacy Policy',
     image: privacy,
-    pageUrl: 'https://tieguy.staginganideos.com/privacy_policy',
+    pageUrl: privacyUrl,
   },
   {
     title: 'Terms and Conditions',
     image: terms,
-    pageUrl: 'https://tieguy.staginganideos.com/terms_and_conditions',
-  },
-  {
-    title: 'Contact us',
-    image: contact,
-    screenUrl: 'ContactScreen',
+    pageUrl: termsUrl,
   },
   {
     title: 'Delete Account',
@@ -450,4 +446,9 @@ export const kitList = [
 export const kitImages = {
   1: Sample,
   2: Demo,
+};
+
+export const allSubID = {
+  monthly_18012024: 'Monthly',
+  yearly_18012024: 'Yearly',
 };

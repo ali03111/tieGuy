@@ -12,7 +12,9 @@ const Stack = createNativeStackNavigator();
 function MainNavigator() {
   const {getState} = useReduxStore();
   const {onboarding} = getState('onboarding');
-  const {isLogin} = getState('Auth');
+  const {isLogin, userData} = getState('Auth');
+
+  console.log('kjsdbvjksdbkjvsdb', userData);
 
   return (
     <NavigationContainer
@@ -47,9 +49,15 @@ function MainNavigator() {
         )}
         {isLogin && (
           <>
+            {!userData?.start_trial_at && (
+              <Stack.Screen
+                name="SubscriptionScreen"
+                component={Screens.SubscriptionScreen}
+              />
+            )}
             <Stack.Screen name="MybottomTabs" component={MybottomTabs} />
             <Stack.Screen
-              name="SubscriptionScreen"
+              name="AfterSubscriptionScreen"
               component={Screens.SubscriptionScreen}
             />
             <Stack.Screen

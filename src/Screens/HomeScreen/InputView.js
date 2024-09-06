@@ -7,7 +7,11 @@ import {Colors} from '../../Theme/Variables';
 import {hp, wp} from '../../Config/responsive';
 import ThemeButton from '../../Components/ThemeButton';
 import {TextComponent} from '../../Components/TextComponent';
-import {getDistancesBetweenLocationsArry} from '../../Services/GlobalFunctions';
+import {
+  getDistancesBetweenLocationsArry,
+  hasOneMonthPassed,
+} from '../../Services/GlobalFunctions';
+import useReduxStore from '../../Hooks/UseReduxStore';
 
 const InputView = ({
   startValFun,
@@ -36,6 +40,17 @@ const InputView = ({
       />
     );
   }, [railwayTracks, currentCoords.lat]);
+  const {getState} = useReduxStore();
+  const {userData} = getState('Auth');
+
+  console.log(
+    'isdbhvjksbdoivbsdivbsodbvsdbdslkvbdkobvdksbosdbnisdilk',
+    hasOneMonthPassed(userData?.start_trial_at) && userData?.identifier == null,
+    !Boolean(
+      hasOneMonthPassed(userData?.start_trial_at) &&
+        userData?.identifier == null,
+    ),
+  );
 
   return (
     <View
@@ -86,7 +101,12 @@ const InputView = ({
             defaultValue={endLocation}
             // onChangeText={e => {}}
             onChangeText={e => chageDes('endLocation', e)}
-            isEdit={!isTrackingStart}
+            isEdit={
+              !Boolean(
+                hasOneMonthPassed(userData?.start_trial_at) &&
+                  userData?.identifier == null,
+              ) ?? !isTrackingStart
+            }
           />
         </View>
         {isShowBtn &&

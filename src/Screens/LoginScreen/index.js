@@ -63,7 +63,8 @@ const LoginScreen = ({navigation}) => {
               getValues,
               placeholder: 'Email',
               isImage: sms,
-              defaultValue: '',
+              defaultValue: __DEV__ ? 'test@mailinator.com' : '',
+              selectionColor: 'white',
             }}
           />
           <InputComponent
@@ -76,10 +77,11 @@ const LoginScreen = ({navigation}) => {
               getValues,
               placeholder: 'Password',
               isImage: lock,
-              defaultValue: '',
+              defaultValue: __DEV__ ? 'Test@123' : '',
               isSecure: true,
               isImage: locksetting,
               inputIconStyle: styles.lockstyle,
+              selectionColor: 'white',
             }}
           />
 

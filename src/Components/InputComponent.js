@@ -30,6 +30,7 @@ export const InputComponent = ({
   errorsTextStyle,
   plColor,
   tintColor,
+  selectionColor,
 }) => {
   const [show, setShow] = useState(!isSecure);
   const handleClick = () => setShow(!show);
@@ -62,7 +63,7 @@ export const InputComponent = ({
               {...{
                 value,
                 isDisabled,
-                selectionColor: Colors.gray,
+                selectionColor: selectionColor ?? Colors.gray,
                 placeholder,
                 keyboardType,
                 style: {...styles.input(isSecure), ...textStyle},

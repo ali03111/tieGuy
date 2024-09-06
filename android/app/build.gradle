@@ -70,6 +70,7 @@ def enableProguardInReleaseBuilds = false
 def jscFlavor = 'org.webkit:android-jsc:+'
 
 android {
+    
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
@@ -79,7 +80,7 @@ android {
         applicationId "com.tieguy"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 5
+        versionCode 12
         versionName "1.0"
                missingDimensionStrategy 'store', 'play'
     }
@@ -122,6 +123,7 @@ implementation 'com.facebook.android:facebook-android-sdk:latest.release'
 implementation 'com.google.firebase:firebase-analytics'
 implementation 'com.revenuecat.purchases:purchases:7.0.0'
     implementation project(':react-native-vector-icons')
+     implementation project(':react-native-iap')
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {

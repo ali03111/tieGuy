@@ -46,7 +46,7 @@ import Geolocationios from '@react-native-community/geolocation';
 import {PERMISSIONS, request} from 'react-native-permissions';
 import Geolocation from '@react-native-community/geolocation';
 
-const WeatherComp = ({addListener, startLocationDes}) => {
+const WeatherComp = ({addListener, startLocationDes, startLocation}) => {
   const [weatherState, setWeatherState] = useState();
   // const isGranted = true;
 
@@ -86,26 +86,23 @@ const WeatherComp = ({addListener, startLocationDes}) => {
     // await checkPermission();
     const hasPermission = await checkLocationPermission();
     setIsGranted(hasPermission);
+
+    console.log('skjdbvkjsbklvblksdbvlkbsdvklsdbv', startLocation);
     if (hasPermission) {
-      let temp;
-      let wind;
-      getLocation().then(location => {
-        getWeather({
-          key: 'd3b17fd9554eb61a5ddc829fe4624335',
-          lat: location.coords.latitude,
-          lon: location.coords.longitude,
-          unit: 'metric',
+      getWeather({
+        key: 'd3b17fd9554eb61a5ddc829fe4624335',
+        lat: startLocation.coords.lat,
+        lon: startLocation.coords.long,
+        unit: 'metric',
+      })
+        .then(() => {
+          let data = new showWeather();
+          console.log('jksdbjklbsdklvbkldsbvklsdbvklbsdlvksdklvblsdkv', data);
+          setWeatherState(data);
         })
-          .then(() => {
-            let data = new showWeather();
-            setWeatherState(data);
-            temp = data.temp;
-            wind = data.wind;
-          })
-          .catch(err =>
-            console.log('lskdbvlkbsdlkvblksdbvlksdbklvbsdklbksd', err),
-          );
-      });
+        .catch(err =>
+          console.log('lskdbvlkbsdlkvblksdbvlksdbklvbsdklbksd', err),
+        );
     }
   };
 
@@ -117,6 +114,9 @@ const WeatherComp = ({addListener, startLocationDes}) => {
     getWeatherLo();
     return event;
   }, [startLocationDes]);
+  useEffect(() => {
+    getWeatherLo();
+  }, []);
 
   const WeatherImgaesView = useCallback(() => {
     return (
@@ -145,6 +145,11 @@ const WeatherComp = ({addListener, startLocationDes}) => {
     );
   }, [weatherState?.description]);
 
+  console.log(
+    'kjshdvjsdbkjsdbkjvbsdkjvbksdjbvjksdbvkjsbdjkvbsdjkbvkjsdb',
+    getValBeforePoint(weatherState?.temp),
+  );
+
   return isGranted ? (
     <ImageBackground
       style={styles.bgImage}
@@ -154,12 +159,17 @@ const WeatherComp = ({addListener, startLocationDes}) => {
         <WeatherImgaesView />
         <View style={styles.upInnerView}>
           <TextComponent
-            text={getValBeforePoint(weatherState?.temp)}
+            text={
+              getValBeforePoint(weatherState?.temp) != NaN
+                ? getValBeforePoint(weatherState?.temp)
+                : '3'
+            }
             styles={styles.temp}
           />
           <TextComponent text={'°C'} styles={styles.textDeg} />
         </View>
       </View>
+      {/* {weatherState?.description != undefined &&} */}
       <View style={styles.downView}>
         <TextComponent
           text={`It's ${weatherState?.description}`}

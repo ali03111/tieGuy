@@ -7,7 +7,6 @@ import {TextComponent} from './TextComponent';
 import {Touchable} from './Touchable';
 import ThemeButton from './ThemeButton';
 import {clipboardClose, dataNotFound1, dataNotFound2} from '../Assets';
-import GradientText from './GradientText';
 
 export const EmptyViewComp = ({onRefresh, refreshStyle}) => {
   return (
@@ -28,9 +27,7 @@ export const EmptyViewComp = ({onRefresh, refreshStyle}) => {
         resizeMode="contain"
         style={styles.noDataIcon}
       />
-      <GradientText style={styles.heading} GradientAlignment={0.7}>
-        Data Not Found
-      </GradientText>
+      <TextComponent text={'Data Not Found'} styles={styles.heading} />
       <TextComponent
         text={'No data, please try again later'}
         styles={styles.text}
@@ -43,7 +40,7 @@ export const EmptyViewComp = ({onRefresh, refreshStyle}) => {
       <ThemeButton
         // textStyle={styles.btnText}
         // onPress={() => onPress(1, tripId, tripOwner.id)}
-        btnStyle={styles.btnSt}
+        style={styles.btnSt}
         // hide={true}
         title={'Refresh'}
         onPress={onRefresh}
@@ -71,9 +68,9 @@ const styles = StyleSheet.create({
     marginTop: hp('-3'),
   },
   heading: {
-    fontSize: hp('2'),
+    fontSize: hp('3'),
     fontWeight: '600',
-    color: 'red',
+    color: Colors.primaryColor,
     textAlign: 'center',
     marginTop: hp('1'),
   },

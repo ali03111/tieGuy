@@ -426,7 +426,7 @@ function getValBeforePoint(value) {
   const number = parseFloat(value);
 
   // Return the integer part before the decimal point
-  return Math.floor(number);
+  return Math.floor(number) ?? '2';
 }
 
 /**
@@ -630,6 +630,34 @@ function formatString(input) {
     .join(' ');
 }
 
+function removeDecimals(amount) {
+  return amount.replace(/(\d+)\.\d+/, '$1');
+}
+
+function hasOneMonthPassed(dateString) {
+  // Parse the input date string into a Date object
+  const inputDate = new Date(dateString);
+
+  // Get the current date
+  const currentDate = new Date();
+
+  // Calculate the difference in months
+  const diffInMonths =
+    currentDate.getFullYear() * 12 +
+    currentDate.getMonth() -
+    (inputDate.getFullYear() * 12 + inputDate.getMonth());
+
+  // Check if the date has passed 1 month
+  if (diffInMonths > 1) {
+    return true;
+  } else if (diffInMonths === 1) {
+    // If the difference is exactly 1 month, check the day of the month
+    return currentDate.getDate() >= inputDate.getDate();
+  }
+
+  return false;
+}
+
 export {
   getSingleCharacter,
   getProperLocation,
@@ -659,4 +687,6 @@ export {
   reqPerNotiAND,
   matchIDBetweenTwoArry,
   removeDuplicates,
+  removeDecimals,
+  hasOneMonthPassed,
 };

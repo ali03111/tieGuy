@@ -15,7 +15,10 @@ import {errorMessage, successMessage} from '../../Config/NotificationMessage';
  * methods:
  */
 const useSettingScreen = ({navigate, goBack}) => {
-  const {dispatch} = useReduxStore();
+  const {dispatch, getState} = useReduxStore();
+  const {userData} = getState('Auth');
+
+  console.log('kjdsbvjksdbvjksdbjkvbsdjkvbsdjbksdbdjksd', userData);
 
   const [alertState, setAlertState] = useState({
     logoutAlert: false,
@@ -69,6 +72,7 @@ const useSettingScreen = ({navigate, goBack}) => {
     deleteAlert,
     logoutAlert,
     toggleAlert,
+    userData,
   };
 };
 

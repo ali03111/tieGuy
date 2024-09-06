@@ -20,6 +20,7 @@ import {
 } from '../../Services/AuthServices';
 import {errorMessage, successMessage} from '../../Config/NotificationMessage';
 import NavigationService from '../../Services/NavigationService';
+import {getUserDataFromRevenewCat} from '../../Utils/helperFunc';
 
 const loginObject = {
   Google: () => googleLogin(),
@@ -88,17 +89,38 @@ function* registerSaga({payload: {datas}}) {
         const {data, ok} = yield call(loginService, {
           token: jwtToken,
         });
-        yield put(loadingTrue());
-        console.log('sdjbfjksdbfjbsdjfbsdf', data);
         if (ok) {
-          yield put(loadingTrue());
-          yield put(updateAuth(data));
+          const dataFromRevCat = yield call(getUserDataFromRevenewCat);
+          const activeSubscriptions =
+            dataFromRevCat.entitlements.active['AppStorePlans'] ?? undefined;
+
+          console.log('activeSubscriptions', activeSubscriptions);
+
+          if (activeSubscriptions != undefined) {
+            const userUpdate = {
+              ...data,
+              userData: {
+                ...data.user,
+                planName:
+                  allSubID[activeSubscriptions?.productIdentifier] ?? null,
+                identifier: activeSubscriptions?.productIdentifier,
+              },
+            };
+            yield put(updateAuth(userUpdate));
+          } else {
+            const userUpdate = {
+              ...data,
+              userData: {...data.user, planName: null, identifier: null},
+            };
+
+            yield put(updateAuth(userUpdate));
+          }
+          console.log('sdjbfjksdbfjbsdjfbsdf', data);
         }
       }
     }
   } catch (error) {
     errorMessage(error?.message.split(' ').slice(1).join(' ') ?? error);
-    console.log('err', newError.toString());
   } finally {
     // delay(4000);
     yield put(loadingFalse());

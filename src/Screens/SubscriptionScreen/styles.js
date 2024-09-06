@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: hp('3'),
     fontWeight: 'bold',
+    marginBottom: hp('2'),
     // marginTop
   },
   subView: {
@@ -49,7 +50,7 @@ export const styles = StyleSheet.create({
     marginVertical: hp('0.8'),
   },
   chooseBtn: {
-    marginBottom: hp('2'),
+    marginBottom: hp('1'),
     width: wp('85'),
     alignSelf: 'center',
   },

@@ -71,12 +71,13 @@ const RegisterScreen = ({navigation}) => {
               getValues,
               placeholder: 'First Name',
               isImage: user,
-              defaultValue: '',
+              defaultValue: __DEV__ ? 'first' : '',
               handleSubmit,
               errors,
               reset,
               control,
               getValues,
+              selectionColor: 'white',
             }}
           />
           <InputComponent
@@ -88,8 +89,9 @@ const RegisterScreen = ({navigation}) => {
               control,
               getValues,
               placeholder: 'Last Name',
-              defaultValue: '',
+              defaultValue: __DEV__ ? 'last' : '',
               isImage: user,
+              selectionColor: 'white',
             }}
           />
 
@@ -103,7 +105,8 @@ const RegisterScreen = ({navigation}) => {
               getValues,
               placeholder: 'Email Address',
               isImage: sms,
-              defaultValue: '',
+              defaultValue: __DEV__ ? 'test@mailinator.com' : '',
+              selectionColor: 'white',
             }}
           />
           <InputComponent
@@ -116,9 +119,10 @@ const RegisterScreen = ({navigation}) => {
               getValues,
               placeholder: 'Password',
               isImage: locksetting,
-              defaultValue: '',
+              defaultValue: __DEV__ ? 'Test@123' : '',
               isSecure: true,
               inputIconStyle: styles.lockstyle,
+              selectionColor: 'white',
             }}
           />
           <InputComponent
@@ -131,9 +135,10 @@ const RegisterScreen = ({navigation}) => {
               getValues,
               placeholder: 'Confirm Password',
               isImage: locksetting,
-              defaultValue: '',
+              defaultValue: __DEV__ ? 'Test@123' : '',
               isSecure: true,
               inputIconStyle: styles.lockstyle,
+              selectionColor: 'white',
             }}
           />
           <View style={{paddingTop: hp('3')}}>
