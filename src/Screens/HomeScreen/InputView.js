@@ -43,15 +43,6 @@ const InputView = ({
   const {getState} = useReduxStore();
   const {userData} = getState('Auth');
 
-  console.log(
-    'isdbhvjksbdoivbsdivbsodbvsdbdslkvbdkobvdksbosdbnisdilk',
-    hasOneMonthPassed(userData?.start_trial_at) && userData?.identifier == null,
-    !Boolean(
-      hasOneMonthPassed(userData?.start_trial_at) &&
-        userData?.identifier == null,
-    ),
-  );
-
   return (
     <View
       style={{

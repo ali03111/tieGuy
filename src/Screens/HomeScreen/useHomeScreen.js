@@ -93,6 +93,11 @@ const useHomeScreen = ({addListener, navigate}) => {
 
         if (ok) {
           const afterDubRemove = removeDuplicates(data);
+          console.log(
+            'oioiiohoihiohoihiohiohoihoih',
+            !hasOneMonthPassed(userData?.start_trial_at),
+            userData?.identifier != null,
+          );
           if (
             !hasOneMonthPassed(userData?.start_trial_at) ||
             userData?.identifier != null
@@ -100,7 +105,7 @@ const useHomeScreen = ({addListener, navigate}) => {
             const afterFilterTrack = getDistancesBetweenLocationsArry(
               {lat: latitude, long: longitude},
               afterDubRemove,
-            ).filter(res => parseFloat(res.km) <= 0.5);
+            ).filter(res => parseFloat(res.km) <= 1000);
 
             if (afterFilterTrack.length > 0) {
               const lengthOfTrack = trackThatNotifyRef.current.length ?? 0;
@@ -119,6 +124,10 @@ const useHomeScreen = ({addListener, navigate}) => {
               // setTrackThatNotify(newFilterArry);
 
               needToNotify.map(res => {
+                console.log(
+                  'dnvklsdnvsdkvbnjksdbvkjsdbvkjlsdbvkljsdbnvkljbnsdklvnsdlkvndsklvndskl',
+                  res,
+                );
                 if (res.match == false) {
                   trackThatNotifyRef.current = [
                     ...trackThatNotifyRef.current,
@@ -168,11 +177,6 @@ const useHomeScreen = ({addListener, navigate}) => {
   const setTheValForMap = async () => {
     const location = await getProperLocation();
     if (location?.ok == true || location?.location?.ok == true) {
-      console.log(
-        'lkdsbvklsdbvlksdbvlksdklvbsdklbvkldsbvkldsbvlsdkvbsdvklsdbv',
-        location,
-      );
-
       valChange('startLocation', location?.location ?? location);
       valChange(
         'startDescription',

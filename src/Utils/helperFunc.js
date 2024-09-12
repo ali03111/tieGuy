@@ -92,12 +92,6 @@ const fetchPostWithToken = (url, body, isFormData, imageKey, isArray) => {
   const {Auth} = store.getState('Auth');
   const fullUrl = baseURL + url;
   store.dispatch(loadingTrue());
-  console.log(
-    'Auth Token',
-    createFormData(body, imageKey, isArray)?.getAll(),
-    createFormData(body, imageKey, isArray)?.getParts(),
-    isFormData,
-  );
 
   var requestOptions = {
     method: 'POST',
@@ -158,8 +152,6 @@ const createFormData = (photos, imageKey, isArray) => {
     //   data.append(key, val);
     // }
   });
-
-  console.log('sdkljbvkjlsdbvkljbsdkjvbsdkbvjsdv', data);
 
   // Object.keys(body).forEach(key => {
   //   console.log({body}, 'dldldlq');
@@ -246,7 +238,6 @@ const formDataFunc = (url, body, imageKey, isArray) => {
     }
     formData.append(key, value);
   });
-  console.log('asdasd123', formData);
   var requestOptions = {
     method: 'POST',
     headers: myHeaders,
@@ -254,7 +245,6 @@ const formDataFunc = (url, body, imageKey, isArray) => {
     redirect: 'follow',
   };
   let newUrl = baseURL + url;
-  console.log(newUrl, 'aasdas');
   return fetch(newUrl, requestOptions)
     .then(res => res.json())
     .then(async res => {

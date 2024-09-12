@@ -14,6 +14,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-tieguy-tieguyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-tieguy-tieguyTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		A655D39C2C91FAE700427216 /* notificationSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = A655D39B2C91FAE700427216 /* notificationSound.wav */; };
 		A676DA5D2C52684F008BCF56 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A676DA5C2C52684F008BCF56 /* StoreKit.framework */; };
 		A695F3682C3EB7F6001DBDEC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A695F3672C3EB7F6001DBDEC /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
@@ -90,6 +91,7 @@
 		A643AB862C0DEFA100FCF549 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
 		A643AB872C0DEFA100FCF549 /* Proxima-Nova-Alt-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Proxima-Nova-Alt-Thin.otf"; sourceTree = "<group>"; };
 		A643AB882C0DEFA100FCF549 /* Rubik-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-BoldItalic.ttf"; sourceTree = "<group>"; };
+		A655D39B2C91FAE700427216 /* notificationSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = notificationSound.wav; path = ../src/Assets/NotificationSound/notificationSound.wav; sourceTree = "<group>"; };
 		A676DA5C2C52684F008BCF56 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		A695F3672C3EB7F6001DBDEC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A6A432382C4EB6CF00871EE6 /* tieguy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = tieguy.entitlements; path = tieguy/tieguy.entitlements; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				A655D39B2C91FAE700427216 /* notificationSound.wav */,
 				A695F3672C3EB7F6001DBDEC /* GoogleService-Info.plist */,
 				A643AB5B2C0DEFA100FCF549 /* Resources */,
 				13B07FAE1A68108700A75B9A /* tieguy */,
@@ -350,6 +353,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				A655D39C2C91FAE700427216 /* notificationSound.wav in Resources */,
 				A695F3682C3EB7F6001DBDEC /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);

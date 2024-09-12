@@ -14,8 +14,6 @@ function MainNavigator() {
   const {onboarding} = getState('onboarding');
   const {isLogin, userData} = getState('Auth');
 
-  console.log('kjsdbvjksdbkjvsdb', userData);
-
   return (
     <NavigationContainer
       ref={ref => {

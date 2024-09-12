@@ -355,11 +355,6 @@ const fetchRailwayCrossingAPI = async (lat, long) => {
     );
     const combinedResults = results.flatMap(result => result.results);
 
-    console.log(
-      'kjsvdjkvsdjkvjksdvkjsdvjksdbvjksbdjkvbsdkjvblsdkvbsdlkbvskldvbklsdv',
-      combinedResults,
-    );
-
     // Filter out any results that contain "station" in their name
     const filteredResults = combinedResults.filter(
       place => !place.name.toLowerCase().includes('station'),

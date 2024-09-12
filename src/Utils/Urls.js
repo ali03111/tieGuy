@@ -23,9 +23,9 @@ export const imageUrl = url => {
   // : 'https://res.cloudinary.com/dd6tdswt5/image/upload/v1684830799/UserImages/mhysa2zj0sbmvnw69b35.jpg';
 };
 
-export const aboutUrl = 'https://trackpal.co/about_us';
-export const privacyUrl = 'https://trackpal.co/privacy_policy';
-export const termsUrl = 'https://trackpal.co/terms_and_conditions';
+export const DeleteUrl = 'https://tieguy.app/deletion_policy';
+export const privacyUrl = 'https://tieguy.app/privacy_policy';
+export const termsUrl = 'https://tieguy.app/terms_and_conditions';
 
 export const MapAPIKey = 'AIzaSyAF-COUBSLnPj1qp_7dgQ0IYV3XiwJwJ4M'; // tieGUY
 // export const MapAPIKey = 'AIzaSyAu-nEBbiOahfUyeMc8Lc1gTTKfete_wnQ';

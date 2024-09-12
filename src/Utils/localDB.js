@@ -64,7 +64,7 @@ import {
   videoThumb,
   water,
 } from '../Assets';
-import {aboutUrl, privacyUrl, termsUrl} from './Urls';
+import {aboutUrl, DeleteUrl, privacyUrl, termsUrl} from './Urls';
 
 export const onBoardingData = [
   {
@@ -239,9 +239,9 @@ export const settingData = [
     screenUrl: 'ChangePasswordScreen',
   },
   {
-    title: 'About Tieguy',
-    image: about,
-    pageUrl: aboutUrl,
+    title: 'Delete Account Policy',
+    image: deleteAcc,
+    pageUrl: DeleteUrl,
   },
   {
     title: 'Privacy Policy',

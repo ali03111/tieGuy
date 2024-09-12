@@ -1,6 +1,7 @@
 import PushNotification, {Importance} from 'react-native-push-notification';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import notifee from '@notifee/react-native';
+import {Platform} from 'react-native';
 PushNotification.configure({
   onNotification: function (notification) {
     console.log('Local Notification', notification);
@@ -14,13 +15,18 @@ PushNotification.configure({
   },
 });
 
+const sound = Platform.select({
+  ios: '/src/Assets/NotificationSound/notificationSound.wav',
+  android: '/src/Assets/NotificationSound/notificationSound.mp3',
+});
+
 PushNotification.createChannel(
   {
     channelId: 'channel-id', // (required)
     channelName: 'My channel', // (required)
     channelDescription: 'A channel to categorise your notifications', // (optional) default: undefined.
     playSound: true, // (optional) default: true
-    soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
+    soundName: sound, // (optional) See `soundName` parameter of `localNotification` function
     importance: Importance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
     vibrate: true,
     vibration: 1000, // (optional) default: true. Creates the default vibration pattern if true.
@@ -40,7 +46,7 @@ export const localNotification = () => {
     title: 'Local Notification Title',
     message: 'hey Expand Me!!!',
     playSound: true, // (optional) default: true
-    soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
+    soundName: sound, // (optional) See `soundName` parameter of `localNotification` function
     // importance: 10, // (optional) default: Importance.HIGH. Int value of the Android notification importance
     vibrate: true,
     vibration: 1000, // (optional) default: true. Creates the default vibration pattern if true.
@@ -53,13 +59,15 @@ export async function localNotifeeNotification(id) {
 
   // Create a channel (required for Android)
   const channelId = await notifee.createChannel({
-    id: 'channel-id',
-    name: 'My channel',
+    id: 'channel-id-new',
+    name: 'My new channel',
+    sound: sound,
+    vibration: true,
   });
 
   // Display a notification
   await notifee.displayNotification({
-    title: id,
+    title: 'Railway crossing alert!',
     body: 'Here is a railway crossing near you!',
 
     android: {
@@ -72,9 +80,11 @@ export async function localNotifeeNotification(id) {
       autoCancel: true,
       circularLargeIcon: true,
       lightUpScreen: true,
+      sound: 'notificationSound.mp3',
     },
     ios: {
       critical: true,
+      sound: 'notificationSound.wav',
     },
   });
   // notifee.setBadgeCount(1).then(() => console.log('Badge count set!'));

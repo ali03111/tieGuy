@@ -87,7 +87,6 @@ const WeatherComp = ({addListener, startLocationDes, startLocation}) => {
     const hasPermission = await checkLocationPermission();
     setIsGranted(hasPermission);
 
-    console.log('skjdbvkjsbklvblksdbvlkbsdvklsdbv', startLocation);
     if (hasPermission) {
       getWeather({
         key: 'd3b17fd9554eb61a5ddc829fe4624335',
@@ -97,7 +96,6 @@ const WeatherComp = ({addListener, startLocationDes, startLocation}) => {
       })
         .then(() => {
           let data = new showWeather();
-          console.log('jksdbjklbsdklvbkldsbvklsdbvklbsdlvksdklvblsdkv', data);
           setWeatherState(data);
         })
         .catch(err =>
@@ -108,7 +106,6 @@ const WeatherComp = ({addListener, startLocationDes, startLocation}) => {
 
   useEffect(() => {
     const event = addListener('focus', async () => {
-      console.log('jdbjksdjkvjksdvjksdvjksdvkjsdvvkjsdkjvbkjsdvsdb');
       await getWeatherLo();
     });
     getWeatherLo();
@@ -144,11 +141,6 @@ const WeatherComp = ({addListener, startLocationDes, startLocation}) => {
       />
     );
   }, [weatherState?.description]);
-
-  console.log(
-    'kjshdvjsdbkjsdbkjvbsdkjvbksdjbvjksdbvkjsbdjkvbsdjkbvkjsdb',
-    getValBeforePoint(weatherState?.temp),
-  );
 
   return isGranted ? (
     <ImageBackground

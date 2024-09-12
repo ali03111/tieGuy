@@ -76,7 +76,7 @@ const HomeScreen = ({navigation}) => {
               ? startLocation.coords.long
               : -122.4324,
           }}
-          radius={500} // radius in meters
+          radius={1000} // radius in meters
           strokeWidth={2}
           strokeColor="rgba(0, 122, 255, 1)"
           fillColor="rgba(0, 122, 255, 0.3)"
