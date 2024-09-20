@@ -105,7 +105,7 @@ const useHomeScreen = ({addListener, navigate}) => {
             const afterFilterTrack = getDistancesBetweenLocationsArry(
               {lat: latitude, long: longitude},
               afterDubRemove,
-            ).filter(res => parseFloat(res.km) <= 1000);
+            ).filter(res => parseFloat(res.km) <= 2);
 
             if (afterFilterTrack.length > 0) {
               const lengthOfTrack = trackThatNotifyRef.current.length ?? 0;
@@ -124,11 +124,7 @@ const useHomeScreen = ({addListener, navigate}) => {
               // setTrackThatNotify(newFilterArry);
 
               needToNotify.map(res => {
-                console.log(
-                  'dnvklsdnvsdkvbnjksdbvkjsdbvkjlsdbvkljsdbnvkljbnsdklvnsdlkvndsklvndskl',
-                  res,
-                );
-                if (res.match == false) {
+                if (res.match == false && parseFloat(res.km) <= 2) {
                   trackThatNotifyRef.current = [
                     ...trackThatNotifyRef.current,
                     res,

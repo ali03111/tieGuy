@@ -54,6 +54,7 @@ export {default as editIcon} from './Icons/editIcon.png';
 export {default as contact} from './Icons/contact.png';
 export {default as addProfileImage} from './Icons/addProfileImage.png';
 export {default as deleteAcc} from './Icons/deleteIcon.png';
+export {default as restorePurch} from './Icons/restorePurch.png';
 
 export {default as username} from './Icons/username.png';
 export {default as user} from './Icons/user.png';

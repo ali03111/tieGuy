@@ -5,8 +5,12 @@ import {logoutService} from '../../Services/AuthServices';
 import {Linking} from 'react-native';
 import {useMutation} from '@tanstack/react-query';
 import API from '../../Utils/helperFunc';
-import {DeleteAccUrl} from '../../Utils/Urls';
+import {DeleteAccUrl, restorePurchUrl} from '../../Utils/Urls';
 import {errorMessage, successMessage} from '../../Config/NotificationMessage';
+import Purchases from 'react-native-purchases';
+import {types} from '../../Redux/types';
+import {allSubID} from '../../Utils/localDB';
+import {loadingFalse, loadingTrue} from '../../Redux/Action/isloadingAction';
 
 /**
  * The function `useSettingScreen` handles navigation and logout functionality in a setting screen
@@ -42,6 +46,52 @@ const useSettingScreen = ({navigate, goBack}) => {
 
   const toggleAlert = state => updateState({[state]: !alertState[state]});
 
+  const restorePurchases = async () => {
+    dispatch(loadingTrue());
+    try {
+      const restore = await Purchases.restorePurchases();
+
+      const activeSubscriptions =
+        restore.entitlements.active['AppStorePlans'] ?? undefined;
+
+      /** The condition `if (restore.entitlements.active['AppStorePlans'] != undefined)` is checking if
+    the 'AppStorePlans' entitlement is active in the restored purchases. **/
+      if (activeSubscriptions != undefined) {
+        const {ok, data} = await API.post(restorePurchUrl, {
+          identifier: activeSubscriptions.productIdentifier,
+          rev_id: restore.originalAppUserId,
+        });
+        console.log(
+          'lskdbklbsdklvbsdklvbklsdbvklsdbvklsdbvksdbklvsbdlkvbsklvds',
+          data,
+        );
+
+        if (ok) {
+          dispatch({
+            type: types.UpdateProfile,
+            payload: {
+              ...data,
+              planName:
+                allSubID[activeSubscriptions?.productIdentifier] ?? null,
+              identifier: activeSubscriptions?.productIdentifier,
+            },
+          });
+          dispatch(loadingFalse());
+        } else errorMessage('Failed to fetch data from server');
+      } else {
+        dispatch({
+          type: types.UpdateProfile,
+          payload: {...data, planName: null, identifier: null},
+        });
+        dispatch(loadingFalse());
+      }
+    } catch (e) {
+      errorMessage('Failed to fetch data from server');
+      dispatch(loadingFalse());
+      console.log('e', e);
+    }
+  };
+
   const onConfirm = val => {
     toggleAlert(val);
     if (val == 'logoutAlert') {
@@ -59,10 +109,10 @@ const useSettingScreen = ({navigate, goBack}) => {
       navigate(item?.screenUrl);
     } else if (item?.pageUrl) {
       Linking.openURL(item?.pageUrl);
-    } else {
-      toggleAlert(item?.onPress);
+    } else if (item?.onPress == 'restorePurchases') {
+      restorePurchases();
       // console.log('asd asd');
-    }
+    } else toggleAlert(item?.onPress);
   };
   return {
     onCancel,

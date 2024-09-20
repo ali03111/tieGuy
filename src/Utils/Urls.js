@@ -40,6 +40,7 @@ export const VerifyUserUrl = '/verify';
 export const updateProfileUrl = '/update_profile';
 export const AfterSubBuyUrl = '/validate-receipt';
 export const StartTrialUrl = '/trial-start';
+export const restorePurchUrl = '/set-restore-identifier';
 
 export const DeleteAccUrl = '/user/delete';
 export const logoutUrl = 'auth/logout';

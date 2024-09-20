@@ -51,6 +51,7 @@ import {
   profile,
   rapid,
   remediation,
+  restorePurch,
   sample,
   splashIndustrial,
   splashLand,
@@ -227,6 +228,12 @@ export const settingData = [
     title: 'My Profile',
     image: profile,
     screenUrl: 'EditProfileScreen',
+  },
+  {
+    title: 'Restore Purchase',
+    image: restorePurch,
+    screenUrl: '',
+    onPress: 'restorePurchases',
   },
   {
     title: 'Emergency Contacts',
