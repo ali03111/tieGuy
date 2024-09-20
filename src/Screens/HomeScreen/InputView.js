@@ -10,6 +10,7 @@ import {TextComponent} from '../../Components/TextComponent';
 import {
   getDistancesBetweenLocationsArry,
   hasOneMonthPassed,
+  kilometersToMiles,
 } from '../../Services/GlobalFunctions';
 import useReduxStore from '../../Hooks/UseReduxStore';
 
@@ -54,7 +55,9 @@ const InputView = ({
       <View style={styles.desView}>
         {isShowBtn ? (
           <TextComponent
-            text={`Destination ${kiloMeter.current}/km`}
+            text={`Destination ${kilometersToMiles(kiloMeter.current).toFixed(
+              2,
+            )}/miles`}
             styles={styles.destination}
           />
         ) : (

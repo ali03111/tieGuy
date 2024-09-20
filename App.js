@@ -20,6 +20,7 @@ import Geolocation from '@react-native-community/geolocation';
 import {withIAPContext} from 'react-native-iap';
 import {fetchGetWithToken} from './src/Utils/helperFunc';
 import {VerifyUserUrl} from './src/Utils/Urls';
+import Orientation from 'react-native-orientation-locker';
 
 const App = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -65,6 +66,7 @@ const App = () => {
   };
 
   useEffect(() => {
+    Orientation.lockToPortrait();
     Geolocation.setRNConfiguration({
       config: {
         skipPermissionRequests: true,

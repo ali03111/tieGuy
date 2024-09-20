@@ -68,8 +68,8 @@ export async function localNotifeeNotification(id) {
   // Display a notification
   await notifee.displayNotification({
     title: 'Railway crossing alert!',
-    body: id,
-    // body: 'Here is a railway crossing near you!',
+    // body: id,
+    body: 'Here is a railway crossing near you!',
 
     android: {
       channelId,

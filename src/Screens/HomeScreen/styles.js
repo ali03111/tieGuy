@@ -81,6 +81,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: wp('1.5'),
     backgroundColor: 'red',
     borderRadius: 10,
+    fontSize: hp('1.5'),
     overflow: 'hidden',
   },
   destination: {
@@ -90,5 +91,6 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     overflow: 'hidden',
     borderWidth: 1,
+    fontSize: hp('1.5'),
   },
 });

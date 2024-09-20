@@ -376,6 +376,20 @@ const fetchRailwayCrossingAPI = async (lat, long) => {
   }
 };
 
+/**
+ * The function `kilometersToMiles` converts a distance in kilometers to miles using a conversion
+ * factor of 0.621371.
+ * @param kilometers - The `kilometersToMiles` function converts kilometers to miles using the
+ * conversion factor 0.621371. If you provide me with a value for `kilometers`, I can calculate the
+ * equivalent distance in miles for you. Just let me know the value you'd like to convert.
+ * @returns The function `kilometersToMiles` returns the equivalent distance in miles when provided
+ * with a distance in kilometers.
+ */
+function kilometersToMiles(kilometers) {
+  const miles = kilometers * 0.621371;
+  return miles;
+}
+
 // const fetchRailwayCrossingAPI = async (lat, long) => {
 //   const apiKey = MapAPIKey;
 //   const locations = `${lat},${long}`;
@@ -684,4 +698,5 @@ export {
   removeDuplicates,
   removeDecimals,
   hasOneMonthPassed,
+  kilometersToMiles,
 };

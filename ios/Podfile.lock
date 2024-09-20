@@ -1131,7 +1131,7 @@ PODS:
     - React-Core
   - react-native-maps (1.10.3):
     - React-Core
-  - react-native-orientation-locker (1.6.0):
+  - react-native-orientation-locker (1.7.0):
     - React-Core
   - react-native-safe-area-context (4.9.0):
     - React-Core
@@ -1733,7 +1733,7 @@ SPEC CHECKSUMS:
   react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b
   react-native-google-maps: 1bcc1f9f13f798fcf230db7fe476f3566d0bc0a3
   react-native-maps: 72a8a903f8a1b53e2c777ba79102078ab502e0bf
-  react-native-orientation-locker: 4409c5b12b65f942e75449872b4f078b6f27af81
+  react-native-orientation-locker: 5819fd23ca89cbac0d736fb4314745f62716d517
   react-native-safe-area-context: b97eb6f9e3b7f437806c2ce5983f479f8eb5de4b
   react-native-sms: 31fbb9d6ebb565ad32e409eaf9dc70329936a129
   React-nativeconfig: b4d4e9901d4cabb57be63053fd2aa6086eb3c85f
