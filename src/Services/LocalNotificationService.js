@@ -1,6 +1,6 @@
 import PushNotification, {Importance} from 'react-native-push-notification';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
-import notifee from '@notifee/react-native';
+import notifee, {AndroidImportance, EventType} from '@notifee/react-native';
 import {Platform} from 'react-native';
 PushNotification.configure({
   onNotification: function (notification) {
@@ -10,7 +10,7 @@ PushNotification.configure({
   requestPermissions: true,
   permissions: {
     alert: true,
-    badge: true,
+    badge: false,
     sound: true,
   },
 });
@@ -27,7 +27,7 @@ PushNotification.createChannel(
     channelDescription: 'A channel to categorise your notifications', // (optional) default: undefined.
     playSound: true, // (optional) default: true
     soundName: sound, // (optional) See `soundName` parameter of `localNotification` function
-    importance: Importance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
+    importance: AndroidImportance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
     vibrate: true,
     vibration: 1000, // (optional) default: true. Creates the default vibration pattern if true.
   },
@@ -53,23 +53,54 @@ export const localNotification = () => {
   });
 };
 
-export async function localNotifeeNotification(id) {
+export const backgroundHandler = () => {
+  return notifee.onBackgroundEvent(({type, detail}) => {
+    switch (type) {
+      case EventType.DISMISSED:
+        console.log('User dismissed notification', detail.notification);
+        break;
+      case EventType.PRESS:
+        console.log(
+          'User pressed notification onBackgroundEvent',
+          detail.notification,
+        );
+        break;
+    }
+  });
+};
+export const forgroundHandler = () => {
+  return notifee.onForegroundEvent(({type, detail}) => {
+    switch (type) {
+      case EventType.DISMISSED:
+        console.log('User dismissed notification', detail.notification);
+        break;
+      case EventType.PRESS:
+        console.log(
+          'User pressed notification onBackgroundEvent',
+          detail.notification,
+        );
+        break;
+    }
+  });
+};
+
+export async function localNotifeeNotification(title, body) {
   // Request permissions (required for iOS)
   await notifee.requestPermission();
 
   // Create a channel (required for Android)
   const channelId = await notifee.createChannel({
-    id: 'channel-id-new',
+    id: 'channelId-new',
     name: 'My new channel',
     sound: sound,
     vibration: true,
+    // importance: AndroidImportance.HIGH,
   });
 
-  // Display a notification
   await notifee.displayNotification({
-    title: 'Railway crossing alert!',
-    // body: id,
-    body: 'Here is a railway crossing near you!',
+    title: title ?? 'Railway crossing alert!',
+    body: body ?? 'Here is a railway crossing near you!',
+    // body: 'Here is a railway crossing near you!',
 
     android: {
       channelId,
@@ -81,12 +112,35 @@ export async function localNotifeeNotification(id) {
       autoCancel: true,
       circularLargeIcon: true,
       lightUpScreen: true,
-      sound: 'notificationSound.mp3',
+      sound: 'notificationSound',
     },
     ios: {
       critical: true,
       sound: 'notificationSound.wav',
     },
   });
+  // Display a notification
+  // await notifee.displayNotification({
+  //   title: title ?? 'Railway crossing alert!',
+  //   body: body ?? 'Here is a railway crossing near you!',
+  //   // body: 'Here is a railway crossing near you!',
+
+  //   android: {
+  //     channelId,
+  //     // smallIcon: 'name-of-a-small-icon', // optional, defaults to 'ic_launcher'.
+  //     // pressAction is needed if you want the notification to open the app when pressed
+  //     pressAction: {
+  //       id: 'default',
+  //     },
+  //     autoCancel: true,
+  //     circularLargeIcon: true,
+  //     lightUpScreen: true,
+  //     sound: 'notificationsound.mp3',
+  //   },
+  //   ios: {
+  //     critical: true,
+  //     sound: 'notificationSound.wav',
+  //   },
+  // });
   // notifee.setBadgeCount(1).then(() => console.log('Badge count set!'));
 }

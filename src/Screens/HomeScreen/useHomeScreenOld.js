@@ -25,14 +25,9 @@ import {errorMessage} from '../../Config/NotificationMessage';
 import useReduxStore from '../../Hooks/UseReduxStore';
 import {loadingFalse, loadingTrue} from '../../Redux/Action/isloadingAction';
 import {store} from '../../Redux/Reducer';
-import {useMutation, useQuery} from '@tanstack/react-query';
-import API from '../../Utils/helperFunc';
-import {GetCrossingUrl} from '../../Utils/Urls';
-import {appleIdlogin} from '../../Utils/SocialLogin';
-import BackgroundTimer from 'react-native-background-timer';
 
 const useHomeScreen = ({addListener, navigate}) => {
-  const notificationKM = 1.5;
+  const notificationKM = 1;
 
   const {getState, dispatch} = useReduxStore();
   const {userData, isLogin} = getState('Auth');
@@ -86,47 +81,6 @@ const useHomeScreen = ({addListener, navigate}) => {
     },
   });
 
-  // const {data, error, isLoading} = useQuery({
-  //   queryKey: ['homeDataCous'],
-  //   queryFn: async () => {
-  //     const allData = await API.get(GetCrossingUrl);
-  //     if (allData?.ok) {
-  //       railwayTracksRef.current = allData?.data?.crossings;
-  //       console.log(
-  //         'sldkvklsdnvklsdnlkvnsdklvnksdnklvsdvsdvsdvsdvsd',
-  //         allData?.data?.crossings,
-  //       );
-  //       setDummy(dummy++);
-  //     }
-  //     return allData;
-  //   },
-  // });
-
-  const {mutate} = useMutation({
-    mutationFn: body => {
-      return API.post(GetCrossingUrl, body);
-    },
-    onSuccess: ({ok, data}) => {
-      if (ok) {
-        railwayTracksRef.current = data?.crossings;
-        console.log(
-          'sldkvklsdnvklsdnlkvnsdklvnksdnklvsdvsdvsdvsdvsd',
-          data?.crossings,
-        );
-        setDummy(prev => prev++);
-      }
-      console.log('jksdbvjksdkbvdjksbvjkldsjklvbdsklvbdlvks', data);
-    },
-    onError: error => {
-      console.log('kasvcjkasvkjcvdjkvcklsadbgk.cgaslicvoiasgsilgioqlad', error);
-    },
-  });
-
-  // console.log(
-  //   'datadatadatadatadatadatadatadatadsdfsdfsdfsdatadatadatadatadatadatadatadatadata',
-  //   JSON.stringify(data?.data),
-  // );
-
   const [dummy, setDummy] = useState(1);
   const [subAlert, setSubAlert] = useState(false);
 
@@ -141,10 +95,97 @@ const useHomeScreen = ({addListener, navigate}) => {
   const trackThatNotifyRef = useRef([]);
 
   const startYourTracking = async (lat, long, isFocue, text) => {
+    // console.log(
+    //   'ksdvbjksdbkjbsdjkvbsdklbklsdbkls',
+    //   startLocation,
+    //   lat,
+    //   long,
+    //   startDescription,
+    //   text,
+    //   startLocationState,
+    // );
+    // console.log('jkssksk');
     Geolocation.watchPosition(
       async position => {
         const {latitude, longitude} = position.coords;
+
         var afterDubRemove = [];
+
+        setKmBetweenTwoPoints(
+          parseFloat(
+            getDistanceFromLatLonInKm(
+              startLocation?.coords?.lat ??
+                startLocationState.coords.lat ??
+                lat,
+              startLocation?.coords?.long ??
+                startLocationState.coords.long ??
+                long,
+              position.coords.latitude,
+              position.coords.longitude,
+            ),
+          ),
+        );
+        const {ok, data} = afterFilterPreAndNewCoords
+          ? {ok: true, data: railwayTracksRef.current}
+          : await fetchRailwayCrossingAPI(latitude, longitude);
+
+        if (ok) {
+          if (!afterFilterPreAndNewCoords) {
+            afterDubRemove = removeDuplicates(data);
+            railwayTracksRef.current = afterDubRemove;
+            setDummy(prev => ++prev);
+          }
+          // console.log(
+          //   'oioiiohoihiohoihiohiohoihoih',
+          //   !hasOneMonthPassed(userData?.start_trial_at),
+          //   userData?.identifier != null,
+          //   latitude,
+          //   longitude,
+          // );
+          // if (
+          //   !hasOneMonthPassed(userData?.start_trial_at) ||
+          //   userData?.identifier != null
+          // )
+          // {
+          const afterFilterTrack = getDistancesBetweenLocationsArry(
+            {lat: latitude, long: longitude},
+            afterFilterPreAndNewCoords
+              ? railwayTracksRef.current
+              : afterDubRemove,
+          ).filter(res => parseFloat(res.km) <= notificationKM);
+
+          console.log(
+            'afterFilterTrackafterFilterTrackafterFilterTrackafterFilterTrackafterFilterTrackafterFilterTrack',
+            afterFilterTrack,
+          );
+
+          if (afterFilterTrack.length > 0) {
+            let afterMatch = matchIDBetweenTwoArry(
+              afterFilterTrack,
+              trackThatNotifyRef.current,
+            );
+
+            const newFilterArry =
+              afterMatch.length > 0 ? afterMatch : afterFilterTrack;
+            const needToNotify = matchTwoArrays(
+              newFilterArry,
+              trackThatNotifyRef.current,
+            );
+            // setTrackThatNotify(newFilterArry);
+
+            needToNotify.map(res => {
+              if (res.match == false && parseFloat(res.km) <= notificationKM) {
+                trackThatNotifyRef.current = [
+                  ...trackThatNotifyRef.current,
+                  res,
+                ];
+                setTrackThatNotify(prev => [...prev, res]);
+                localNotifeeNotification(res?.id);
+              }
+            });
+          }
+        }
+        if (startTracking) getKiloMeter(position.coords);
 
         const afterFilterPreAndNewCoords = Boolean(
           parseFloat(
@@ -158,61 +199,68 @@ const useHomeScreen = ({addListener, navigate}) => {
               position.coords.latitude,
               position.coords.longitude,
             ),
-          ) < 300,
+          ) < 100,
         );
+        // console.log(
+        //   'afterFilterPreAndNewCoordsafterFilterPreAndNewCoordsafterFilterPreAndNewCoordsafterFilterPreAndNewCoords',
+        //   afterFilterPreAndNewCoords,
+        //   startLocation?.coords?.lat,
+        //   startLocationState.coords.lat,
+        //   lat,
+        //   startLocation?.coords?.long,
+        //   startLocationState.coords.long,
+        //   long,
+        //   getDistanceFromLatLonInKm(
+        //     startLocation?.coords?.lat ?? startLocationState.coords.lat ?? lat,
+        //     startLocation?.coords?.long ??
+        //       startLocationState.coords.long ??
+        //       long,
+        //     position.coords.latitude,
+        //     position.coords.longitude,
+        //   ),
+        //   Platform.OS,
+        // );
 
-        if (!afterFilterPreAndNewCoords) {
-          mutate({
-            latitude,
-            longitude,
-          });
-        }
+        // const afterFilterPreAndNewCoords = Boolean(
+        //   isFocue && startLocationState.coords.lat != null
+        //     ? parseFloat(
+        //         getDistanceFromLatLonInKm(
+        //           startLocation?.coords?.lat ??
+        //             startLocationState.coords.lat ??
+        //             lat,
+        //           startLocation?.coords?.long ??
+        //             startLocationState.coords.long ??
+        //             long,
+        //           position.coords.latitude,
+        //           position.coords.longitude,
+        //         ),
+        //       ) < 100
+        //     : true,
+        // );
 
-        const afterFilterTrack = getDistancesBetweenLocationsArry(
-          {lat: latitude, long: longitude},
-          railwayTracksRef.current,
-        ).filter(res => parseFloat(res.km) <= notificationKM);
-
-        console.log(
-          'afterFilterTrackafterFilterTrackafterFilterTrackafterFilterTracsdfsdfsdkafterFilterTrackafterFilterTrack',
-          afterFilterTrack,
-          railwayTracksRef.current,
-          latitude,
-          longitude,
-        );
-
-        if (afterFilterTrack.length > 0) {
-          let afterMatch = matchIDBetweenTwoArry(
-            afterFilterTrack,
-            trackThatNotifyRef.current,
-          );
-
-          const newFilterArry =
-            afterMatch.length > 0 ? afterMatch : afterFilterTrack;
-          const needToNotify = matchTwoArrays(
-            newFilterArry,
-            trackThatNotifyRef.current,
-          );
-          console.log(
-            'needToNotifyneedToNotifyneedToNotifyneedToNotifyneedToNotify',
-            needToNotify,
-          );
-          // setTrackThatNotify(newFilterArry);
-
-          needToNotify.map(res => {
-            if (res.match == false && parseFloat(res.km) <= notificationKM) {
-              console.log(
-                'jksdbvlsdblvkbsdlvkbsdklbvlksdbvlkdsbvlksbdvksdlvbsdkv',
-                Boolean(parseFloat(res.km) <= notificationKM),
-              );
-              trackThatNotifyRef.current = [...trackThatNotifyRef.current, res];
-              // setTrackThatNotify(prev => [...prev, res]);
-              // localNotifeeNotification(res?.id);
-              localNotifeeNotification();
-            }
-          });
-        }
-        if (startTracking) getKiloMeter(position.coords);
+        // if (
+        //   afterFilterPreAndNewCoords ||
+        //   startLocation.coords?.lat == null ||
+        //   startLocationState.coords.lat == null
+        // ) {
+        //   // console.log('on start set', latitude, longitude);
+        //   if (latitude != null) {
+        //     setStartLocationState({
+        //       description: await getLocationName(latitude, longitude),
+        //       coords: {
+        //         lat: latitude,
+        //         long: longitude,
+        //       },
+        //     });
+        //     await valChange('startLocation', {
+        //       description: await getLocationName(latitude, longitude),
+        //       coords: {
+        //         lat: latitude,
+        //         long: longitude,
+        //       },
+        //     });
+        //   }
+        // }
         setDummy(prev => ++prev);
         // }
       },
@@ -221,8 +269,8 @@ const useHomeScreen = ({addListener, navigate}) => {
       },
       {
         enableHighAccuracy: true,
-        fastestInterval: 200, // for android in milisecond
-        distanceFilter: 200, // for android in meter
+        // fastestInterval: 200, // for android in milisecond
+        // distanceFilter: 200, // for android in meter
         useSignificantChanges: true,
         timeout: 200,
         maximumAge: 0,
@@ -235,23 +283,50 @@ const useHomeScreen = ({addListener, navigate}) => {
     isFocue,
     text,
   ) => {
-    console.log(
-      'latitudelatitudelatitudelatitudelatitude',
-      latitude,
-      longitude,
-      railwayTracksRef.current,
-    );
+    // console.log(
+    //   'ksdvbjksdbkjbsdjkvbsdklbklsdbkls',
+    //   startLocation,
+    //   lat,
+    //   long,
+    //   startDescription,
+    //   text,
+    //   startLocationState,
+    // );
+    // console.log('jkssksk');
+
+    // const {latitude, longitude} = position.coords;
+
+    var afterDubRemove = [];
+
+    // const {ok, data} = afterFilterPreAndNewCoords
+    //   ? {ok: true, data: railwayTracksRef.current}
+    //   : await fetchRailwayCrossingAPI(latitude, longitude);
+
+    // if (!afterFilterPreAndNewCoords) {
+    //   afterDubRemove = removeDuplicates(data);
+    //   railwayTracksRef.current = afterDubRemove;
+    //   setDummy(prev => ++prev);
+    // }
+    // console.log(
+    //   'oioiiohoihiohoihiohiohoihoih',
+    //   !hasOneMonthPassed(userData?.start_trial_at),
+    //   userData?.identifier != null,
+    //   latitude,
+    //   longitude,
+    // );
+    // if (
+    //   !hasOneMonthPassed(userData?.start_trial_at) ||
+    //   userData?.identifier != null
+    // )
+    // {
     const afterFilterTrack = getDistancesBetweenLocationsArry(
       {lat: latitude, long: longitude},
       railwayTracksRef.current,
     ).filter(res => parseFloat(res.km) <= notificationKM);
 
     console.log(
-      'afterFilterTrackafterFilterTrackafterFilterTrackafterFilterTracsdfsdfsdkafterFilterTrackafterFilterTrack',
+      'afterFilterTrackafterFilterTrackafterFilterTrackafterFilterTrackafterFilterTrackafterFilterTrack',
       afterFilterTrack,
-      railwayTracksRef.current,
-      latitude,
-      longitude,
     );
 
     if (afterFilterTrack.length > 0) {
@@ -266,25 +341,78 @@ const useHomeScreen = ({addListener, navigate}) => {
         newFilterArry,
         trackThatNotifyRef.current,
       );
-      console.log(
-        'needToNotifyneedToNotifyneedToNotifyneedToNotifyneedToNotify',
-        needToNotify,
-      );
       // setTrackThatNotify(newFilterArry);
 
       needToNotify.map(res => {
         if (res.match == false && parseFloat(res.km) <= notificationKM) {
-          console.log(
-            'jksdbvlsdblvkbsdlvkbsdklbvlksdbvlkdsbvlksbdvksdlvbsdkv',
-            Boolean(parseFloat(res.km) <= notificationKM),
-          );
           trackThatNotifyRef.current = [...trackThatNotifyRef.current, res];
-          // setTrackThatNotify(prev => [...prev, res]);
-          // localNotifeeNotification(res?.id);
-          localNotifeeNotification();
+          setTrackThatNotify(prev => [...prev, res]);
+          localNotifeeNotification(res?.id);
         }
       });
     }
+
+    // console.log(
+    //   'afterFilterPreAndNewCoordsafterFilterPreAndNewCoordsafterFilterPreAndNewCoordsafterFilterPreAndNewCoords',
+    //   afterFilterPreAndNewCoords,
+    //   startLocation?.coords?.lat,
+    //   startLocationState.coords.lat,
+    //   lat,
+    //   startLocation?.coords?.long,
+    //   startLocationState.coords.long,
+    //   long,
+    //   getDistanceFromLatLonInKm(
+    //     startLocation?.coords?.lat ?? startLocationState.coords.lat ?? lat,
+    //     startLocation?.coords?.long ??
+    //       startLocationState.coords.long ??
+    //       long,
+    //     position.coords.latitude,
+    //     position.coords.longitude,
+    //   ),
+    //   Platform.OS,
+    // );
+
+    // const afterFilterPreAndNewCoords = Boolean(
+    //   isFocue && startLocationState.coords.lat != null
+    //     ? parseFloat(
+    //         getDistanceFromLatLonInKm(
+    //           startLocation?.coords?.lat ??
+    //             startLocationState.coords.lat ??
+    //             lat,
+    //           startLocation?.coords?.long ??
+    //             startLocationState.coords.long ??
+    //             long,
+    //           position.coords.latitude,
+    //           position.coords.longitude,
+    //         ),
+    //       ) < 100
+    //     : true,
+    // );
+
+    // if (
+    //   afterFilterPreAndNewCoords ||
+    //   startLocation.coords?.lat == null ||
+    //   startLocationState.coords.lat == null
+    // ) {
+    //   // console.log('on start set', latitude, longitude);
+    //   if (latitude != null) {
+    //     setStartLocationState({
+    //       description: await getLocationName(latitude, longitude),
+    //       coords: {
+    //         lat: latitude,
+    //         long: longitude,
+    //       },
+    //     });
+    //     await valChange('startLocation', {
+    //       description: await getLocationName(latitude, longitude),
+    //       coords: {
+    //         lat: latitude,
+    //         long: longitude,
+    //       },
+    //     });
+    //   }
+    // }
+    // }
   };
 
   // Function to update the description using valChange
@@ -296,8 +424,6 @@ const useHomeScreen = ({addListener, navigate}) => {
   };
 
   const setTheValForMap = async () => {
-    // localNotifeeNotification();
-    trackThatNotifyRef.current = [];
     // localNotifeeNotification('Alert', 'Notification allow successfully');
     const location = await getProperLocation();
     if (location?.ok == true || location?.location?.ok == true) {
@@ -313,31 +439,25 @@ const useHomeScreen = ({addListener, navigate}) => {
           'startLocation',
           {...location?.location} ?? {...location},
         );
-        railwayTracksRef.current = [];
-        mutate({
-          latitude: location.location?.coords?.lat ?? location?.coords?.lat,
-          longitude: location.location?.coords?.long ?? location?.coords?.long,
-        });
       }
-
       await valChange(
         'startDescription',
         location?.location?.description ?? location?.description,
       );
       // valChange('startLocation', location?.location ?? location);
-      // await fetchRailwayCrossingAPI(
-      //   location.location?.coords?.lat ?? location?.coords?.lat,
-      //   location.location?.coords?.long ?? location?.coords?.long,
-      // );
-      // const {ok, data} = await fetchRailwayCrossingAPI(
-      //   location.location?.coords?.lat ?? location?.coords?.lat,
-      //   location.location?.coords?.long ?? location?.coords?.long,
-      // );
-      // if (ok) {
-      //   const removeDuplicateIds = removeDuplicates(data);
-      //   railwayTracksRef.current = removeDuplicateIds;
-      //   setDummy(prev => ++prev);
-      // }
+      await fetchRailwayCrossingAPI(
+        location.location?.coords?.lat ?? location?.coords?.lat,
+        location.location?.coords?.long ?? location?.coords?.long,
+      );
+      const {ok, data} = await fetchRailwayCrossingAPI(
+        location.location?.coords?.lat ?? location?.coords?.lat,
+        location.location?.coords?.long ?? location?.coords?.long,
+      );
+      if (ok) {
+        const removeDuplicateIds = removeDuplicates(data);
+        railwayTracksRef.current = removeDuplicateIds;
+        setDummy(prev => ++prev);
+      }
       // setTimeout(async () => {
       await startYourTracking(
         location.location?.coords?.lat,
@@ -346,6 +466,7 @@ const useHomeScreen = ({addListener, navigate}) => {
         'settitme out',
       );
       // }, 500);
+      dispatch(loadingFalse());
       // setTimeout(async () => {
       //   await startYourTracking(
       //     location.location?.coords?.lat,
@@ -358,7 +479,6 @@ const useHomeScreen = ({addListener, navigate}) => {
       applyForNotifiPer();
     }
     const event = addListener('focus', () => {
-      trackThatNotifyRef.current = [];
       setTimeout(async () => {
         await startYourTracking(null, null, true, 'focus out');
       }, 500);
@@ -406,18 +526,14 @@ const useHomeScreen = ({addListener, navigate}) => {
     // localNotifeeNotification();
   };
 
-  const useEffectFun = async () => {
-    dispatch(loadingTrue());
-    await setTheValForMap();
-    dispatch(loadingTrue());
-    dispatch(loadingFalse());
+  const useEffectFun = () => {
+    setTheValForMap();
   };
 
   useEffect(useEffectFun, []);
 
   const appState = useRef(AppState.currentState);
   const intervalId = useRef(null);
-  const intervalIdBg = useRef(null);
 
   useEffect(() => {
     const subscription = AppState.addEventListener(
@@ -425,58 +541,23 @@ const useHomeScreen = ({addListener, navigate}) => {
       async nextState => {
         if (nextState.match(/background/) && isLogin) {
           console.log('lsbdvklsdbklvbsdklvbsldbvlsdbv', nextState);
-          intervalIdBg.current = BackgroundTimer.setInterval(async () => {
-            const location = await getCurrentLocation();
-            console.log(
-              'ljskdbvklbsdkvbsdkvbsdklbvlksdbvlksdbklvbsdlkvbslkdbvlksdbvkdslvsdkvlsdbvsdbk',
-              location,
-            );
-            if (location?.ok == true || location?.location?.ok == true) {
-              const latVal =
-                location.location?.coords?.lat ?? location?.coords?.lat;
-              const langVal =
-                location.location?.coords?.long ?? location?.coords?.long;
-              console.log(
-                'jksdvbjksbdkjbsdklbsdklvbklsdbvlkdsbvlkdsks',
-                langVal,
-                latVal,
-              );
-              // if (startLocation.coords.lat.toFixed(6) != lantVal.toFixed(6))
-              await startYourTrackingInBackground(latVal, langVal);
-            }
-            //code that will be called every 3 seconds
-          }, 2000);
           intervalId.current = setInterval(async () => {
             console.log('lsbdvklsdbklvbsdklvbsldbvlsdwddwcwdcbv', nextState);
             const location = await getCurrentLocation();
-            console.log(
-              'ljskdbvklbsdkvbsdkvbsdklbvlksdbvlksdbklvbsdlkvbslkdbvlksdbvkdslvsdkvlsdbvsdbk',
-              location,
-            );
             if (location?.ok == true || location?.location?.ok == true) {
-              const latVal =
+              const lantVal =
                 location.location?.coords?.lat ?? location?.coords?.lat;
-              const langVal =
-                location.location?.coords?.long ?? location?.coords?.long;
               console.log(
                 'jksdvbjksbdkjbsdklbsdklvbklsdbvlkdsbvlkdsks',
-                langVal,
-                latVal,
+                startLocation,
+                lantVal,
               );
               // if (startLocation.coords.lat.toFixed(6) != lantVal.toFixed(6))
-              await startYourTrackingInBackground(latVal, langVal);
+              await startYourTrackingInBackground();
             }
           }, 2000);
         } else if (nextState.match(/active/) && isLogin) {
           if (intervalId.current) {
-            console.log(
-              'clearIntervalclearIntervalclearIntervalclearIntervalclearIntervalclearIntervalclearInterval',
-              intervalId.current,
-            );
-            // Cancel the timer when you are done with it
-            BackgroundTimer.clearInterval(intervalIdBg.current);
-            // BackgroundTimer.clearInterval(intervalId);
-            BackgroundTimer.stopBackgroundTimer(); //after this call all code on background stop run.
             clearInterval(intervalId.current); // Clear the stored interval ID
             intervalId.current = null; // Reset the intervalId
           }
@@ -569,7 +650,6 @@ const useHomeScreen = ({addListener, navigate}) => {
     userData,
     KmBetweenTwoPoint,
     startLocationState,
-    // railData: data?.data?.crossings ?? [],
   };
 };
 

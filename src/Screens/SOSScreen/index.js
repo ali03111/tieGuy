@@ -41,10 +41,10 @@ const SOSScreen = ({navigation}) => {
           moveOnMarkerPress
           showsMyLocationButton
           region={{
-            latitude: startLocation.coords.lat
-              ? startLocation.coords.lat
+            latitude: startLocation?.coords?.lat
+              ? startLocation?.coords?.lat
               : 37.78825,
-            longitude: startLocation.coords.long
+            longitude: startLocation?.coords?.long
               ? startLocation.coords.long
               : -122.4324,
             latitudeDelta: latitudeDelta,

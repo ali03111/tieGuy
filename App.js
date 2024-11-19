@@ -21,6 +21,7 @@ import {withIAPContext} from 'react-native-iap';
 import {fetchGetWithToken} from './src/Utils/helperFunc';
 import {VerifyUserUrl} from './src/Utils/Urls';
 import Orientation from 'react-native-orientation-locker';
+import {AndroidImportance} from '@notifee/react-native';
 
 const App = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -64,6 +65,27 @@ const App = () => {
   const time = () => {
     return 3000;
   };
+
+  const sound = Platform.select({
+    ios: '/src/Assets/NotificationSound/notificationSound.wav',
+    android: '/src/Assets/NotificationSound/notificationSound.mp3',
+  });
+
+  // useEffect(() => {
+  //   PushNotification.createChannel(
+  //     {
+  //       channelId: 'channel-id', // (required)
+  //       channelName: 'My channel', // (required)
+  //       channelDescription: 'A channel to categorise your notifications', // (optional) default: undefined.
+  //       playSound: true, // (optional) default: true
+  //       soundName: sound, // (optional) See `soundName` parameter of `localNotification` function
+  //       importance: AndroidImportance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
+  //       vibrate: true,
+  //       vibration: 1000, // (optional) default: true. Creates the default vibration pattern if true.
+  //     },
+  //     created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+  //   );
+  // }, []);
 
   useEffect(() => {
     Orientation.lockToPortrait();

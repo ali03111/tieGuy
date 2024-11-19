@@ -8567,6 +8567,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-background-timer@npm:^2.4.1":
+  version: 2.4.1
+  resolution: "react-native-background-timer@npm:2.4.1"
+  peerDependencies:
+    react-native: ">=0.47.0"
+  checksum: 635feb23bfdc8c43b8ee85dc85a5eb83f85aa9c285ce92ac329946ac83864121ae66bfb64fefa21e2a10462d094e03c17ff87eeb5d7e6349bc8e72d941f12754
+  languageName: node
+  linkType: hard
+
 "react-native-blurhash@npm:^2.0.3":
   version: 2.0.3
   resolution: "react-native-blurhash@npm:2.0.3"
@@ -10042,6 +10051,7 @@ __metadata:
     react-hook-form: ^7.43.9
     react-native: 0.73.6
     react-native-awesome-alerts: ^2.0.0
+    react-native-background-timer: ^2.4.1
     react-native-blurhash: ^2.0.3
     react-native-fast-image: ^8.6.3
     react-native-fbsdk-next: ^13.0.0

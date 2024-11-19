@@ -1,5 +1,5 @@
 import {create} from 'apisauce';
-import {VerifyUserUrl, baseURL} from './Urls';
+import {GetCrossingUrl, VerifyUserUrl, baseURL} from './Urls';
 import {store} from '../Redux/Reducer';
 import {loadingFalse, loadingTrue} from '../Redux/Action/isloadingAction';
 import {Platform} from 'react-native';
@@ -15,7 +15,7 @@ const API = create({
   //   timeoutErrorMessage: 'Please try Again...',
 });
 
-const hideLoaderAPIs = [VerifyUserUrl];
+const hideLoaderAPIs = [VerifyUserUrl, GetCrossingUrl];
 // const hideLoaderAPIs = ['/playcount', '/playlist', '/home-content'];
 
 API.addRequestTransform(config => {

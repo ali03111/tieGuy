@@ -19,6 +19,7 @@ import {
   AMPMLayout,
   checkLocationPermission,
   checkPer,
+  getCurrentLocation,
   getProperLocation,
   getValBeforePoint,
   granted,
@@ -46,7 +47,12 @@ import Geolocationios from '@react-native-community/geolocation';
 import {PERMISSIONS, request} from 'react-native-permissions';
 import Geolocation from '@react-native-community/geolocation';
 
-const WeatherComp = ({addListener, startLocationDes, startLocation}) => {
+const WeatherComp = ({
+  addListener,
+  startLocationDes,
+  startLocation,
+  railwayTracks,
+}) => {
   const [weatherState, setWeatherState] = useState();
   // const isGranted = true;
 
@@ -73,7 +79,7 @@ const WeatherComp = ({addListener, startLocationDes, startLocation}) => {
     overcastClouds: brokenClouds,
     veryHeavyrain: rain,
     heavyIntensityrain: rain,
-    lightRain,
+    lightRain: rain,
     drizzle: rain,
     thunderstormWithLightrain: rain,
     thunderstormWithHeavyrain: rain,
@@ -88,10 +94,15 @@ const WeatherComp = ({addListener, startLocationDes, startLocation}) => {
     setIsGranted(hasPermission);
 
     if (hasPermission) {
+      const {ok, coords} = await getCurrentLocation();
+      console.log(
+        'coordscoordscoordscoordscoordscoordscoordscoordscoordscoordscoordscoordscoords',
+        coords,
+      );
       getWeather({
         key: 'd3b17fd9554eb61a5ddc829fe4624335',
-        lat: startLocation.coords.lat,
-        lon: startLocation.coords.long,
+        lat: coords.lat,
+        lon: coords?.long,
         unit: 'metric',
       })
         .then(() => {
@@ -110,7 +121,7 @@ const WeatherComp = ({addListener, startLocationDes, startLocation}) => {
     });
     getWeatherLo();
     return event;
-  }, [startLocationDes]);
+  }, [startLocationDes, railwayTracks]);
   useEffect(() => {
     getWeatherLo();
   }, []);

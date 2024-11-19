@@ -24,6 +24,7 @@ const SettingScreen = ({navigation}) => {
     logoutAlert,
     toggleAlert,
     userData,
+    apiCount,
   } = useSettingScreen(navigation);
   const renderItem = useCallback(({item, index}) => {
     return (
@@ -68,6 +69,7 @@ const SettingScreen = ({navigation}) => {
             />
           </View>
           <TextComponent text={userData?.first_name} styles={styles.userName} />
+          {/* <TextComponent text={apiCount} styles={styles.userName} /> */}
           <TextComponent
             text={
               userData?.identifier

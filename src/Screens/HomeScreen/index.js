@@ -25,6 +25,7 @@ import {MapAPIKey} from '../../Utils/Urls';
 import {getDistanceFromLatLonInKm} from '../../Services/GlobalFunctions';
 import {localNotifeeNotification} from '../../Services/LocalNotificationService';
 import {AlertDesign} from '../../Components/AlertDesign';
+import {TextComponent} from '../../Components/TextComponent';
 
 const HomeScreen = ({navigation}) => {
   const {
@@ -39,6 +40,9 @@ const HomeScreen = ({navigation}) => {
     startDescription,
     subAlert,
     userData,
+    KmBetweenTwoPoint,
+    startLocationState,
+    railData,
     setSubAlert,
     dynamicNav,
     updateState,
@@ -54,26 +58,31 @@ const HomeScreen = ({navigation}) => {
     endLocation?.coords.lat != null && endLocation?.coords.lat != '',
   );
 
+  // console.log(
+  //   'startDescriptionstartDescriptionstartDescriptionstartDescriptionstartDescription',
+  //   startDescription,
+  // );
+
   const CurrentMarker = useCallback(() => {
     return (
       <>
         <Marker
           coordinate={{
-            latitude: startLocation.coords.lat
-              ? startLocation.coords.lat
-              : 37.78825,
-            longitude: startLocation.coords.long
-              ? startLocation.coords.long
-              : -122.4324,
+            latitude: startLocation?.coords?.lat
+              ? startLocation?.coords?.lat
+              : startLocationState.coords.lat ?? 37.78825,
+            longitude: startLocation?.coords?.long
+              ? startLocation?.coords?.long
+              : startLocationState.coords.long ?? -122.4324,
           }}
         />
         <Circle
           center={{
-            latitude: startLocation.coords.lat
-              ? startLocation.coords.lat
+            latitude: startLocation?.coords?.lat
+              ? startLocation?.coords?.lat
               : 37.78825,
-            longitude: startLocation.coords.long
-              ? startLocation.coords.long
+            longitude: startLocation?.coords?.long
+              ? startLocation?.coords?.long
               : -122.4324,
           }}
           radius={1000} // radius in meters
@@ -83,7 +92,11 @@ const HomeScreen = ({navigation}) => {
         />
       </>
     );
-  }, [startLocation?.description, startLocation.coords.lat]);
+  }, [
+    startLocation?.description,
+    startLocation?.coords?.lat,
+    startLocationState.coords.lat,
+  ]);
 
   const RenderMap = useCallback(
     ({childern}) => {
@@ -93,14 +106,15 @@ const HomeScreen = ({navigation}) => {
           style={styles.staticMapImg}
           followsUserLocation={true}
           showsUserLocation={true}
+          focusable={true}
           region={{
-            latitude: startLocation.coords.lat
-              ? startLocation.coords.lat
-              : 37.78825,
-            longitude: startLocation.coords.long
-              ? startLocation.coords.long
-              : -122.4324,
-            latitudeDelta: latitudeDelta,
+            latitude: startLocation?.coords?.lat
+              ? startLocation?.coords?.lat
+              : startLocationState?.coords.lat ?? 37.78825,
+            longitude: startLocation?.coords?.long
+              ? startLocation?.coords?.long
+              : startLocationState?.coords.long ?? -122.4324,
+            latitudeDelta,
             longitudeDelta: laongituteDalta,
           }}
           rotateEnabled={true}>
@@ -109,26 +123,16 @@ const HomeScreen = ({navigation}) => {
         </MapView>
       );
     },
-    [startLocation?.description],
+    [startDescription, railwayTracks.current],
   );
 
   const MarkerForTrack = useCallback(
     ({res, index}) => {
-      const km = getDistanceFromLatLonInKm(
-        startLocation.coords.lat,
-        startLocation.coords.long,
-        res.location.latitude,
-        res.location.longitude,
-      );
-
-      const isNearMe = Boolean(parseFloat(km) <= 5);
-
-      // if (isNearMe && startTracking) localNotifeeNotification();
       return (
         <Marker
           coordinate={{
-            latitude: res?.location?.latitude,
-            longitude: res?.location?.longitude,
+            latitude: Number(res?.latitude),
+            longitude: Number(res?.longitude),
             latitudeDelta,
             longitudeDelta: laongituteDalta,
           }}>
@@ -136,7 +140,6 @@ const HomeScreen = ({navigation}) => {
             style={{
               height: hp('5'),
               width: wp('10'),
-              display: isNearMe ? 'flex' : 'none',
             }}
             resizeMode="contain"
             source={train}
@@ -144,7 +147,12 @@ const HomeScreen = ({navigation}) => {
         </Marker>
       );
     },
-    [railwayTracks, startLocation.coords],
+    [
+      railwayTracks.current,
+      startLocation.coords,
+      startLocation?.coords?.lat,
+      startLocation?.coords?.lang,
+    ],
   );
 
   return (
@@ -153,10 +161,10 @@ const HomeScreen = ({navigation}) => {
       scroll={true}
       bounces={false}
       keyboardShouldPersistTaps={'always'}>
-      <InputView
+      {/* <InputView
         startValFun={val => valChange('startLocation', val)}
-        endValFun={val => {
-          valChange('endLocation', val);
+        endValFun={async val => {
+          await valChange('endLocation', val);
           getKiloMeter({}, val);
         }}
         chageDes={(locationType, des) => updateDescription(locationType, des)}
@@ -164,7 +172,7 @@ const HomeScreen = ({navigation}) => {
         startLocation={startDescription ?? startLocation?.description}
         startYourTracking={() => {
           valChange('startTracking', true);
-          // startYourTracking();
+          startYourTracking();
         }}
         isShowBtn={isShowBtn}
         isTrackingStart={startTracking}
@@ -173,7 +181,7 @@ const HomeScreen = ({navigation}) => {
         kiloMeter={kiloMeterRef}
         currentCoords={startLocation.coords}
         userData={userData}
-      />
+      /> */}
       <RenderMap
         childern={
           <>
@@ -182,13 +190,17 @@ const HomeScreen = ({navigation}) => {
                 <>
                   <MapViewDirections
                     origin={{
-                      latitude: startLocation.coords.lat,
-                      longitude: startLocation.coords.long,
+                      latitude:
+                        startLocation?.coords?.lat ??
+                        startLocationState.coords.lat,
+                      longitude:
+                        startLocation?.coords?.long ??
+                        startLocationState.coords.long,
                     }}
                     precision="high"
                     destination={{
-                      latitude: endLocation.coords.lat,
-                      longitude: endLocation.coords.long,
+                      latitude: endLocation?.coords?.lat,
+                      longitude: endLocation?.coords?.long,
                     }}
                     optimizeWaypoints
                     geodesic
@@ -202,8 +214,8 @@ const HomeScreen = ({navigation}) => {
                   />
                   <Marker
                     coordinate={{
-                      latitude: endLocation.coords.lat,
-                      longitude: endLocation.coords.long,
+                      latitude: endLocation?.coords?.lat,
+                      longitude: endLocation?.coords?.long,
                       latitudeDelta,
                       longitudeDelta: laongituteDalta,
                     }}>
@@ -226,20 +238,24 @@ const HomeScreen = ({navigation}) => {
           </>
         }
       />
+
       <View
-        style={{
-          marginTop: !isShowBtn
-            ? Platform.OS == 'ios'
-              ? hp('8')
-              : hp('6')
-            : hp('7.8'),
-        }}>
+      // style={{
+      //   marginTop: !isShowBtn
+      //     ? Platform.OS == 'ios'
+      //       ? hp('8')
+      //       : hp('6')
+      //     : hp('7.8'),
+      // }}
+      >
         <WeatherComp
           addListener={navigation.addListener}
           startLocationDes={startLocation.description}
           startLocation={startLocation}
+          railwayTracks={railwayTracks}
         />
       </View>
+
       <EmergencyCardComp onPress={() => dynamicNav('EmergencyContactScreen')} />
 
       <AlertDesign

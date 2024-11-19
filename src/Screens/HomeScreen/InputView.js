@@ -28,19 +28,50 @@ const InputView = ({
   kiloMeter,
   currentCoords,
 }) => {
+  // console.log(
+  //   'isTrackingStartisTrackingStartisTrackingStartisTrackingStartisTrackingStartisTrackingStart',
+  //   hasOneMonthPassed(userData?.start_trial_at),
+  //   userData?.identifier == null,
+  //   isTrackingStart,
+  // );
+
+  const FunThatCheckIsedit = () => {
+    if (
+      !hasOneMonthPassed(userData?.start_trial_at) &&
+      userData?.identifier == null
+    ) {
+      return !isTrackingStart;
+    } else if (
+      hasOneMonthPassed(userData?.start_trial_at) &&
+      userData?.identifier != null
+    ) {
+      return !isTrackingStart;
+    } else return false;
+  };
+
   const KlMeterView = useCallback(() => {
     return (
       <TextComponent
         text={`${
-          getDistancesBetweenLocationsArry(currentCoords, railwayTracks).filter(
-            res => parseFloat(res.km) <= 5,
-          ).length ?? 0
-        } Rail Tracks`}
+          railwayTracks.length ?? 0
+        } Railway crossings \n within 3 miles`}
         styles={styles.tracksText}
         isWhite={true}
       />
     );
-  }, [railwayTracks, currentCoords.lat]);
+  }, [railwayTracks, currentCoords?.lat]);
+
+  const DistanceKMView = useCallback(() => {
+    return (
+      <TextComponent
+        text={`Destination: ${kilometersToMiles(kiloMeter.current).toFixed(
+          2,
+        )} miles away`}
+        styles={styles.destination}
+      />
+    );
+  }, [railwayTracks, currentCoords?.lat, kiloMeter, currentCoords?.long]);
+
   const {getState} = useReduxStore();
   const {userData} = getState('Auth');
 
@@ -53,17 +84,8 @@ const InputView = ({
         zIndex: 1,
       }}>
       <View style={styles.desView}>
-        {isShowBtn ? (
-          <TextComponent
-            text={`Destination ${kilometersToMiles(kiloMeter.current).toFixed(
-              2,
-            )}/miles`}
-            styles={styles.destination}
-          />
-        ) : (
-          <View />
-        )}
-        <KlMeterView />
+        {isShowBtn ? <DistanceKMView /> : <View />}
+        {/* <KlMeterView /> */}
       </View>
       <View style={styles.inputViewContainer(isShowBtn)}>
         <View style={styles.inputArea}>
@@ -95,12 +117,15 @@ const InputView = ({
             defaultValue={endLocation}
             // onChangeText={e => {}}
             onChangeText={e => chageDes('endLocation', e)}
-            isEdit={
-              !Boolean(
-                hasOneMonthPassed(userData?.start_trial_at) &&
-                  userData?.identifier == null,
-              ) ?? !isTrackingStart
-            }
+            isEdit={FunThatCheckIsedit()}
+            // isEdit={
+            //   Boolean(
+            //     hasOneMonthPassed(userData?.start_trial_at) &&
+            //       userData?.identifier == null,
+            //   ) && isTrackingStart
+            //     ? false
+            //     : true
+            // }
           />
         </View>
         {isShowBtn &&

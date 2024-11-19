@@ -14,6 +14,7 @@ import {store} from '../Redux/Reducer';
 import {loadingFalse, loadingTrue} from '../Redux/Action/isloadingAction';
 import {errorMessage} from '../Config/NotificationMessage';
 import {MapAPIKey} from '../Utils/Urls';
+import {types} from '../Redux/types';
 
 const getSingleCharacter = text => {
   let letter = text?.charAt(0).toUpperCase();
@@ -173,6 +174,44 @@ const IOSNotifyPer = async () => {
 //   });
 // };
 
+const checkNotificationPer = async () => {
+  if (Platform.OS == 'android') {
+    const granted = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+    );
+    return granted;
+  }
+};
+
+// Function to request notification permission
+const requestNotifiPer = async () => {
+  if (Platform.OS === 'android') {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+    );
+    return granted === PermissionsAndroid.RESULTS.GRANTED;
+  }
+};
+
+const applyForNotifiPer = async () => {
+  const hasPermission = await checkNotificationPer();
+  if (hasPermission) {
+    return {ok: true};
+  } else {
+    const permissionGranted = await requestNotifiPer();
+    if (permissionGranted) {
+      return {ok: true};
+    } else {
+      Alert.alert(
+        'Permission Denied',
+        'Notification permission is required to get notification',
+        [{text: 'OK'}],
+      );
+      return {location: {}, ok: false};
+    }
+  }
+};
+
 // Function to check location permission
 const checkLocationPermission = async () => {
   if (Platform.OS === 'ios') {
@@ -220,7 +259,7 @@ const getCurrentLocation = () => {
         });
       },
       error => {
-        reject(error);
+        reject({ok: false, description: error});
       },
       {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
     );
@@ -257,6 +296,7 @@ const getLocationName = async (latitude, longitude) => {
 
   const res = await fetch(geocodingAPI);
   const response = await res.json();
+  console.log('lksdbklbsdlkbvklsdbvklsbdklvbsdklbvklsdbvlsdblvksd', response);
   if (response.results.length > 0) {
     const locationName = response.results[0].formatted_address;
     return locationName;
@@ -348,6 +388,10 @@ const fetchRailwayCrossingAPI = async (lat, long) => {
         query,
       )}&location=${locations}&radius=${radius}&key=${apiKey}`,
   );
+
+  store.dispatch({
+    type: types.isIncreanment,
+  });
 
   try {
     const results = await Promise.all(
@@ -486,18 +530,19 @@ function deg2rad(deg) {
  * @returns {Array} Array of distances from the current location to each location in the array in kilometers.
  */
 function getDistancesBetweenLocationsArry(currentLocation, locations) {
-  // console.log(
-  //   'skldbvklsdblkvbsdlkbvlksdvlkbsdvlksdbvklsdbvksdl',
-  //   currentLocation,
-  // );
+  console.log(
+    'skldbvklsdblkvbsdlkbvlksdvlkbsdvlksdbvklsdbvksdl',
+    currentLocation,
+    locations,
+  );
   return locations.map(res => {
     return {
       id: res?.id,
       km: getDistanceFromLatLonInKm(
         currentLocation?.lat,
         currentLocation?.long,
-        res?.location?.latitude,
-        res?.location?.longitude,
+        res?.location?.latitude ?? Number(res?.latitude),
+        res?.location?.longitude ?? Number(res?.longitude),
       ),
     };
   });
@@ -699,4 +744,7 @@ export {
   removeDecimals,
   hasOneMonthPassed,
   kilometersToMiles,
+  applyForNotifiPer,
+  getLocationName,
+  getCurrentLocation,
 };

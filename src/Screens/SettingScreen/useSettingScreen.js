@@ -21,6 +21,7 @@ import {loadingFalse, loadingTrue} from '../../Redux/Action/isloadingAction';
 const useSettingScreen = ({navigate, goBack}) => {
   const {dispatch, getState} = useReduxStore();
   const {userData} = getState('Auth');
+  const {apiCount} = getState('apiCount');
 
   console.log('kjdsbvjksdbvjksdbjkvbsdjkvbsdjbksdbdjksd', userData);
 
@@ -123,6 +124,7 @@ const useSettingScreen = ({navigate, goBack}) => {
     logoutAlert,
     toggleAlert,
     userData,
+    apiCount,
   };
 };
 

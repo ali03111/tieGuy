@@ -17,4 +17,6 @@ export const types = {
   getcatalogData: 'getcatalogData',
   UpdateProfile: 'UpdateProfile',
   forgotPasswordType: 'forgotPasswordType',
+  isIncreanment: 'isIncreanment',
+  resetCount: 'resetCount',
 };
