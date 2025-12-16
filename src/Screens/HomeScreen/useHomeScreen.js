@@ -32,7 +32,7 @@ import {appleIdlogin} from '../../Utils/SocialLogin';
 import BackgroundTimer from 'react-native-background-timer';
 
 const useHomeScreen = ({addListener, navigate}) => {
-  const notificationKM = 1.5;
+  const notificationKM = 5;
 
   const {getState, dispatch} = useReduxStore();
   const {userData, isLogin} = getState('Auth');
@@ -186,9 +186,16 @@ const useHomeScreen = ({addListener, navigate}) => {
             afterFilterTrack,
             trackThatNotifyRef.current,
           );
-
+          console.log(
+            'afterMatchafterMatchafterMatchafterMatchafterMatchafterMatch',
+            afterMatch,
+          );
           const newFilterArry =
             afterMatch.length > 0 ? afterMatch : afterFilterTrack;
+          console.log(
+            'newFilterArrynewFilterArrynewFilterArrynewFilterArrynewFilterArrynewFilterArrynewFilterArry',
+            newFilterArry,
+          );
           const needToNotify = matchTwoArrays(
             newFilterArry,
             trackThatNotifyRef.current,
@@ -221,10 +228,10 @@ const useHomeScreen = ({addListener, navigate}) => {
       },
       {
         enableHighAccuracy: true,
-        fastestInterval: 200, // for android in milisecond
-        distanceFilter: 200, // for android in meter
+        fastestInterval: 100, // for android in milisecond
+        distanceFilter: 100, // for android in meter
         useSignificantChanges: true,
-        timeout: 200,
+        timeout: 100,
         maximumAge: 0,
       },
     );

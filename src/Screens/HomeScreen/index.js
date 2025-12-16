@@ -26,6 +26,7 @@ import {getDistanceFromLatLonInKm} from '../../Services/GlobalFunctions';
 import {localNotifeeNotification} from '../../Services/LocalNotificationService';
 import {AlertDesign} from '../../Components/AlertDesign';
 import {TextComponent} from '../../Components/TextComponent';
+import useHomeScreenNew from './useHomeScreenNew';
 
 const HomeScreen = ({navigation}) => {
   const {
@@ -52,7 +53,7 @@ const HomeScreen = ({navigation}) => {
     onDirectionReady,
     stopTracking,
     getKiloMeter,
-  } = useHomeScreen(navigation);
+  } = useHomeScreenNew(navigation);
 
   const isShowBtn = Boolean(
     endLocation?.coords.lat != null && endLocation?.coords.lat != '',

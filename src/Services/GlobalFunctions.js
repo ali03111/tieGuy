@@ -288,19 +288,20 @@ const getProperLocation = async () => {
 };
 
 const getLocationName = async (latitude, longitude) => {
-  console.log('third');
+  // console.log('third');
 
-  const geocodingAPI = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${MapAPIKey}`;
+  // const geocodingAPI = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${MapAPIKey}`;
 
-  // Replace "YOUR_API_KEY" with your actual Google Maps Geocoding API key
+  // // Replace "YOUR_API_KEY" with your actual Google Maps Geocoding API key
 
-  const res = await fetch(geocodingAPI);
-  const response = await res.json();
-  console.log('lksdbklbsdlkbvklsdbvklsbdklvbsdklbvklsdbvlsdblvksd', response);
-  if (response.results.length > 0) {
-    const locationName = response.results[0].formatted_address;
-    return locationName;
-  }
+  // const res = await fetch(geocodingAPI);
+  // const response = await res.json();
+  // console.log('lksdbklbsdlkbvklsdbvklsbdklvbsdklbvklsdbvlsdblvksd', response);
+  // if (response.results.length > 0) {
+  //   const locationName = response.results[0].formatted_address;
+  //   return locationName;
+  // }
+  return '';
 };
 
 function extractTimeFromString(str) {

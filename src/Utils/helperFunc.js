@@ -184,7 +184,6 @@ const fetchGetWithToken = async url => {
       getData.entitlements.active['AppStorePlans'] ?? undefined;
 
     if (!response.ok) {
-      store.dispatch({type: types.LogoutType});
       throw new Error('Network response was not ok.');
     } else if (response.ok) {
       const data = await response.json();
@@ -210,7 +209,6 @@ const fetchGetWithToken = async url => {
       return data; // Return the fetched data
     }
   } catch (error) {
-    store.dispatch({type: types.LogoutType});
     console.error('Error fetching data:', error);
     throw error; // Rethrow the error to handle it at the caller's level if needed
   }
@@ -250,8 +248,8 @@ const formDataFunc = (url, body, imageKey, isArray) => {
     .then(async res => {
       console.log('test', res);
       if (res?.message == 'Unauthenticated.') {
-        await logoutService();
         store.dispatch(logOutUser());
+        await logoutService();
         store.dispatch(loadingFalse());
       }
       return {data: res, ok: true};
