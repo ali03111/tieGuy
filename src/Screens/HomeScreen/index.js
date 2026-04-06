@@ -53,6 +53,7 @@ const HomeScreen = ({navigation}) => {
     onDirectionReady,
     stopTracking,
     getKiloMeter,
+    trackThatNotifyRef,
   } = useHomeScreenNew(navigation);
 
   const isShowBtn = Boolean(
@@ -156,6 +157,16 @@ const HomeScreen = ({navigation}) => {
     ],
   );
 
+  const TrackThat = useCallback(() => {
+    return trackThatNotifyRef.current.map(res => {
+      return (
+        <TextComponent
+          text={`'NOTIFY → crossing:', ${res.id}, 'at', ${res.km}, km`}
+        />
+      );
+    });
+  }, [trackThatNotifyRef.current]);
+
   return (
     <KeyBoardWrapper
       styles={styles.homeMain}
@@ -256,6 +267,7 @@ const HomeScreen = ({navigation}) => {
           railwayTracks={railwayTracks}
         />
       </View>
+      {/* <TrackThat /> */}
 
       <EmergencyCardComp onPress={() => dynamicNav('EmergencyContactScreen')} />
 

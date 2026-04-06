@@ -181,12 +181,15 @@ const WeatherComp = ({
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Ionicons name={'arrow-up'} color={'white'} size={hp('2.5')} />
           <TextComponent
-            text={`${weatherState?.temp_max} °C`}
+            text={`${weatherState?.temp_max ?? ''} °C`}
             isWhite={true}
             styles={{marginRight: wp('2')}}
           />
           <Ionicons name={'arrow-down'} color={'white'} size={hp('2.5')} />
-          <TextComponent text={`${weatherState?.temp_min} °C`} isWhite={true} />
+          <TextComponent
+            text={`${weatherState?.temp_min ?? ''} °C`}
+            isWhite={true}
+          />
         </View>
       </View>
     </ImageBackground>

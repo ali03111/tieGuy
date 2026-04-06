@@ -477,7 +477,7 @@ function getValBeforePoint(value) {
   //    output = 353
 
   // Convert the string to a number
-  const number = parseFloat(value);
+  const number = parseFloat(value ?? 0);
 
   // Return the integer part before the decimal point
   return Math.floor(number) ?? '2';

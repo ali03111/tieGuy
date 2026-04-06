@@ -92,7 +92,7 @@ export async function localNotifeeNotification(title, body) {
   const channelId = await notifee.createChannel({
     id: 'channelId-new',
     name: 'My new channel',
-    sound: sound,
+    sound,
     vibration: true,
     // importance: AndroidImportance.HIGH,
   });
