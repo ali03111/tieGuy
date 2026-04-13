@@ -115,6 +115,14 @@ const WeatherComp = ({
     }
   };
 
+  function celsiusToFahrenheit(celsius) {
+    return ((celsius * 9) / 5 + 32).toFixed(0);
+  }
+
+  console.log(
+    'weatherStateweatherStateweatherStateweatherStateweatherStateweatherState',
+    weatherState,
+  );
   useEffect(() => {
     const event = addListener('focus', async () => {
       await getWeatherLo();
@@ -163,31 +171,40 @@ const WeatherComp = ({
         <View style={styles.upInnerView}>
           <TextComponent
             text={
-              getValBeforePoint(weatherState?.temp) != NaN
-                ? getValBeforePoint(weatherState?.temp)
+              celsiusToFahrenheit(weatherState?.temp ?? 0) != NaN
+                ? celsiusToFahrenheit(weatherState?.temp ?? 0)
                 : '3'
             }
             styles={styles.temp}
           />
-          <TextComponent text={'°C'} styles={styles.textDeg} />
+          <TextComponent text={'°F'} styles={styles.textDeg} />
         </View>
       </View>
       {/* {weatherState?.description != undefined &&} */}
       <View style={styles.downView}>
         <TextComponent
           text={`It's ${weatherState?.description}`}
-          styles={{color: 'white', width: wp('45')}}
+          styles={{color: 'white'}}
         />
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginRight: wp('3'),
+          }}>
           <Ionicons name={'arrow-up'} color={'white'} size={hp('2.5')} />
           <TextComponent
-            text={`${weatherState?.temp_max ?? ''} °C`}
+            text={`${
+              celsiusToFahrenheit(weatherState?.temp_max ?? 0) ?? ''
+            } °F`}
             isWhite={true}
             styles={{marginRight: wp('2')}}
           />
           <Ionicons name={'arrow-down'} color={'white'} size={hp('2.5')} />
           <TextComponent
-            text={`${weatherState?.temp_min ?? ''} °C`}
+            text={`${
+              celsiusToFahrenheit(weatherState?.temp_min ?? 0) ?? ''
+            } °F`}
             isWhite={true}
           />
         </View>
@@ -253,6 +270,7 @@ const styles = StyleSheet.create({
     marginLeft: wp('2'),
     flexDirection: 'row',
     marginTop: hp('1.5'),
+    justifyContent: 'space-between',
   },
   allowBtn: {
     width: wp('95'),
