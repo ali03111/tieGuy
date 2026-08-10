@@ -73,15 +73,23 @@
 	<key>NSCameraUsageDescription</key>
 	<string>To add profile picture , you need to allow access to your photo gallery</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>To track your location , you need to allow access to your location</string>
+	<string>To track your location to notify the railway tracks , you need to allow access to
+			your location</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>To track your location , you need to allow access to your location</string>
+	<string>To track your location to notify the railway tracks, you need to allow access to
+			your location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>To track your location , you need to allow access to your location</string>
+	<string>To track your location to notify the railway tracks, you need to allow access to
+			your location</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>To add profile picture , you need to allow access to your photo gallery</string>
 	<key>NSUserNotificationsUsageDescription</key>
 	<string>To notify about the track, Please allow the notification permission</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Get connected with your friends and family! Our app needs access to your contacts.
+			Contacts are securely uploaded on our server for you to see other users of the app.</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>This app uses tracking to provide personalized railway safety alerts and location-based notifications when you or your loved ones are near railway tracks. For example, it helps notify you of nearby railtrack hazards based on your location data.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Quicksand-Bold.ttf</string>

@@ -1,58 +1,26 @@
-# Resolve react_native_pods.rb with node to allow for hoisting
-# require Pod::Executable.execute_command('node', ['-p',
-#   'require.resolve(
-#     "react-native/scripts/react_native_pods.rb",
-#     {paths: [process.argv[1]]},
-#   )', __dir__]).strip
+def node_require(script)
+  require Pod::Executable.execute_command('node', ['-p',
+    "require.resolve(
+      '#{script}',
+      {paths: [process.argv[1]]},
+    )", __dir__]).strip
+end
 
+node_require('react-native/scripts/react_native_pods.rb')
+node_require('react-native-permissions/scripts/setup.rb')
+require_relative '../node_modules/react-native-permissions/scripts/setup'
 
- def node_require(script)
-   # Resolve script with node to allow for hoisting
-   require Pod::Executable.execute_command('node', ['-p',
-     "require.resolve(
-       '#{script}',
-       {paths: [process.argv[1]]},
-     )", __dir__]).strip
- end
-
- node_require('react-native/scripts/react_native_pods.rb')
- node_require('react-native-permissions/scripts/setup.rb')
- require_relative '../node_modules/react-native-permissions/scripts/setup'
-platform :ios, 13.4
+platform :ios, '13.4'
 prepare_react_native_project!
 
 setup_permissions([
-  # 'AppTrackingTransparency',
-  # 'Bluetooth',
-  # 'Calendars',
-  # 'CalendarsWriteOnly',
-  # 'Camera',
-  # 'Contacts',
-  # 'FaceID',
   'LocationAccuracy',
   'LocationAlways',
   'LocationWhenInUse',
-  # 'MediaLibrary',
-  # 'Microphone',
-  # 'Motion',
   'Notifications',
-  # 'PhotoLibrary',
-  # 'PhotoLibraryAddOnly',
-  # 'Reminders',
-  # 'Siri',
-  # 'SpeechRecognition',
   'StoreKit',
 ])
 
-# If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.
-# because `react-native-flipper` depends on (FlipperKit,...) that will be excluded
-#
-# To fix this you can also exclude `react-native-flipper` using a `react-native.config.js`
-# ```js
-# module.exports = {
-#   dependencies: {
-#     ...(process.env.NO_FLIPPER ? { 'react-native-flipper': { platforms: { ios: null } } } : {}),
-# ```
 flipper_config = ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
 
 linkage = ENV['USE_FRAMEWORKS']
@@ -66,44 +34,148 @@ target 'tieguy' do
 
   use_react_native!(
     :path => config[:reactNativePath],
-    # Enables Flipper.
-    #
-    # Note that if you have use_frameworks! enabled, Flipper will not work and
-    # you should disable the next line.
     :hermes_enabled => false,
     :flipper_configuration => flipper_config,
-    # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-# pod install
-rn_maps_path = '../node_modules/react-native-maps'
-pod 'GoogleMaps'
+  rn_maps_path = '../node_modules/react-native-maps'
+  pod 'GoogleMaps'
   pod 'GooglePlaces'
   pod 'react-native-google-maps', :path => rn_maps_path
-  pod 'GoogleMaps'  # Uncomment this line if you want to support GoogleMaps on iOS
-  pod 'Google-Maps-iOS-Utils' # Uncomment this line if you want to support GoogleMaps on iOS
+  pod 'Google-Maps-iOS-Utils'
   pod 'Firebase', :modular_headers => true
   pod 'FirebaseCoreInternal', :modular_headers => true
   pod 'GTMSessionFetcher', :modular_headers => true
   pod 'GoogleUtilities', :modular_headers => true
   pod 'FirebaseCore', :modular_headers => true
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   permissions_path = '../node_modules/react-native-permissions/ios'
-pod 'RNPurchases', :path => '../node_modules/react-native-purchases', :inhibit_warnings => true
-# pod 'RevenueCat', '~> 4.15', :inhibit_warnings => true
-  
+
+  pod 'RNPurchases', :path => '../node_modules/react-native-purchases',
+      :modular_headers => true,
+      :inhibit_warnings => true
+  pod 'RevenueCat', :modular_headers => true
+  pod 'PurchasesHybridCommon', :modular_headers => true
+
   target 'tieguyTests' do
     inherit! :complete
-    # Pods for testing
   end
 
-  post_install do |installer|
-    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
-    react_native_post_install(
-      installer,
-      config[:reactNativePath],
-      :mac_catalyst_enabled => false
-    )
-  end
+post_install do |installer|
+      react_native_post_install(
+        installer,
+        config[:reactNativePath],
+        :mac_catalyst_enabled => false
+      )
+
+      file_path = "#{installer.sandbox.root}/PurchasesHybridCommon/ios/PurchasesHybridCommon/PurchasesHybridCommon/StoreProduct+HybridAdditions.swift"
+
+      if File.exist?(file_path)
+        File.chmod(0644, file_path)
+
+        fixed_content = <<~SWIFT
+          //
+          //  SKProduct+HybridAdditions.swift
+          //  PurchasesHybridCommon
+          //
+          //  Created by Andrés Boedo on 4/13/22.
+          //  Copyright © 2022 RevenueCat. All rights reserved.
+          //
+          import Foundation
+          import RevenueCat
+          import StoreKit
+          @objc public extension StoreProduct {
+              @objc var rc_dictionary: [String: Any] {
+                  var dictionary: [String: Any] = [
+                      "currencyCode": self.currencyCode ?? NSNull(),
+                      "description": self.localizedDescription,
+                      "discounts": NSNull(),
+                      "identifier": self.productIdentifier,
+                      "introPrice": NSNull(),
+                      "price": self.price,
+                      "priceString": self.localizedPriceString,
+                      "productCategory": self.productCategoryString,
+                      "productType": self.productTypeString,
+                      "title": self.localizedTitle,
+                      "subscriptionPeriod": NSNull(),
+                  ]
+                  if #available(iOS 11.2, tvOS 11.2, macOS 10.13.2, *),
+                     let introductoryDiscount = self.introductoryDiscount {
+                      dictionary["introPrice"] = introductoryDiscount.rc_dictionary
+                  }
+                  if #available(iOS 12.2, tvOS 12.2, macOS 10.14.4, *) {
+                      dictionary["discounts"] = self.discounts.map { $0.rc_dictionary }
+                  }
+                  if #available(iOS 11.2, macOS 10.13.2, tvOS 11.2, watchOS 6.2, *) {
+                      if let subscriptionPeriod = self.subscriptionPeriod {
+                          dictionary["subscriptionPeriod"] = StoreProduct.rc_normalized(subscriptionPeriod: subscriptionPeriod)
+                      }
+                  }
+                  return dictionary
+              }
+              @objc(rc_normalizedSubscriptionPeriod:)
+              static func rc_normalized(subscriptionPeriod: RevenueCat.SubscriptionPeriod) -> String {
+                  let unitString: String
+                  switch subscriptionPeriod.unit {
+                  case .day:
+                      unitString = "D"
+                  case .week:
+                      unitString = "W"
+                  case .month:
+                      unitString = "M"
+                  case .year:
+                      unitString = "Y"
+                  @unknown default:
+                      unitString = "-"
+                  }
+                  return "P\(subscriptionPeriod.value)\(unitString)"
+              }
+              @objc(rc_normalizedSubscriptionPeriodUnit:)
+              static func rc_normalized(subscriptionPeriodUnit: RevenueCat.SubscriptionPeriod.Unit) -> String {
+                  switch subscriptionPeriodUnit {
+                  case .day:
+                      return "DAY"
+                  case .week:
+                      return "WEEK"
+                  case .month:
+                      return "MONTH"
+                  case .year:
+                      return "YEAR"
+                  @unknown default:
+                      return "-"
+                  }
+              }
+          }
+          private extension StoreProduct {
+              var productCategoryString: String {
+                  switch self.productCategory {
+                  case .nonSubscription:
+                      return "NON_SUBSCRIPTION"
+                  case .subscription:
+                      return "SUBSCRIPTION"
+                  }
+              }
+              var productTypeString: String {
+                  switch self.productType {
+                  case .consumable:
+                      return "CONSUMABLE"
+                  case .nonConsumable:
+                      return "NON_CONSUMABLE"
+                  case .nonRenewableSubscription:
+                      return "NON_RENEWABLE_SUBSCRIPTION"
+                  case .autoRenewableSubscription:
+                      return "AUTO_RENEWABLE_SUBSCRIPTION"
+                  }
+              }
+          }
+        SWIFT
+
+        File.write(file_path, fixed_content)
+        puts "✅ Patched StoreProduct+HybridAdditions.swift successfully"
+      else
+        puts "⚠️ File not found: #{file_path}"
+      end
+    end
 end

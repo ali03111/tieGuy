@@ -1,16 +1,16 @@
 PODS:
-  - AppAuth (1.7.5):
-    - AppAuth/Core (= 1.7.5)
-    - AppAuth/ExternalUserAgent (= 1.7.5)
-  - AppAuth/Core (1.7.5)
-  - AppAuth/ExternalUserAgent (1.7.5):
+  - AppAuth (1.7.6):
+    - AppAuth/Core (= 1.7.6)
+    - AppAuth/ExternalUserAgent (= 1.7.6)
+  - AppAuth/Core (1.7.6)
+  - AppAuth/ExternalUserAgent (1.7.6):
     - AppAuth/Core
   - BEMCheckBox (1.4.1)
   - boost (1.83.0)
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
-  - FBAEMKit (17.0.2):
-    - FBSDKCoreKit_Basics (= 17.0.2)
+  - FBAEMKit (17.0.3):
+    - FBSDKCoreKit_Basics (= 17.0.3)
   - FBLazyVector (0.73.6)
   - FBReactNativeSpec (0.73.6):
     - RCT-Folly (= 2022.05.16.00)
@@ -19,18 +19,18 @@ PODS:
     - React-Core (= 0.73.6)
     - React-jsi (= 0.73.6)
     - ReactCommon/turbomodule/core (= 0.73.6)
-  - FBSDKCoreKit (17.0.2):
-    - FBAEMKit (= 17.0.2)
-    - FBSDKCoreKit_Basics (= 17.0.2)
-  - FBSDKCoreKit_Basics (17.0.2)
-  - FBSDKGamingServicesKit (17.0.2):
-    - FBSDKCoreKit (= 17.0.2)
-    - FBSDKCoreKit_Basics (= 17.0.2)
-    - FBSDKShareKit (= 17.0.2)
-  - FBSDKLoginKit (17.0.2):
-    - FBSDKCoreKit (= 17.0.2)
-  - FBSDKShareKit (17.0.2):
-    - FBSDKCoreKit (= 17.0.2)
+  - FBSDKCoreKit (17.0.3):
+    - FBAEMKit (= 17.0.3)
+    - FBSDKCoreKit_Basics (= 17.0.3)
+  - FBSDKCoreKit_Basics (17.0.3)
+  - FBSDKGamingServicesKit (17.0.3):
+    - FBSDKCoreKit (= 17.0.3)
+    - FBSDKCoreKit_Basics (= 17.0.3)
+    - FBSDKShareKit (= 17.0.3)
+  - FBSDKLoginKit (17.0.3):
+    - FBSDKCoreKit (= 17.0.3)
+  - FBSDKShareKit (17.0.3):
+    - FBSDKCoreKit (= 17.0.3)
   - Firebase (10.22.0):
     - Firebase/Core (= 10.22.0)
   - Firebase/Auth (10.22.0):
@@ -238,17 +238,17 @@ PODS:
   - GTMSessionFetcher/Full (3.5.0):
     - GTMSessionFetcher/Core
   - libevent (2.1.12)
-  - libwebp (1.3.2):
-    - libwebp/demux (= 1.3.2)
-    - libwebp/mux (= 1.3.2)
-    - libwebp/sharpyuv (= 1.3.2)
-    - libwebp/webp (= 1.3.2)
-  - libwebp/demux (1.3.2):
+  - libwebp (1.5.0):
+    - libwebp/demux (= 1.5.0)
+    - libwebp/mux (= 1.5.0)
+    - libwebp/sharpyuv (= 1.5.0)
+    - libwebp/webp (= 1.5.0)
+  - libwebp/demux (1.5.0):
     - libwebp/webp
-  - libwebp/mux (1.3.2):
+  - libwebp/mux (1.5.0):
     - libwebp/demux
-  - libwebp/sharpyuv (1.3.2)
-  - libwebp/webp (1.3.2):
+  - libwebp/sharpyuv (1.5.0)
+  - libwebp/webp (1.5.0):
     - libwebp/sharpyuv
   - nanopb (2.30910.0):
     - nanopb/decode (= 2.30910.0)
@@ -257,8 +257,8 @@ PODS:
   - nanopb/encode (2.30910.0)
   - OpenSSL-Universal (1.1.1100)
   - PromisesObjC (2.4.0)
-  - PurchasesHybridCommon (6.3.2):
-    - RevenueCat (= 4.26.1)
+  - PurchasesHybridCommon (4.12.1):
+    - RevenueCat (= 4.17.4)
   - RCT-Folly (2022.05.16.00):
     - boost
     - DoubleConversion
@@ -1139,6 +1139,8 @@ PODS:
     - React-Core
   - react-native-sms (1.11.0):
     - React
+  - react-native-tracking-transparency (0.1.2):
+    - React
   - React-nativeconfig (0.73.6)
   - React-NativeModulesApple (0.73.6):
     - glog
@@ -1303,7 +1305,7 @@ PODS:
     - React-logger (= 0.73.6)
     - React-perflogger (= 0.73.6)
   - RecaptchaInterop (100.0.0)
-  - RevenueCat (4.26.1)
+  - RevenueCat (4.17.4)
   - RNAppleAuthentication (2.3.0):
     - React-Core
   - RNCAsyncStorage (1.23.1):
@@ -1345,8 +1347,8 @@ PODS:
     - React-Core
   - RNPermissions (4.1.5):
     - React-Core
-  - RNPurchases (6.7.2):
-    - PurchasesHybridCommon (= 6.3.2)
+  - RNPurchases (5.9.0):
+    - PurchasesHybridCommon (= 4.12.1)
     - React-Core
   - RNScreens (3.29.0):
     - glog
@@ -1401,6 +1403,7 @@ DEPENDENCIES:
   - GoogleUtilities
   - GTMSessionFetcher
   - OpenSSL-Universal (= 1.1.1100)
+  - PurchasesHybridCommon
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCT-Folly/Fabric (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -1435,6 +1438,7 @@ DEPENDENCIES:
   - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-sms (from `../node_modules/react-native-sms`)
+  - react-native-tracking-transparency (from `../node_modules/react-native-tracking-transparency`)
   - React-nativeconfig (from `../node_modules/react-native/ReactCommon`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -1455,6 +1459,7 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - RevenueCat
   - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCCheckbox (from `../node_modules/@react-native-community/checkbox`)"
@@ -1593,6 +1598,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-sms:
     :path: "../node_modules/react-native-sms"
+  react-native-tracking-transparency:
+    :path: "../node_modules/react-native-tracking-transparency"
   React-nativeconfig:
     :path: "../node_modules/react-native/ReactCommon"
   React-NativeModulesApple:
@@ -1667,19 +1674,19 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
+  AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
   BEMCheckBox: 5ba6e37ade3d3657b36caecc35c8b75c6c2b1a4e
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
-  FBAEMKit: 619f96ea65427e8afca240d5b0f4703738dfdf5c
+  FBAEMKit: 9900b2edd99a2d21629a6277e6166f14c6215799
   FBLazyVector: f64d1e2ea739b4d8f7e4740cde18089cd97fe864
   FBReactNativeSpec: 9f2b8b243131565335437dba74923a8d3015e780
-  FBSDKCoreKit: a5f384db2e9ee84e98494fed8f983d2bd79accff
-  FBSDKCoreKit_Basics: d35c775aaf243a2d731dfae7be3a74b1987285ab
-  FBSDKGamingServicesKit: bf02b6f115e545910b8a77bf8defaf74a7eccda1
-  FBSDKLoginKit: f8ca5f7ab7c4e5b93e729d94975b0db7fcc511ed
-  FBSDKShareKit: e7ec3bed8e82dabc04e56f3cf44ef99a1864309e
+  FBSDKCoreKit: 0791f8f68a8630931a4c12aa23a56cc021551596
+  FBSDKCoreKit_Basics: 46d6b472c0dd0a5a7e972c025033d1c567f54eb4
+  FBSDKGamingServicesKit: 599a63c235776b7c6288d5dfd7c02edab9a1d3b7
+  FBSDKLoginKit: b4a4eba1d62eb452544411824f41689adabd5bd2
+  FBSDKShareKit: eb1169eafe3c06f881dc6deed2d7979585b16959
   Firebase: 797fd7297b7e1be954432743a0b3f90038e45a71
   FirebaseAnalytics: 8d0ff929c63b7f72260f332b86ccf569776b75d3
   FirebaseAppCheckInterop: 6a1757cfd4067d8e00fccd14fcc1b8fd78cfac07
@@ -1706,11 +1713,11 @@ SPEC CHECKSUMS:
   GTMAppAuth: f69bd07d68cd3b766125f7e072c45d7340dea0de
   GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
+  libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
-  PurchasesHybridCommon: 98af59169dd9c418eac0725c43f02db92a643b79
+  PurchasesHybridCommon: 6e262ca1090bd9f99e85cf604a12d0866b9b80b2
   RCT-Folly: cd21f1661364f975ae76b3308167ad66b09f53f5
   RCTRequired: ca1d7414aba0b27efcfa2ccd37637edb1ab77d96
   RCTTypeSafety: 678e344fb976ff98343ca61dc62e151f3a042292
@@ -1742,6 +1749,7 @@ SPEC CHECKSUMS:
   react-native-orientation-locker: cc6f357b289a2e0dd2210fea0c52cb8e0727fdaa
   react-native-safe-area-context: 435f4c13ac75ceed6135382ee77d57d1a5b5b2d6
   react-native-sms: 4669ce3cc4e17b06d2e91fb8a4584e02907e40e4
+  react-native-tracking-transparency: 15eb319f2b982070eb9831582af27d87badfa624
   React-nativeconfig: b4d4e9901d4cabb57be63053fd2aa6086eb3c85f
   React-NativeModulesApple: d785436758436f4e02f8035ff4d1b6a8d1da178b
   React-perflogger: 5f49905de275bac07ac7ea7f575a70611fa988f2
@@ -1763,7 +1771,7 @@ SPEC CHECKSUMS:
   React-utils: 288c9cb9a73bb150c273c84df7c2f8546f28e23f
   ReactCommon: 53a7c32268a2ec0779faa89d7af0392f4d8e8dca
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
-  RevenueCat: 4e8899a69fd57180ef166237d1eb670023be05de
+  RevenueCat: 3411bc79fc724c5c130035c92959a802c6d6f5b2
   RNAppleAuthentication: 445222cf501db405f0b3713593a6d0fecc87fd05
   RNCAsyncStorage: aa75595c1aefa18f868452091fa0c411a516ce11
   RNCCheckbox: 450ce156f3e29e25efa0315c96cfbabe5a39ded1
@@ -1776,7 +1784,7 @@ SPEC CHECKSUMS:
   RNImageCropPicker: d14a08134d1b5bc2d5f29a12ce3ac1d402dd2389
   RNNotifee: 8768d065bf1e2f9f8f347b4bd79147431c7eacd6
   RNPermissions: af7e7fd57a106501ec08277d141b1008dd3a2ffd
-  RNPurchases: 48a852e4fed64065987a1cf23271101faef33571
+  RNPurchases: 487826e8a2bcd600def969ec79188e649c648329
   RNScreens: 59f615aa0782077560c8eea46c2daec3a716dba9
   RNVectorIcons: 0b5569bc6d955e496b3fa9bc6718c390c7f37f51
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
@@ -1785,6 +1793,6 @@ SPEC CHECKSUMS:
   TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
   Yoga: 805bf71192903b20fc14babe48080582fee65a80
 
-PODFILE CHECKSUM: b013c3269342e3609333433dfa43cf21f07b6cf4
+PODFILE CHECKSUM: cf3f8be5c43f7eb3bad228df87faa6cf2a954a37
 
 COCOAPODS: 1.16.2

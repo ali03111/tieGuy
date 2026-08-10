@@ -49,7 +49,7 @@ export const styles = StyleSheet.create({
     paddingVertical: hp('1.8'),
   },
   midleTextView: {
-    width: wp('65'),
+    width: wp('63'),
     paddingLeft: wp('2'),
     alignContent: 'center',
     height: hp('6'),

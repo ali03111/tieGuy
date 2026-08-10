@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {hp, wp} from '../../Config/responsive';
-import {Colors} from '../../Theme/Variables';
+import {Colors, FontSize} from '../../Theme/Variables';
 
 export const styles = StyleSheet.create({
   ImgBg: {
@@ -57,7 +57,7 @@ export const styles = StyleSheet.create({
   logInMain: {
     // paddingHorizontal: wp('3.5'),
     justifyContent: 'center',
-    position: 'relative'
+    position: 'relative',
   },
   buttonStyle: {
     // marginTop: hp('3'),
@@ -65,7 +65,24 @@ export const styles = StyleSheet.create({
   lockstyle: {
     flex: 0.5,
   },
-  
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+    marginLeft: wp('5'),
+  },
+  checkboxText: {
+    color: '#ffffff',
+    fontSize: FontSize.scale14,
+    marginLeft: 10, // Space between checkbox and text
+    textAlign: 'center',
+    marginBottom: hp('0.5'),
+  },
+  termsLink: {
+    color: '#00aaff',
+    fontWeight: 'bold',
+    fontSize: FontSize.scale14,
+  },
   userIconStyle: {
     flex: 2,
   },
@@ -87,7 +104,7 @@ export const styles = StyleSheet.create({
   signUpText: {
     color: Colors.themeOrg,
     fontSize: hp('2'),
-    fontWeight: '600'
+    fontWeight: '600',
   },
   lastNameSt: {
     // position: 'absolute',
@@ -146,5 +163,40 @@ export const styles = StyleSheet.create({
   socialImage: {
     width: wp('7'),
     height: hp('3.5'),
+  },
+  modalBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalContainer: {
+    width: '90%',
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: 'black',
+  },
+  modalContent: {
+    maxHeight: 300,
+    marginTop: 10,
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+  },
+  modalCancel: {
+    backgroundColor: 'red',
+    width: wp('40'),
+  },
+  modalAccept: {
+    backgroundColor: 'green',
+    width: wp('40'),
   },
 });

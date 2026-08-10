@@ -22,6 +22,7 @@ import {fetchGetWithToken} from './src/Utils/helperFunc';
 import {VerifyUserUrl} from './src/Utils/Urls';
 import Orientation from 'react-native-orientation-locker';
 import {AndroidImportance} from '@notifee/react-native';
+import {requestTrackingPermission} from 'react-native-tracking-transparency';
 
 const App = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -120,6 +121,11 @@ const App = () => {
         // if (Platform.OS == 'ios') IOSNotifyPer();
         // else reqPerNotiAND();
       }, 5000);
+      setTimeout(() => {
+        requestTrackingPermission().then(response => {
+          console.log('Tracking permission response:', response);
+        });
+      }, 10000);
     }
   }, [isLogin]);
 

@@ -2838,10 +2838,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@revenuecat/purchases-typescript-internal@npm:6.3.2":
-  version: 6.3.2
-  resolution: "@revenuecat/purchases-typescript-internal@npm:6.3.2"
-  checksum: 8ec54edc21f4a59e20c69dddb7d7f4c139880843b388c5c8c2b1ffdda94d5717649758479ad2eee5e0566f216129c312edd9093d0011cc94c6749e1c20621999
+"@revenuecat/purchases-js-hybrid-mappings@npm:18.28.0":
+  version: 18.28.0
+  resolution: "@revenuecat/purchases-js-hybrid-mappings@npm:18.28.0"
+  dependencies:
+    "@revenuecat/purchases-js": 1.49.1
+  checksum: 0d4e4f14c45ca0cfde015a696f0d9967014c21ae837b9d364a1b924eadac47040a855c382f295fe8e993608d72471f8db88b83987c6856d2ea1294f618b9c74b
+  languageName: node
+  linkType: hard
+
+"@revenuecat/purchases-js@npm:1.49.1":
+  version: 1.49.1
+  resolution: "@revenuecat/purchases-js@npm:1.49.1"
+  checksum: 3ca60fef30718f69e38dcd16ce8d1042a0031f14ef7a79c4b21012e75aced16ca8cc0f677f72a5d8812500b82de453c4c741d0fb736d29e2a78318de01034c95
+  languageName: node
+  linkType: hard
+
+"@revenuecat/purchases-typescript-internal@npm:18.28.0":
+  version: 18.28.0
+  resolution: "@revenuecat/purchases-typescript-internal@npm:18.28.0"
+  checksum: a002df45df843b876130483abf9da0d09f71a3ce7cbe9f03e9ec6c396998a05663dad2a0ec18eb58f7df503467429d942f9d95414e41b9ac3ef83342d24a4edc
   languageName: node
   linkType: hard
 
@@ -8428,7 +8444,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.5.10, prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -8583,6 +8599,15 @@ __metadata:
     react: ">=16.8.1"
     react-native: ">=0.60.0-rc.0 <1.0.x"
   checksum: 3beb6a3a5b3ff119f983c8e950c81e3826ecce5e9d614155cdeb26294622eaa8fc55764902a2bad6c417cc764b8c9ae0a6a7cce3661ede50c62b62a54faceea5
+  languageName: node
+  linkType: hard
+
+"react-native-checkbox@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "react-native-checkbox@npm:2.0.0"
+  dependencies:
+    prop-types: ^15.5.10
+  checksum: b09f2ef292afc3bbfdfc914be5cc7010f82bbf6c4b97206d8e55b3715be14ea2bf564b44eca5a289168e610f1805848944e71fa5c8ee004724498c9093ed1f39
   languageName: node
   linkType: hard
 
@@ -8754,6 +8779,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-phone-call@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "react-native-phone-call@npm:1.2.0"
+  checksum: e90967080c672fbf504d6ad248d07e59fa5444d89fca059e12543cc73ac88171fde477b99d729ebae955f623e9533acaf5652b0f3d494c39de3d9858fae93867
+  languageName: node
+  linkType: hard
+
 "react-native-popup-menu@npm:^0.16.1":
   version: 0.16.1
   resolution: "react-native-popup-menu@npm:0.16.1"
@@ -8761,15 +8793,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-purchases@npm:^6.6.5":
-  version: 6.7.2
-  resolution: "react-native-purchases@npm:6.7.2"
+"react-native-purchases@npm:^10.6.0":
+  version: 10.6.0
+  resolution: "react-native-purchases@npm:10.6.0"
   dependencies:
-    "@revenuecat/purchases-typescript-internal": 6.3.2
+    "@revenuecat/purchases-js-hybrid-mappings": 18.28.0
+    "@revenuecat/purchases-typescript-internal": 18.28.0
   peerDependencies:
     react: ">= 16.6.3"
-    react-native: ">= 0.58.2"
-  checksum: 7a9d0b547e8a0cefa03f1910041be27db952825436f4e110f9e9146202b73abc796039b04ad822f511d5906e4cfee537341e23637142a54fb348d0a5ccecfec1
+    react-native: ">= 0.73.0"
+    react-native-web: "*"
+  peerDependenciesMeta:
+    react-native-web:
+      optional: true
+  checksum: 48dbad8ef1b370e2fc87be843e4563c3a8e2a06657f2cacd56c7111c24199663b0450f9e929e24f8b8a5ac0d80d05fb4009eb25b8e951e62dabbce5eb3c5556c
   languageName: node
   linkType: hard
 
@@ -8819,6 +8856,16 @@ __metadata:
   version: 1.11.0
   resolution: "react-native-sms@npm:1.11.0"
   checksum: 52c73d4280e7a2fa90c8fdfd8fe796468448a0ff32bfba51789597768707187da7819e6be90b5b94b58ead2afd82f22f26b87f65022416d7802511afd36a070b
+  languageName: node
+  linkType: hard
+
+"react-native-tracking-transparency@npm:^0.1.2":
+  version: 0.1.2
+  resolution: "react-native-tracking-transparency@npm:0.1.2"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 972706c14929c3c158cd47dc908ba1c448f482f64a9a1fb2087374b5fbc4124d54dd678de7094d6ad866a75415479e6a120d3cc7e39f338fee27ee214a4b902a
   languageName: node
   linkType: hard
 
@@ -10053,6 +10100,7 @@ __metadata:
     react-native-awesome-alerts: ^2.0.0
     react-native-background-timer: ^2.4.1
     react-native-blurhash: ^2.0.3
+    react-native-checkbox: ^2.0.0
     react-native-fast-image: ^8.6.3
     react-native-fbsdk-next: ^13.0.0
     react-native-flash-message: ^0.4.2
@@ -10065,13 +10113,15 @@ __metadata:
     react-native-maps-directions: ^1.9.0
     react-native-orientation-locker: ^1.7.0
     react-native-permissions: ^4.1.5
+    react-native-phone-call: ^1.2.0
     react-native-popup-menu: ^0.16.1
-    react-native-purchases: ^6.6.5
+    react-native-purchases: ^10.6.0
     react-native-push-notification: ^8.1.1
     react-native-responsive-screen: ^1.4.2
     react-native-safe-area-context: ^4.9.0
     react-native-screens: ^3.29.0
     react-native-sms: ^1.11.0
+    react-native-tracking-transparency: ^0.1.2
     react-native-vector-icons: ^10.1.0
     react-native-weather-api: ^3.4.0
     react-redux: ^8.0.5

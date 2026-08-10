@@ -19,13 +19,10 @@ function useSubscriptionScreen({navigate, goBack}) {
   const [products, setProducts] = useState([]);
 
   const {getState, dispatch} = useReduxStore();
-
   const {userData} = getState('Auth');
 
   const {mutate} = useMutation({
-    mutationFn: body => {
-      return API.post(AfterSubBuyUrl, body);
-    },
+    mutationFn: body => API.post(AfterSubBuyUrl, body),
     onSuccess: async ({ok, data}) => {
       if (ok) {
         dispatch(loadingFalse());
@@ -37,90 +34,90 @@ function useSubscriptionScreen({navigate, goBack}) {
         if (data?.start_trial_at) goBack();
       } else {
         dispatch(loadingFalse());
-        errorMessage(data?.message ?? data?.error ?? 'Some thing wrong');
+        errorMessage(data?.message ?? data?.error ?? 'Something went wrong');
       }
     },
   });
 
   const {mutateAsync} = useMutation({
-    mutationFn: body => {
-      // Get the current date and time
-      const currentDate = new Date();
-
-      // Format the date and time
-      const formattedDate = currentDate.toISOString().replace('Z', '.000000Z');
-      return API.post(StartTrialUrl, {
-        trial_start_at: formattedDate,
-      });
+    mutationFn: () => {
+      const formattedDate = new Date().toISOString().replace('Z', '.000000Z');
+      return API.post(StartTrialUrl, {trial_start_at: formattedDate});
     },
     onSuccess: async ({ok, data}) => {
       if (ok) {
         dispatch(loadingFalse());
         successMessage('User subscribed successfully');
-        console.log('skldjbvjksbdkvbsdkvklsdbvklbsdv', data);
-        dispatch({
-          type: types.UpdateProfile,
-          payload: data,
-        });
+        dispatch({type: types.UpdateProfile, payload: data});
       } else {
         dispatch(loadingFalse());
-        errorMessage(data?.message ?? data?.error ?? 'Some thing wrong');
+        errorMessage(data?.message ?? data?.error ?? 'Something went wrong');
       }
     },
   });
-
-  const buySubscription = async PurchasesPackage => {
-    const currentDate = new Date();
-
-    // Format the date and time
-    const formattedDate = currentDate.toISOString().replace('Z', '.000000Z');
-
+  const buySubscription = async product => {
+    const formattedDate = new Date().toISOString().replace('Z', '.000000Z');
     dispatch(loadingTrue());
 
     try {
-      const {customerInfo} = await Purchases.purchaseStoreProduct(
-        PurchasesPackage,
+      console.log('Available Purchases methods:', Object.keys(Purchases));
+      console.log('Product:', JSON.stringify(product, null, 2));
+
+      // Try purchaseProduct which works across more versions
+      const result = await Purchases.purchaseProduct(
+        product?.productIdentifier ?? product?.identifier,
       );
 
+      const customerInfo = result.customerInfo;
+      console.log('CustomerInfo:', JSON.stringify(customerInfo, null, 2));
+
       if (customerInfo?.originalAppUserId != null) {
+        const activeEntitlement =
+          customerInfo.entitlements?.active?.['AppStorePlans'];
+
         mutate({
           customer_id: customerInfo.originalAppUserId,
           identifier:
-            customerInfo.entitlements.active['AppStorePlans'].productIdentifier,
+            activeEntitlement?.productIdentifier ??
+            product?.productIdentifier ??
+            product?.identifier,
           start_trial_at: formattedDate,
         });
       }
     } catch (error) {
-      errorMessage('Purchase failed or was canceled');
-      console.error('Purchase failed or was canceled:', error);
-      // Handle any additional error handling logic here, if needed.
+      if (!error?.userCancelled) {
+        errorMessage('Purchase failed or was canceled');
+        console.error('Purchase error:', error);
+      }
     } finally {
-      // Ensure loading is set to false in all cases
+      dispatch(loadingFalse());
+    }
+  };
+  const getProductsFromStore = async () => {
+    dispatch(loadingTrue());
+    try {
+      const allProducts = await Purchases.getProducts(SKU);
+      console.log(
+        'allProductsallProductsallProductsallProductsallProducts',
+        allProducts,
+      );
+      const yearlyPackage = allProducts?.find(
+        res => res.identifier === 'yearly_18012024',
+      );
+      const monthlyPackage = allProducts?.find(
+        res => res.identifier === 'monthly_18012024',
+      );
+      setProducts([yearlyPackage, monthlyPackage].filter(Boolean));
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
       dispatch(loadingFalse());
     }
   };
 
-  const getProductsFromStore = async () => {
-    dispatch(loadingTrue());
-    try {
-      const offerings = await Purchases.getProducts(SKU);
-      const allProducts = offerings ?? [];
-      const yearlyPackages = allProducts.filter(
-        res => res.subscriptionPeriod == 'P1Y',
-      )[0];
-      const monthlyPackages = allProducts.filter(
-        res => res.subscriptionPeriod == 'P1M',
-      )[0];
-      setProducts([yearlyPackages, monthlyPackages]);
-      dispatch(loadingFalse());
-    } catch (error) {
-      dispatch(loadingFalse());
-    }
-  };
   useEffect(() => {
     getProductsFromStore();
-    dispatch(loadingFalse());
-  }, []); // Empty dependency array means this effect runs once, similar to componentDidMount
+  }, []);
 
   return {
     startTrial: false,
@@ -129,7 +126,7 @@ function useSubscriptionScreen({navigate, goBack}) {
     getProductsFromStore,
     startFreeTrial: () => mutateAsync(),
     userData,
-    getProductsFromStore,
   };
 }
+
 export default useSubscriptionScreen;

@@ -1,4 +1,4 @@
-import {View, Text, ScrollView, Image} from 'react-native';
+import {View, Text, ScrollView, Image, Pressable} from 'react-native';
 import React, {memo, useCallback} from 'react';
 import {HeaderComponent} from '../../Components/HeaderComponent';
 import MapView from 'react-native-maps';
@@ -11,8 +11,9 @@ import ThemeButton from '../../Components/ThemeButton';
 import {hp, wp} from '../../Config/responsive';
 import {contactArry} from '../../Utils/localDB';
 import {CircleImage} from '../../Components/CircleImage';
-import {phone} from '../../Assets';
+import {message1, phone} from '../../Assets';
 import {imageUrl} from '../../Utils/Urls';
+import SendSMS from 'react-native-sms';
 
 const SOSScreen = ({navigation}) => {
   const {
@@ -25,6 +26,7 @@ const SOSScreen = ({navigation}) => {
     sendMessage,
     selectedContacts,
     setContacts,
+    makePhoneCall,
   } = useSOSScreen(navigation);
 
   const RenderMap = useCallback(
@@ -66,15 +68,30 @@ const SOSScreen = ({navigation}) => {
             <View style={styles.midleTextView}>
               <TextComponent text={res?.name} styles={styles.contactName} />
               <View style={styles.numberView}>
-                <Image
-                  source={phone}
-                  resizeMode="contain"
-                  style={{width: wp('5'), marginRight: wp('1')}}
-                />
                 <TextComponent text={res?.phone} />
               </View>
             </View>
-            <CheckBox
+            <Pressable
+              onPress={() => {
+                makePhoneCall(res?.phone);
+              }}>
+              <Image
+                source={phone}
+                resizeMode="contain"
+                style={{width: wp('8'), marginRight: wp('2')}}
+              />
+            </Pressable>
+            <Pressable
+              onPress={() => {
+                sendMessage([res?.phone]);
+              }}>
+              <Image
+                source={message1}
+                resizeMode="contain"
+                style={{width: wp('8'), marginRight: wp('2')}}
+              />
+            </Pressable>
+            {/* <CheckBox
               value={Boolean(selectedContacts.includes(res?.phone))}
               onValueChange={() => {
                 if (selectedContacts.includes(res?.phone))
@@ -83,7 +100,7 @@ const SOSScreen = ({navigation}) => {
               }}
               onCheckColor={Colors.primaryColor}
               onTintColor={Colors.primaryColor}
-            />
+            /> */}
           </View>
         );
       })
@@ -100,12 +117,16 @@ const SOSScreen = ({navigation}) => {
         <RenderMap />
         <TextComponent text={'Emergency Contacts'} styles={styles.heading} />
         <ContactsMapView contacts={allContacts} />
-        {selectedContacts.length > 0 && (
-          <ThemeButton
-            title={'Send Notification'}
-            style={{width: wp('95'), alignSelf: 'center', marginTop: hp('2')}}
-            onPress={sendMessage}
-          />
+        {allContacts.length > 0 && (
+          <>
+            <ThemeButton
+              title={'Send to all contacts'}
+              style={{width: wp('95'), alignSelf: 'center', marginTop: hp('2')}}
+              onPress={() => {
+                sendMessage(allContacts.map(contact => contact.phone));
+              }}
+            />
+          </>
         )}
       </ScrollView>
     </View>

@@ -3,7 +3,7 @@
     "project_number": "664658424087",
     "firebase_url": "https://tieguy-2b261-default-rtdb.firebaseio.com",
     "project_id": "tieguy-2b261",
-    "storage_bucket": "tieguy-2b261.appspot.com"
+    "storage_bucket": "tieguy-2b261.firebasestorage.app"
   },
   "client": [
     {
@@ -22,6 +22,50 @@
             "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
           }
         },
+        {
+          "client_id": "664658424087-m0ntrn2qflo47fr3d6b5oob59g88o0bp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tieguy",
+            "certificate_hash": "bee1c5a39576ffeed8bce1c269e0ae9ac27ca9e4"
+          }
+        },
+        {
+          "client_id": "664658424087-v2dlr35kebo9c9d8u305f2hgjeiqvosv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvmpZbq9pEvRIfnnk5ZEJIEE4IoNk5DmY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "664658424087-v2dlr35kebo9c9d8u305f2hgjeiqvosv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "664658424087-lcsk0ihine61evfk8n3umt9c5ot3j0ao.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tieguy.codment"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:664658424087:android:484f1abcafa866459e0752",
+        "android_client_info": {
+          "package_name": "com.tieguy.codment"
+        }
+      },
+      "oauth_client": [
         {
           "client_id": "664658424087-v2dlr35kebo9c9d8u305f2hgjeiqvosv.apps.googleusercontent.com",
           "client_type": 3

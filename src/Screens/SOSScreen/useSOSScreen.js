@@ -20,6 +20,7 @@ import {useQuery} from '@tanstack/react-query';
 import API from '../../Utils/helperFunc';
 import {allContactsUrl} from '../../Utils/Urls';
 import SendSMS from 'react-native-sms';
+import call from 'react-native-phone-call';
 
 const useSOSScreen = ({addListener, navigate}) => {
   const {width, height} = Dimensions.get('window');
@@ -57,11 +58,11 @@ const useSOSScreen = ({addListener, navigate}) => {
     // if (ok) setRailwayTracks(data);
   };
 
-  const sendMessage = () => {
+  const sendMessage = phoneNumber => {
     SendSMS.send(
       {
-        body: 'The default body of the SMS!',
-        recipients: contacts,
+        body: 'This is an emergency message!',
+        recipients: phoneNumber,
         successTypes: ['sent', 'queued'],
         allowAndroidSendWithoutReadPermission: true,
       },
@@ -76,6 +77,23 @@ const useSOSScreen = ({addListener, navigate}) => {
         );
       },
     );
+  };
+
+  const makePhoneCall = phoneNumber => {
+    const args = {
+      number: phoneNumber, // String - phone number
+      prompt: true, // Optional - shows confirmation dialog (recommended)
+      // skipCanOpenCheck: false // Optional - for advanced use
+    };
+
+    call(args)
+      .then(() => {
+        console.log('Call initiated successfully');
+      })
+      .catch(error => {
+        console.log('Call error:', error);
+        // Handle permission errors, invalid number, etc.
+      });
   };
 
   const {data, isSuccess} = useQuery({
@@ -115,6 +133,7 @@ const useSOSScreen = ({addListener, navigate}) => {
     sendMessage,
     setContacts,
     selectedContacts: contacts,
+    makePhoneCall,
   };
 };
 

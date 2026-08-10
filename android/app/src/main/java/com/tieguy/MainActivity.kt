@@ -1,4 +1,4 @@
-package com.tieguy
+package com.tieguy.codment
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
